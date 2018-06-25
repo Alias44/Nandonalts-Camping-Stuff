@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<WorkGivers>
+
+  <WorkGiverDef>
+    <defName>DoBillsCookPortableStove</defName>
+    <label>Cook meals at portable stove.</label>
+    <giverClass>WorkGiver_DoBill</giverClass>
+    <workType>Cooking</workType>
+    <priorityInType>95</priorityInType>
+    <fixedBillGiverDefs>
+      <li>PortableStove</li>
+    </fixedBillGiverDefs>
+    <verb>cook</verb>
+    <gerund>cooking</gerund>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+    <prioritizeSustains>true</prioritizeSustains>
+  </WorkGiverDef>
+  
+    <WorkGiverDef>
+    <defName>DoBillsButcherFleshSpot</defName>
+    <label>Butcher corpses at the bucthering spot.</label>
+    <giverClass>WorkGiver_DoBill</giverClass>
+    <workType>Cooking</workType>
+    <priorityInType>85</priorityInType>
+    <fixedBillGiverDefs>
+      <li>ButcheringSpot</li>
+    </fixedBillGiverDefs>
+    <verb>butcher</verb>
+    <gerund>butchering at</gerund>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+    <prioritizeSustains>true</prioritizeSustains>
+  </WorkGiverDef>
+
+</WorkGivers>

@@ -1,0 +1,10 @@
+D:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Nandonalt - Camping Stuff\Source\Nandonalt_CampingStuff\Nandonalt_CampingStuff\bin\Debug\Nandonalt_CampingStuff.dll
+D:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Nandonalt - Camping Stuff\Source\Nandonalt_CampingStuff\Nandonalt_CampingStuff\obj\Debug\Nandonalt_CampingStuff.csprojResolveAssemblyReference.cache
+D:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Nandonalt - Camping Stuff\Source\Nandonalt_CampingStuff\Nandonalt_CampingStuff\obj\Debug\Nandonalt_CampingStuff.dll
+D:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Nandonalt - Camping Stuff\Assemblies\Nandonalt_CampingStuff.dll
+C:\Program Files (x86)\Games\Steam\steamapps\workshop\content\294100\834823750\Source\Nandonalt_CampingStuff\Nandonalt_CampingStuff\obj\Debug\Nandonalt_CampingStuff.csprojResolveAssemblyReference.cache
+C:\Program Files (x86)\Games\Steam\steamapps\workshop\content\294100\834823750\Source\Nandonalt_CampingStuff\Nandonalt_CampingStuff\obj\Debug\Nandonalt_CampingStuff.dll
+C:\Program Files (x86)\Games\Steam\steamapps\workshop\content\294100\834823750\Assemblies\Nandonalt_CampingStuff.dll
+C:\Program Files (x86)\Games\Steam\steamapps\common\RimWorld\Mods\Nandonalt_CampingStuff-a17\Assemblies\Nandonalt_CampingStuff.dll
+C:\Program Files (x86)\Games\Steam\steamapps\common\RimWorld\Mods\Nandonalt_CampingStuff-a17\Source\Nandonalt_CampingStuff\Nandonalt_CampingStuff\obj\Debug\Nandonalt_CampingStuff.csprojResolveAssemblyReference.cache
+C:\Program Files (x86)\Games\Steam\steamapps\common\RimWorld\Mods\Nandonalt_CampingStuff-a17\Source\Nandonalt_CampingStuff\Nandonalt_CampingStuff\obj\Debug\Nandonalt_CampingStuff.dll

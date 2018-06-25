@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+
+    <name>Camping Stuff</name>
+
+    <author>Nandonalt</author>
+
+    <url>https://ludeon.com/forums/index.php?action=profile;u=58544</url>
+
+    <targetVersion>0.17.1557</targetVersion>
+
+    <description>v0.3.0 Camping Stuff Mod By Nandonalt (made compatible with a17 by Alias): Adds Deployable Tents(Normal, Medium and Big), Sleeping Bags, Portable Stoves and the Butchering Spot.
+	
+Changelog:
+v3.0- a17 support
+v2.0- enables you to make tents from any textile and adds two new sizes to tents: medium and big.
+</description>
+
+</ModMetaData>

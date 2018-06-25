@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Buildings>
+  
+    <ThingDef ParentName="FurnitureBaseCampingStuff">
+    <defName>BagBed</defName>
+    <label>Sleeping Bag</label>
+    <Description>A sleeping bag for sleeping in the wild. Lightweigh and comfy.</Description>
+    <ThingClass>Building_Bed</ThingClass>
+	 <graphicData>
+      <texPath>CampingStuff/Bag</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <shaderType>CutoutComplex</shaderType>
+      <drawSize>(3,3.5)</drawSize>
+      <damageData>
+        <rect>(0,0.05,1,1.95)</rect>
+      </damageData>
+    </graphicData>
+    <AltitudeLayer>Building</AltitudeLayer>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Flammability>1.5</Flammability>
+      <Beauty>5</Beauty>
+      <WorkToBuild>500</WorkToBuild>
+      <Mass>1.5</Mass>
+      <BedRestEffectiveness>0.8</BedRestEffectiveness>
+      <Comfort>0.55</Comfort>
+      <ImmunityGainSpeedFactor>1.1</ImmunityGainSpeedFactor>
+    </statBases>
+	   <DesignationCategory>Furniture</DesignationCategory>
+    <Size>(1,2)</Size>
+    <stuffCategories>
+      <li>Fabric</li>
+      <li>Leathery</li>
+    </stuffCategories>
+    <costStuffCount>30</costStuffCount>
+    <building>
+      <Bed_ShowSleeperBody>False</Bed_ShowSleeperBody>
+      <bed_healPerDay>5</bed_healPerDay>
+	 
+    </building>
+    <comps>
+      <li Class="CompProperties_AffectedByFacilities">
+        <linkableFacilities>
+          <li>VitalsMonitor</li>
+        </linkableFacilities>
+      </li>
+			<li Class="CompProperties_RoomIdentifier">
+				<roomStat>Impressiveness</roomStat>
+			</li>
+    </comps>
+    <fillPercent>0.4</fillPercent>
+    <PathCost>60</PathCost>
+    <StaticSunShadowHeight>0</StaticSunShadowHeight>
+    <CastEdgeShadows>True</CastEdgeShadows>
+    <designationHotKey>Misc2</designationHotKey>
+    <Passability>PassThroughOnly</Passability>
+    <DrawGUIOverlay>True</DrawGUIOverlay>
+		<placeWorkers>
+			<li>PlaceWorker_ShowFacilitiesConnections</li>
+		</placeWorkers>
+  </ThingDef>
+  
+    <ThingDef ParentName="BuildingBaseCampingStuff">
+    <defName>TentDeployed</defName>
+    <label>Tent Support</label>
+	 <thingClass>Building</thingClass>
+    <description>Supports the tent.</description>
+	<stuffCategories>
+      <li>Fabric</li>
+      <li>Leathery</li>
+    </stuffCategories>
+    <graphicData>
+      <texPath>CampingStuff/TentSupport</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+	  <shaderType>CutoutComplex</shaderType>
+      <shadowData>
+        <volume>(0.25, 0.5, 0.25)</volume>
+        <offset>(0,0,-0.1)</offset>
+      </shadowData>
+      <damageData>
+        <rect>(0.2,0.2,0.6,0.6)</rect>
+      </damageData>
+    </graphicData>
+	     <comps>
+         <li Class="Nandonalt_CampingStuff.CompPropTent">
+		  <useJob>PackTent</useJob>
+          <useLabel>Pack the tent</useLabel>
+             </li>
+    </comps>
+    <tickerType>Normal</tickerType>
+    <altitudeLayer>Building</altitudeLayer>
+	    <building>
+        <deconstructible>false</deconstructible>
+    </building>
+    <statBases>
+      <MaxHitPoints>150</MaxHitPoints>
+      <Mass>2</Mass>
+      <Flammability>1.0</Flammability>
+      <Beauty>0</Beauty>
+    </statBases>
+    <fillPercent>0.15</fillPercent>
+      <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+	    <resourcesFractionWhenDeconstructed>0</resourcesFractionWhenDeconstructed>
+    <pathCost>25</pathCost>
+     </ThingDef>
+  
+  
+</Buildings>
