@@ -1,4 +1,4 @@
-# -Nandonalts-Camping-Stuff-v0.4.0
+# Nandonalts-Camping-Stuff-v0.4.0
 Nandonalt's Camping Stuff v0.2.3 updated to b18
 Sourced from steam with the following changes:
 
