@@ -370,7 +370,7 @@ namespace Nandonalt_CampingStuff
             if (this.parent.HitPoints <= 0)
             {
 
-                Messages.Message("Cannot place a fully damaged tent.", MessageSound.RejectInput);
+                Messages.Message("Cannot place a fully damaged tent.", MessageTypeDefOf.RejectInput);
                 return;
             }
 
@@ -386,13 +386,13 @@ namespace Nandonalt_CampingStuff
                 if (!GenConstruct.CanPlaceBlueprintAt(ThingDefOf.Wall, current, Rot4.North, user.Map, false, null).Accepted)
                 {
                    
-                        Messages.Message("Tent placement blocked. Please deploy on a suitable space.", MessageSound.RejectInput);
+                        Messages.Message("Tent placement blocked. Please deploy on a suitable space.", MessageTypeDefOf.RejectInput);
                                     return;
                 }
 
                 if (current.GetFirstItem(user.Map) != null || current.GetFirstPawn(user.Map) != null || current.GetFirstHaulable(user.Map) != null)
                 {
-                    Messages.Message("Tent placement blocked by a item, pawn or a building. Please deploy on a suitable space.", MessageSound.RejectInput);
+                    Messages.Message("Tent placement blocked by a item, pawn or a building. Please deploy on a suitable space.", MessageTypeDefOf.RejectInput);
                     return;
                 }
 
@@ -401,7 +401,7 @@ namespace Nandonalt_CampingStuff
                 {
                     if (building.def.IsEdifice())
                     {
-                        Messages.Message("Tent placement blocked by a item, pawn or a building. Please deploy on a suitable space.", MessageSound.RejectInput);
+                        Messages.Message("Tent placement blocked by a item, pawn or a building. Please deploy on a suitable space.", MessageTypeDefOf.RejectInput);
                         return;
                     }
                 }
@@ -410,7 +410,7 @@ namespace Nandonalt_CampingStuff
                     {
                     if(plant.def.plant.IsTree)
                     {
-                        Messages.Message("Tent placement blocked by a tree. Please deploy on a suitable space.", MessageSound.RejectInput);
+                        Messages.Message("Tent placement blocked by a tree. Please deploy on a suitable space.", MessageTypeDefOf.RejectInput);
                         return;
                     }
                 }
@@ -434,7 +434,7 @@ namespace Nandonalt_CampingStuff
             }
             else
             {
-                Messages.Message("There is no "+ this.parent.Stuff.label.Translate() + " available to repair the tent (Need " + (this.parent.MaxHitPoints - this.parent.HitPoints).ToString() + ").", MessageSound.RejectInput);
+                Messages.Message("There is no "+ this.parent.Stuff.label.Translate() + " available to repair the tent (Need " + (this.parent.MaxHitPoints - this.parent.HitPoints).ToString() + ").", MessageTypeDefOf.RejectInput);
                 return;
 
             }
@@ -473,13 +473,13 @@ namespace Nandonalt_CampingStuff
 
                 if (!GenConstruct.CanPlaceBlueprintAt(ThingDef.Named("TentWall"), current, Rot4.North, usedBy.Map, false, null).Accepted)
                 {
-                    Messages.Message("Tent placement blocked. Please deploy on a suitable space.", MessageSound.RejectInput);
+                    Messages.Message("Tent placement blocked. Please deploy on a suitable space.", MessageTypeDefOf.RejectInput);
                     return;
                 }
 
                 if (current.GetFirstItem(usedBy.Map) != null || current.GetFirstPawn(usedBy.Map) != null || current.GetFirstHaulable(usedBy.Map) != null )
                 {
-                    Messages.Message("Tent placement blocked. Please deploy on a suitable space.", MessageSound.RejectInput);
+                    Messages.Message("Tent placement blocked. Please deploy on a suitable space.", MessageTypeDefOf.RejectInput);
                     return;
                 }
                 Building building = current.GetFirstBuilding(usedBy.Map);
@@ -487,7 +487,7 @@ namespace Nandonalt_CampingStuff
                 {
                     if (building.def.IsEdifice())
                     {
-                        Messages.Message("Tent placement blocked by a item, pawn or a building. Please deploy on a suitable space.", MessageSound.RejectInput);
+                        Messages.Message("Tent placement blocked by a item, pawn or a building. Please deploy on a suitable space.", MessageTypeDefOf.RejectInput);
                         return;
                     }
                 }
@@ -524,7 +524,7 @@ namespace Nandonalt_CampingStuff
 
             if (wallsToPlace < wallCells.Count + doorCells.Count)
             {
-                Messages.Message("Damaged tent deployed. Some walls will be missing.", MessageSound.Negative);
+                Messages.Message("Damaged tent deployed. Some walls will be missing.", MessageTypeDefOf.NegativeEvent);
             }
             int wallsPlaced = 0;
             this.GetPlacements(this.targetPos);

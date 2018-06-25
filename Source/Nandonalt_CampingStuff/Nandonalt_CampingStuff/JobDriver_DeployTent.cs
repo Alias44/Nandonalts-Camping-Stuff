@@ -10,7 +10,22 @@ namespace Nandonalt_CampingStuff
 {
     public class JobDriver_DeployTent : JobDriver
     {
-               protected override IEnumerable<Toil> MakeNewToils()
+    /*    yield return Toils_Reserve.Reserve(TargetIndex.B, 1);
+        Toil toil = Toils_Reserve.Reserve(TargetIndex.A, 1);
+        yield return toil;
+
+            if (base.job.haulOpportunisticDuplicates)
+            {
+                yield return Toils_Haul.CheckForGetOpportunityDuplicate(toil, TargetIndex.A, TargetIndex.B, false, null);
+            }*/
+
+
+		public override bool TryMakePreToilReservations()
+		{
+			return this.pawn.Reserve(this.TargetB, this.job, 1, -1, null) && this.pawn.Reserve(this.TargetA, this.job, 1, -1, null); ;
+		}
+
+		protected override IEnumerable<Toil> MakeNewToils()
         {
             this.pawn.jobs.curJob.count = 1;
             this.FailOnDestroyedOrNull(TargetIndex.A);
@@ -18,15 +33,10 @@ namespace Nandonalt_CampingStuff
             {
                 this.FailOnForbidden(TargetIndex.A);
             }
-            yield return Toils_Reserve.Reserve(TargetIndex.B, 1);
-            Toil toil = Toils_Reserve.Reserve(TargetIndex.A, 1);
-            yield return toil;
+
             yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.Touch);
             yield return Toils_Haul.StartCarryThing(TargetIndex.A, false, false);
-            if (base.CurJob.haulOpportunisticDuplicates)
-            {
-                yield return Toils_Haul.CheckForGetOpportunityDuplicate(toil, TargetIndex.A, TargetIndex.B, false, null);
-            }
+
             Toil toil3 = Toils_Haul.CarryHauledThingToCell(TargetIndex.B);
             yield return toil3;
             yield return Toils_Haul.PlaceHauledThingInCell(TargetIndex.B, toil3, true);

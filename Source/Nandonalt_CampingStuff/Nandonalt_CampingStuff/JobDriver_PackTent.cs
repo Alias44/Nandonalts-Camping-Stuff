@@ -10,11 +10,15 @@ namespace Nandonalt_CampingStuff
 {
     public class JobDriver_PackTent : JobDriver
     {
-        [DebuggerHidden]
+		public override bool TryMakePreToilReservations()
+		{
+			return this.pawn.Reserve(this.TargetA, this.job, 1, -1, null); ;
+		}
+
+		[DebuggerHidden]
         protected override IEnumerable<Toil> MakeNewToils()
         {
 
-            yield return Toils_Reserve.Reserve(TargetIndex.A, 1);
             yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.Touch);
             Toil toil = new Toil();
             toil.defaultCompleteMode = ToilCompleteMode.Delay;

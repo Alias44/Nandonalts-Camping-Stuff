@@ -11,7 +11,12 @@ namespace Nandonalt_CampingStuff
 {
     public class JobDriver_RepairTent : JobDriver
     {
-        private const TargetIndex BuildingInd = TargetIndex.A;
+		public override bool TryMakePreToilReservations()
+		{
+			return this.pawn.Reserve(this.TargetB, this.job, 1, -1, null) && this.pawn.Reserve(this.TargetA, this.job, 1, -1, null); ;
+		}
+
+		private const TargetIndex BuildingInd = TargetIndex.A;
 
         private const TargetIndex ClothInd = TargetIndex.B;
 
@@ -21,7 +26,7 @@ namespace Nandonalt_CampingStuff
         {
             get
             {
-                return base.CurJob.GetTarget(TargetIndex.B).Thing;
+                return base.job.GetTarget(TargetIndex.B).Thing;
             }
         }
 
@@ -30,8 +35,6 @@ namespace Nandonalt_CampingStuff
         {
           
             this.FailOnDespawnedNullOrForbidden(TargetIndex.A);
-            yield return Toils_Reserve.Reserve(TargetIndex.A, 1);
-            yield return Toils_Reserve.Reserve(TargetIndex.B, 1);
             yield return Toils_Goto.GotoThing(TargetIndex.B, PathEndMode.Touch).FailOnDespawnedNullOrForbidden(TargetIndex.B).FailOnSomeonePhysicallyInteracting(TargetIndex.B);
             yield return Toils_Haul.StartCarryThing(TargetIndex.B, false, false);
             yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.Touch).FailOnDespawnedOrNull(TargetIndex.A);

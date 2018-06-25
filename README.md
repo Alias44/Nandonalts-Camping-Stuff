@@ -1,5 +1,5 @@
-# -A17-Camping-Stuff-v0.2.3
-Nandonalt's Camping Stuff v0.2.3 updated to a17
+# -Nandonalts-Camping-Stuff-v0.4.0
+Nandonalt's Camping Stuff v0.2.3 updated to b18
 Sourced from steam with the following changes:
 
 ## Installation Instructions
@@ -22,7 +22,13 @@ Note: You can get future changes by using the command get pull origin master
 
 
 ### Changes
-V0.3.0
+v0.4.0
+* b18 support
+* Exact changes can be seen on GitHub, it mostly involved reworking the job codeing
+* converted xml defs to lower case
+* removed sleeping bag as it is now a core feature
+
+v0.3.0
 * Retroactively changed version number to comply with Semantic Versioning standards
 
 Initial changes (a17) From Nandonalt's last version
