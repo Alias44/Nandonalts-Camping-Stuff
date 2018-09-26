@@ -7,17 +7,17 @@ Sourced from steam with the following changes:
 ### To install a non-workshop RimWorld mod from zip download:
 Click on the Clone or download button.
 Click Download ZIP
-Extract the zip to your RimWorld install folder (by windows default it's C:\Program Files (x86)\Steam\steamapps\common\RimWorld) and open the "Mods" folder.
+Extract the zip to your RimWorld install folder (by Windows Steam default it's C:\Program Files (x86)\Steam\steamapps\common\RimWorld) and open the "Mods" folder.
 
-After that run Rimworld and "Snowy Trees" will show up in your mod list with a little folder icon next to it.
+After that run Rimworld and "Camping Stuff" will show up in your mod list with a little folder icon next to it.
 From there it should be just like any other workshop item
 
 ### To install using git:
 Click on the Clone or download button.
-Copy the url (https://github.com/Alias44/B18-Snowy-Trees.git)
+Copy the url (https://github.com/Alias44/Nandonalts-Camping-Stuff)
 Open your preferred console (cmd, bash, etc).
 cd into the mods directory. Default is C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods
-Enter the command git clone https://github.com/Alias44/B18-Snowy-Trees.git
+Enter the command git clone https://github.com/Alias44/Nandonalts-Camping-Stuff
 Note: You can get future changes by using the command get pull origin master
 
 
