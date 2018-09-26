@@ -1,55 +1,39 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Defs>
-	<!--========================= Doors =============================-->
-
-	<ThingDef ParentName="BuildingBaseCampingStuff" Name="DoorBase2" Abstract="True">
-		<thingClass>Building_Door</thingClass>
-		<blueprintClass>Blueprint_Door</blueprintClass>
-		<category>Building</category>
-		<blueprintGraphicData>
-			<texPath>Things/Building/Door/DoorSimple_Mover</texPath>
-		</blueprintGraphicData>
-		<altitudeLayer>DoorMoveable</altitudeLayer>
-		<fillPercent>1</fillPercent>
-		<useHitPoints>true</useHitPoints>
-		<stuffCategories>
+	<ThingDef ParentName="DoorBase" Name="TentDoorBase" Abstract="True">
+		<designationCategory Inherit="False"></designationCategory><!--removes recipe from menu-->
+		<stuffCategories Inherit="False">
 			<li>Fabric</li>
 			<li>Leathery</li>
 		</stuffCategories>
 		<statBases>
 			<MaxHitPoints>250</MaxHitPoints>
 			<Flammability>1.0</Flammability>
+			<SellPriceFactor>0</SellPriceFactor>			
 		</statBases>
-		<leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
-		<selectable>true</selectable>
-		<tickerType>Normal</tickerType>
-		<rotatable>false</rotatable>
-		<soundImpactDefault>BulletImpactMetal</soundImpactDefault>
-		<terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
-		<holdsRoof>true</holdsRoof>
-		<staticSunShadowHeight>1.0</staticSunShadowHeight>
-		<blockLight>true</blockLight>
-		<drawerType>RealtimeOnly</drawerType>
 		<building>
-			<soundDoorOpenPowered>DoorOpenPowered</soundDoorOpenPowered>
-			<soundDoorClosePowered>DoorClosePowered</soundDoorClosePowered>
-			<soundDoorOpenManual>DoorOpenManual</soundDoorOpenManual>
-			<soundDoorCloseManual>DoorCloseManual</soundDoorCloseManual>
-			<canPlaceOverWall>true</canPlaceOverWall>
+			<blueprintClass>Blueprint_Door</blueprintClass>
+			<blueprintGraphicData>
+				<texPath>Things/Building/Door/DoorSimple_Mover</texPath>
+			</blueprintGraphicData>
+			<deconstructible>false</deconstructible>
 		</building>
-		<comps>
-			<li Class="CompProperties_Forbiddable"/>
-		</comps>
+		<damageMultipliers Inherit="False">
+			<li>
+				<damageDef>Bomb</damageDef>
+				<multiplier>4</multiplier>
+			</li>
+		</damageMultipliers>
 	</ThingDef>
 
-	<ThingDef ParentName="DoorBase2">
+	<ThingDef ParentName="TentDoorBase">
 		<defName>TentDoor</defName>
 		<label>Tent Door</label>
 		<menuHidden>true</menuHidden>
 		<description>Divides rooms. Must be manually opened and closed, which slows people down.</description>
 		<statBases>
-			<MaxHitPoints>50</MaxHitPoints>
-			<WorkToBuild>850</WorkToBuild>
+			<MaxHitPoints>15</MaxHitPoints>
+			<WorkToBuild>85</WorkToBuild>
 		</statBases>
 		<graphicData>
 			<texPath>CampingStuff/DoorTent_Mover</texPath>
@@ -61,16 +45,13 @@
 			</damageData>
 		</graphicData>
 		<uiIconPath>Things/Building/Door/DoorSimple_MenuIcon</uiIconPath>
-
 		<designationHotKey>Misc1</designationHotKey>
 	</ThingDef>
 
-
-	<ThingDef ParentName="BuildingBaseCampingStuff" Name="Wall">
+	<ThingDef ParentName="Wall" Name="TentWall">
 		<defName>TentWall</defName>
 		<label>Tent Wall</label>
-		<thingClass>Building</thingClass>
-		<category>Building</category>
+		<designationCategory Inherit="False"></designationCategory><!--removes recipe from menu-->
 		<description>A fragile yet practical wall.</description>
 		<graphicData>
 			<texPath>CampingStuff/WallTent</texPath>
@@ -79,60 +60,32 @@
 			<linkFlags>
 				<li>Custom1</li>
 			</linkFlags>
-			<damageData>
-				<cornerTL>Damage/Corner</cornerTL>
-				<cornerTR>Damage/Corner</cornerTR>
-				<cornerBL>Damage/Corner</cornerBL>
-				<cornerBR>Damage/Corner</cornerBR>
-				<edgeTop>Damage/Edge</edgeTop>
-				<edgeBot>Damage/Edge</edgeBot>
-				<edgeLeft>Damage/Edge</edgeLeft>
-				<edgeRight>Damage/Edge</edgeRight>
-			</damageData>
 		</graphicData>
-		<stuffCategories>
-			<li>Fabric</li>
-			<li>Leathery</li>
-		</stuffCategories>
-		<blueprintGraphicData>
-			<texPath>Things/Building/Linked/Wall_Blueprint_Atlas</texPath>
-		</blueprintGraphicData>
 		<uiIconPath>Things/Building/Linked/WallSmooth_MenuIcon</uiIconPath>
-		<statBases>
+		<statBases Inherit="False">
 			<MaxHitPoints>10</MaxHitPoints>
 			<WorkToBuild>75</WorkToBuild>
 			<Flammability>1.5</Flammability>
 		</statBases>
+		<stuffCategories Inherit="False">
+			<li>Fabric</li>
+			<li>Leathery</li>
+		</stuffCategories>
 		<costStuffCount>5</costStuffCount>
-		<leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
-
-		<altitudeLayer>Building</altitudeLayer>
-		<passability>Impassable</passability>
-		<blockWind>true</blockWind>
-		<castEdgeShadows>true</castEdgeShadows>
-		<fillPercent>1</fillPercent>
-		<coversFloor>true</coversFloor>
-		<placingDraggableDimensions>1</placingDraggableDimensions>
-		<tickerType>Never</tickerType>
-		<rotatable>false</rotatable>
-		<selectable>true</selectable>
-		<neverMultiSelect>true</neverMultiSelect>
-		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
-		<holdsRoof>true</holdsRoof>
+		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded><!--heavy terrain?-->
 		<menuHidden>true</menuHidden>
-
-		<staticSunShadowHeight>1.0</staticSunShadowHeight>
-		<blockLight>true</blockLight>
 		<building>
-			<isInert>true</isInert>
+			<deconstructible>false</deconstructible>
 			<alwaysDeconstructible>false</alwaysDeconstructible>
+			<blueprintGraphicData>
+				<texPath>Things/Building/Linked/Wall_Blueprint_Atlas</texPath>
+			</blueprintGraphicData>		
 		</building>
-		<damageMultipliers>
+		<damageMultipliers Inherit="False">
 			<li>
-			<damageDef>Bomb</damageDef>
-			<multiplier>4</multiplier>
+				<damageDef>Bomb</damageDef>
+				<multiplier>4</multiplier>
 			</li>
 		</damageMultipliers>
-		<designationHotKey>Misc3</designationHotKey>
 	</ThingDef>
 </Defs>

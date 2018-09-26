@@ -22,11 +22,19 @@ Note: You can get future changes by using the command get pull origin master
 
 
 ### Changes
+v0.5.0
+* b19 support
+* Major XML rework to remove duplicated and unnecessary definitions
+* Portable stoves are now inherit from campfires- this means that portable stoves should get any recipe that campfires get
+* Major rework to the tent generation code, it is now capable of generating tents of arbitrary rectangular (M x N) size and only requires definition of the south facing orientation in XML
+* Added a new 7x9 Long tent- for all your mobile medical, prison, and housing needs
+* Removed butchering spot as it is now a core feature
+
 v0.4.0
 * b18 support
 * Exact changes can be seen on GitHub, it mostly involved reworking the job codeing
-* converted xml defs to lower case
-* removed sleeping bag as it is now a core feature
+* Converted xml defs to lower case
+* Removed sleeping bag as it is now a core feature
 
 v0.3.0
 * Retroactively changed version number to comply with Semantic Versioning standards
@@ -47,4 +55,5 @@ Unsure of licensing info, as Nandonalt didn't originally publish anything in tha
 
 ### Thanks
 * to Nandonalt for making the mod
-* to jfredric for fixing my aweful readme
+* to jfredric for fixing my awful readme
+* to all the wonderful people on the Rimworld Discord

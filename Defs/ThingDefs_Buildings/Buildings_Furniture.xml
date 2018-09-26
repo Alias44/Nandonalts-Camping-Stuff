@@ -29,9 +29,6 @@
 		</comps>
 		<tickerType>Normal</tickerType>
 		<altitudeLayer>Building</altitudeLayer>
-		<building>
-			<deconstructible>false</deconstructible>
-		</building>
 		<statBases>
 			<MaxHitPoints>150</MaxHitPoints>
 			<Mass>2</Mass>
