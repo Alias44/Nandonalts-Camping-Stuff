@@ -26,7 +26,7 @@ v0.5.0
 * b19 support
 * Major XML rework to remove duplicated and unnecessary definitions
 * Portable stoves are now inherit from campfires- this means that portable stoves should get any recipe that campfires get
-* Major rework to the tent generation code, it is now capable of generating tents of arbitrary rectangular (M x N) size and only requires definition of the south facing orientation in XML
+* Major rework to the tent generation code, it is now capable of generating tents of arbitrary rectangular (M x N) size and only requires definition of the South facing orientation in XML
 * Added a new 7x9 Long tent- for all your mobile medical, prison, and housing needs
 * Removed butchering spot as it is now a core feature
 
