@@ -4,8 +4,8 @@
 	<ThingDef ParentName="Campfire">
 		<defName>PortableStove</defName>
 		<label>Portable Stove</label>
+		<description>Cooks meals and produces heat. Uses chemfuel as a fuel. As with all heat sources, it must be placed indoors so it has a closed space to heat.</description>			
 		<thingClass>Building_WorkTable</thingClass>
-		<description>Cooks meals and produces heat. Uses chemfuel as a fuel. As with all heat sources, it must be placed indoors so it has a closed space to heat.</description>		
 		<graphicData>
 			<texPath>CampingStuff/primus</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
@@ -15,10 +15,14 @@
 				<rect>(0.2,0,0.6,0.1)</rect>
 			</damageData>
 		</graphicData>
-		<uiIconPath>CampingStuff/primus</uiIconPath>
-		<!--<constructEffect>ConstructDirt</constructEffect> Not sure what this does-->
 		<drawerType>RealtimeOnly</drawerType>
 		<fillPercent>0.25</fillPercent>
+		<uiIconPath>CampingStuff/primus</uiIconPath>
+		<thingCategories>
+			<li>BuildingsTemperature</li>
+		</thingCategories>
+		<minifiedDef>MinifiedThing</minifiedDef>
+		<constructEffect>ConstructDirt</constructEffect> <!--Not sure what this does-->
 		<statBases>
 			<Mass>2.5</Mass>
 			<MaxHitPoints>120</MaxHitPoints>

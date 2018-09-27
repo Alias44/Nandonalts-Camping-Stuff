@@ -22,17 +22,20 @@ Note: You can get future changes by using the command get pull origin master
 
 
 ### Changes
+v0.5.1
+* Fixed portable stoves not being portable
+
 v0.5.0
 * b19 support
 * Major XML rework to remove duplicated and unnecessary definitions
-* Portable stoves are now inherit from campfires- this means that portable stoves should get any recipe that campfires get
+* Portable stoves now inherit from campfires- this means that portable stoves should get any recipe that campfires get
 * Major rework to the tent generation code, it is now capable of generating tents of arbitrary rectangular (M x N) size and only requires definition of the South facing orientation in XML
 * Added a new 7x9 Long tent- for all your mobile medical, prison, and housing needs
 * Removed butchering spot as it is now a core feature
 
 v0.4.0
 * b18 support
-* Exact changes can be seen on GitHub, it mostly involved reworking the job codeing
+* Exact changes can be seen on GitHub, it mostly involved reworking the job coding
 * Converted xml defs to lower case
 * Removed sleeping bag as it is now a core feature
 

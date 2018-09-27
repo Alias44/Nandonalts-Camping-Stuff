@@ -9,9 +9,10 @@
 
     <targetVersion>0.19.2009</targetVersion>
 
-    <description>v0.5.0 Camping Stuff Mod By Nandonalt (made compatible with b19 by Alias): Adds Deployable Tents(Normal, Medium, Big, and Long) and Portable Stoves.
+    <description>v0.5.1 Camping Stuff Mod By Nandonalt (made compatible with b19 by Alias): Adds Deployable Tents(Normal, Medium, Big, and Long) and Portable Stoves.
 	
 Changelog:
+v5.1- Fixed portable stoves not being portable
 v5.0- b19 support, removed butchering spots, support for arbitrary tent sizes, new tent size: long
 v4.0- b18 support, removed sleeping bags
 v3.0- a17 support
