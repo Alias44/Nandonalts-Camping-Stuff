@@ -1,36 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Defs>
-
 	<ThingDef ParentName="Campfire">
 		<defName>PortableStove</defName>
 		<label>Portable Stove</label>
-		<description>Cooks meals and produces heat. Uses chemfuel as a fuel. As with all heat sources, it must be placed indoors so it has a closed space to heat.</description>			
-		<thingClass>Building_WorkTable</thingClass>
+		<description>Cooks meals and produces heat. Uses chemfuel as a fuel. As with all heat sources, it must be placed indoors so it has a closed space to heat.</description>
 		<graphicData>
 			<texPath>CampingStuff/primus</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
-			<drawRotated>false</drawRotated>
-			<allowFlip>false</allowFlip>
-			<damageData>
-				<rect>(0.2,0,0.6,0.1)</rect>
-			</damageData>
 		</graphicData>
-		<drawerType>RealtimeOnly</drawerType>
-		<fillPercent>0.25</fillPercent>
 		<uiIconPath>CampingStuff/primus</uiIconPath>
 		<thingCategories>
 			<li>BuildingsTemperature</li>
 		</thingCategories>
 		<minifiedDef>MinifiedThing</minifiedDef>
-		<constructEffect>ConstructDirt</constructEffect> <!--Not sure what this does-->
 		<statBases>
 			<Mass>2.5</Mass>
 			<MaxHitPoints>120</MaxHitPoints>
 			<WorkToBuild>300</WorkToBuild>
 			<Flammability>0</Flammability>
+			<WorkTableWorkSpeedFactor>0.5</WorkTableWorkSpeedFactor>
 		</statBases>
 		<costList Inherit="False">
-			<Steel>50</Steel> 
+			<Steel>50</Steel>
 			<ComponentIndustrial>2</ComponentIndustrial>
 			<Chemfuel>10</Chemfuel>
 		</costList>
@@ -41,7 +32,7 @@
 				<fuelConsumptionPerTickInRain>0.0006</fuelConsumptionPerTickInRain>
 				<fuelFilter>
 					<thingDefs>
-					<li>Chemfuel</li>
+						<li>Chemfuel</li>
 					</thingDefs>
 				</fuelFilter>
 				<initialFuelPercent>1</initialFuelPercent>
@@ -58,12 +49,13 @@
 			<li Class="CompProperties_FireOverlay">
 				<fireSize>0.1</fireSize>
 			</li>
+			<li>
+				<compClass>CompGatherSpot</compClass>
+			</li>
 		</comps>
-		<interactionCellOffset>(0,0,0)</interactionCellOffset>
-		 <researchPrerequisites>
+		<researchPrerequisites>
 			<li>Electricity</li>
 		</researchPrerequisites>
+		<designationHotKey></designationHotKey>
 	</ThingDef>
-
-		
 </Defs>

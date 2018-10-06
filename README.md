@@ -22,6 +22,9 @@ Note: You can get future changes by using the command get pull origin master
 
 
 ### Changes
+v0.5.2
+* Fixed bills not working on portable stoves
+
 v0.5.1
 * Fixed portable stoves not being portable
 
