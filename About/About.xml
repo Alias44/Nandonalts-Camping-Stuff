@@ -7,11 +7,12 @@
 
     <url>https://ludeon.com/forums/index.php?action=profile;u=58544</url>
 
-    <targetVersion>0.19.2009</targetVersion>
+    <targetVersion>1.0.2059</targetVersion>
 
-    <description>v0.5.2 Camping Stuff Mod By Nandonalt (made compatible with b19 by Alias): Adds Deployable Tents(Normal, Medium, Big, and Long) and Portable Stoves.
+    <description>v0.6.0 Camping Stuff Mod By Nandonalt (made compatible with v1.0 by Alias): Adds Deployable Tents(Normal, Medium, Big, and Long) and Portable Stoves.
 	
 Changelog:
+v6.0- v1.0 support
 v5.2- Fixed bills not working on portable stoves
 v5.1- Fixed portable stoves not being portable
 v5.0- b19 support, removed butchering spots, support for arbitrary tent sizes, new tent size: long
