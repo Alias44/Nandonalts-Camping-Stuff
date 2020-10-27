@@ -1,27 +1,21 @@
-# Nandonalts-Camping-Stuff
+# UNSABLE TEST BRANCH of Nandonalts-Camping-Stuff
 Nandonalt's Camping Stuff updated to v1.0
 Sourced from steam with the following changes:
 
 ## Installation Instructions
 
 ### To install a non-workshop RimWorld mod from zip download:
-Click on the Clone or download button.
-Click Download ZIP
-Extract the zip to your RimWorld install folder (by Windows Steam default it's C:\Program Files (x86)\Steam\steamapps\common\RimWorld) and open the "Mods" folder.
+Not intended for installation
 
-After that run Rimworld and "Camping Stuff" will show up in your mod list with a little folder icon next to it.
-From there it should be just like any other workshop item
-
-### To install using git:
-Click on the Clone or download button.
-Copy the url (https://github.com/Alias44/Nandonalts-Camping-Stuff)
-Open your preferred console (cmd, bash, etc).
-cd into the mods directory. Default is C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods
-Enter the command git clone https://github.com/Alias44/Nandonalts-Camping-Stuff
-Note: You can get future changes by using the command get pull origin master
-
+### TODO
+* Change bag properties such as weight and value based on the items packed into bag
+* Write/ migrate code to deploy, undeploy, and repair bags
 
 ### Changes
+v1.0
+* Split tents into bag, cover, pole, and floor parts
+* Parts can be packed into and removed from bags
+
 v0.6.0
 * v1.0 support
 

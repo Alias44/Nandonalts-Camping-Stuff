@@ -1,24 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
 
-    <name>Camping Stuff</name>
+	<name>NCS_TEST</name>
 
-    <author>Nandonalt</author>
+	<author>Alias</author>
+	<packageId>Alias.NCSTEST</packageId>
 
-    <url>https://ludeon.com/forums/index.php?action=profile;u=58544</url>
+	<supportedVersions>
+		<li>1.1</li>
+	</supportedVersions>
 
-    <targetVersion>1.0.2059</targetVersion>
+	<loadAfter>
+		<li>Ludeon.RimWorld</li>
+	</loadAfter>	
 
-    <description>v0.6.0 Camping Stuff Mod By Nandonalt (made compatible with v1.0 by Alias): Adds Deployable Tents(Normal, Medium, Big, and Long) and Portable Stoves.
-	
-Changelog:
-v6.0- v1.0 support
-v5.2- Fixed bills not working on portable stoves
-v5.1- Fixed portable stoves not being portable
-v5.0- b19 support, removed butchering spots, support for arbitrary tent sizes, new tent size: long
-v4.0- b18 support, removed sleeping bags
-v3.0- a17 support
-v2.0- enables you to make tents from any textile and adds two new sizes to tents: medium and big.
-</description>
 
+<description>Camping Stuff test. Not intended for public release</description>
 </ModMetaData>

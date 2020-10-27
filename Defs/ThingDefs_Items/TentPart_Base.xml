@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+	<ThingDef ParentName="ResourceBase" Name="TentPartBase" Abstract="True">
+		<thingClass>ThingWithComps</thingClass>
+		<category>Item</category>
+		<selectable>True</selectable>
+		<useHitPoints>True</useHitPoints>
+		<techLevel>Neolithic</techLevel>
+		<thingCategories>
+			<li>BuildingsSpecial</li>
+		</thingCategories>
+		<altitudeLayer>Item</altitudeLayer>
+		<alwaysHaulable>True</alwaysHaulable>
+		<tickerType>Never</tickerType>
+		<tradeTags>
+			<li>Furniture</li>
+		</tradeTags>
+		<comps>
+			<li Class="CompProperties_Forbiddable"/>
+			<li>
+				<compClass>CompColorable</compClass>
+			</li>
+		</comps>
+	</ThingDef>
+	
+	<ThingDef ParentName="TentPartBase" Name="TentPartTailored" Abstract="True">
+		<stuffCategories>
+			<li>Fabric</li>
+			<li>Leathery</li>
+		</stuffCategories>
+		<recipeMaker>
+			<unfinishedThingDef>NCS_UnfinishedTent</unfinishedThingDef>
+			<workSpeedStat>GeneralLaborSpeed</workSpeedStat> <!--TailoringSpeed-->
+			<workSkill>Crafting</workSkill>
+			<effectWorking>Tailor</effectWorking>
+			<soundWorking>Recipe_Tailor</soundWorking>
+			<recipeUsers>
+				<li>ElectricTailoringBench</li>
+				<li>HandTailoringBench</li>
+			</recipeUsers>
+		</recipeMaker>
+	</ThingDef>
+	
+	<ThingDef ParentName="TentPartBase" Name="TentPartSmith" Abstract="True">
+		<stuffCategories>
+			<li>Metallic</li>
+			<!--li>Woody</li-->
+		</stuffCategories>
+		<recipeMaker>
+			<unfinishedThingDef>UnfinishedWeapon</unfinishedThingDef>
+			<workSpeedStat>GeneralLaborSpeed</workSpeedStat> <!--SmithingSpeed-->
+			<workSkill>Crafting</workSkill>
+			<effectWorking>Smith</effectWorking>
+			<soundWorking>Recipe_Smith</soundWorking>
+			<recipeUsers>
+				<li>ElectricSmithy</li>
+				<li>FueledSmithy</li>
+			</recipeUsers>
+		</recipeMaker>
+	</ThingDef>
+</Defs>

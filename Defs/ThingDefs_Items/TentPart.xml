@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+	<!-- Unfinished -->
+	<ThingDef ParentName="UnfinishedBase">
+		<defName>NCS_UnfinishedTent</defName>
+		<label>Unfinished Tent</label>
+		<graphicData>
+			<texPath>CampingStuff/UnfinishedTent</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<stuffCategories Inherit="False">
+			<li>Fabric</li>
+			<li>Leathery</li>
+		</stuffCategories>
+	</ThingDef>
+
+	<!-- Pole -->
+	<ThingDef ParentName="TentPartSmith">
+		<defName>TentPole</defName>
+		<label>Tent Pole</label>
+		<description>A set of short interlocking rods intended to hold up tents or other temporary structures</description>
+		<graphicData>
+			<texPath>CampingStuff/TentPole</texPath>
+			<graphicClass>Graphic_StackCount</graphicClass>
+		</graphicData>
+		<costStuffCount>5</costStuffCount>
+		<soundInteract>Metal_Drop</soundInteract>
+		<soundDrop>Metal_Drop</soundDrop>
+		<statBases>
+			<MarketValue>1.2</MarketValue>
+			<MaxHitPoints>100</MaxHitPoints>
+			<WorkToMake>500</WorkToMake>
+			<Mass>0.4</Mass> 
+			<Flammability>0.4</Flammability>
+			<SharpDamageMultiplier>0.40</SharpDamageMultiplier>
+			<BluntDamageMultiplier>0.9</BluntDamageMultiplier>
+		</statBases>
+		<stuffProps>
+			<soundImpactStuff>BulletImpact_Metal</soundImpactStuff>
+			<soundMeleeHitSharp>MeleeHit_Metal_Sharp</soundMeleeHitSharp>
+			<soundMeleeHitBlunt>MeleeHit_Metal_Blunt</soundMeleeHitBlunt>
+			<statFactors>
+				<MaxHitPoints>1</MaxHitPoints>
+				<Beauty>1</Beauty>
+				<Flammability>0.4</Flammability>
+			</statFactors>
+		</stuffProps>
+		<tools>
+			<li>
+				<label>pole</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>7</power>
+				<cooldownTime>2</cooldownTime>
+			</li>
+		</tools>
+		<comps>
+			<li Class="Camping_Stuff.CompProperties_TentPart">
+				<compClass>Camping_Stuff.CompUsable_TentPart</compClass>
+				<useJob>NCS_PackBag</useJob>
+				<partType>1</partType>
+			</li>
+		</comps>
+	</ThingDef>
+
+	<!-- Cover -->
+	<ThingDef ParentName="TentPartTailored">
+		<defName>NCS_TentCover_Small</defName>
+		<label>Tent Cover</label>
+		<description>A 4x5 tent.</description>
+		<graphicData>
+			<texPath>CampingStuff/TentSmall</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<costStuffCount>100</costStuffCount>
+		<statBases>
+			<MaxHitPoints>200</MaxHitPoints>
+			<WorkToMake>10000</WorkToMake>
+			<Mass>2</Mass>
+		</statBases>
+		<recipeMaker>
+			<recipeUsers>
+				<li>CraftingSpot</li>
+			</recipeUsers>
+		</recipeMaker>
+		<comps>
+			<li Class="Camping_Stuff.CompProperties_TentCover">
+				<numPoles>5</numPoles>
+				<tentLayoutSouth>
+					<li>1,1,1,1,1</li>
+					<li>1,4,3,4,1</li>
+					<li>1,4,4,4,1</li>
+					<li>1,1,2,1,1</li>
+				</tentLayoutSouth>
+			</li>
+			<li Class="Camping_Stuff.CompProperties_TentPart">
+				<compClass>Camping_Stuff.CompUsable_TentPart</compClass>
+				<useJob>NCS_PackBag</useJob>
+				<partType>2</partType>
+			</li>
+		</comps>
+	</ThingDef>
+	
+	<ThingDef ParentName="TentPartTailored">
+		<defName>NCS_TentCover_Med</defName>
+		<label>Medium Tent Cover</label>
+		<description>A 7x7 rounded tent.</description>
+		<graphicData>
+			<texPath>CampingStuff/TentMed</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<costStuffCount>200</costStuffCount>
+		<statBases>
+			<MaxHitPoints>200</MaxHitPoints>
+			<WorkToMake>20000</WorkToMake>
+			<Mass>2</Mass>
+		</statBases>
+		<comps>
+			<li Class="Camping_Stuff.CompProperties_TentCover">
+				<numPoles>7</numPoles>
+				<tentLayoutSouth>
+					<li>0,1,1,1,1,1,0</li>
+					<li>1,1,4,4,4,1,1</li>
+					<li>1,4,4,4,4,4,1</li>
+					<li>1,4,4,3,4,4,1</li>
+					<li>1,4,4,4,4,4,1</li>
+					<li>1,1,4,4,4,1,1</li>
+					<li>0,1,1,2,1,1,0</li>
+				</tentLayoutSouth>
+			</li>
+			<li Class="Camping_Stuff.CompProperties_TentPart">
+				<compClass>Camping_Stuff.CompUsable_TentPart</compClass>
+				<useJob>NCS_PackBag</useJob>
+				<partType>2</partType>
+			</li>
+		</comps>
+	</ThingDef>
+	
+	<ThingDef ParentName="TentPartTailored">
+		<defName>NCS_TentCover_Large</defName>
+		<label>Large Tent Cover</label>
+		<description>A 8x7 tent with three internal rooms.</description>
+		<graphicData>
+			<texPath>CampingStuff/TentLarge</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<costStuffCount>275</costStuffCount>
+		<statBases>
+			<MaxHitPoints>200</MaxHitPoints>
+			<WorkToMake>27500</WorkToMake>
+			<Mass>2</Mass>
+		</statBases>
+		<comps>
+			<li Class="Camping_Stuff.CompProperties_TentCover">
+				<numPoles>10</numPoles>
+				<tentLayoutSouth>
+					<li>1,1,1,1,1,1,1</li>
+					<li>1,4,4,1,4,4,1</li>
+					<li>1,4,4,1,4,4,1</li>
+					<li>1,2,1,1,1,2,1</li>
+					<li>1,4,4,3,4,4,1</li>
+					<li>1,4,4,4,4,4,1</li>
+					<li>1,4,4,4,4,4,1</li>
+					<li>1,1,1,2,1,1,1</li>
+				</tentLayoutSouth>
+			</li>
+			<li Class="Camping_Stuff.CompProperties_TentPart">
+				<compClass>Camping_Stuff.CompUsable_TentPart</compClass>
+				<useJob>NCS_PackBag</useJob>
+				<partType>2</partType>
+			</li>
+		</comps>
+	</ThingDef>
+	
+	<ThingDef ParentName="TentPartTailored">
+		<defName>NCS_TentCover_Long</defName>
+		<label>Long Tent Cover</label>
+		<description>A 9x7 tent.</description>
+		<graphicData>
+			<texPath>CampingStuff/TentLong</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<costStuffCount>250</costStuffCount>
+		<statBases>
+			<MaxHitPoints>200</MaxHitPoints>
+			<WorkToMake>25000</WorkToMake>
+			<Mass>2</Mass>
+		</statBases>
+		<comps>
+			<li Class="Camping_Stuff.CompProperties_TentCover">
+				<numPoles>15</numPoles>
+				<tentLayoutSouth>
+					<li>1,1,1,1,1,1,1</li>
+					<li>1,4,4,4,4,4,1</li>
+					<li>1,4,4,4,4,4,1</li>
+					<li>1,4,4,4,4,4,1</li>
+					<li>1,4,4,3,4,4,1</li>
+					<li>1,4,4,4,4,4,1</li>
+					<li>1,4,4,4,4,4,1</li>
+					<li>1,4,4,4,4,4,1</li>
+					<li>1,1,1,2,1,1,1</li>
+				</tentLayoutSouth>
+			</li>
+			<li Class="Camping_Stuff.CompProperties_TentPart">
+				<compClass>Camping_Stuff.CompUsable_TentPart</compClass>
+				<useJob>NCS_PackBag</useJob>
+				<partType>2</partType>
+			</li>
+		</comps>
+	</ThingDef>
+	
+	<!-- Floor -->
+	<ThingDef ParentName="TentPartTailored">
+		<defName>NCS_TentFloor</defName>
+		<label>tent mat</label>
+		<description>TBD</description>
+		<graphicData>
+			<texPath>CampingStuff/Blanket</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<costStuffCount>225</costStuffCount>
+		<statBases>
+			<MaxHitPoints>200</MaxHitPoints>
+			<WorkToMake>25000</WorkToMake>
+			<Mass>3</Mass>
+		</statBases>
+		<comps>
+			<li Class="Camping_Stuff.CompProperties_TentPart">
+				<compClass>Camping_Stuff.CompUsable_TentPart</compClass>
+				<useJob>NCS_PackBag</useJob>
+				<partType>3</partType>
+			</li>
+		</comps>
+	</ThingDef>
+		
+	<!-- Bag -->
+	<ThingDef ParentName="MinifiedThingBase">
+		<defName>NCS_MiniTentBag</defName>
+		<thingClass>MinifiedThing</thingClass>
+		<statBases>
+			<Mass>2</Mass>
+		</statBases>
+		
+		<comps>
+			<li Class="Camping_Stuff.CompProperties_MiniTentBag"/>
+		</comps>
+	</ThingDef>
+	
+	
+	<ThingDef ParentName="TentPartTailored">
+		<defName>NCS_TentBag</defName>
+		<label>tent bag</label>
+		<description>A bag to hold tent parts</description>
+		<!--thingClass>NCS_Tent</thingClass-->
+		<useSameGraphicForGhost>true</useSameGraphicForGhost>
+		<tickerType>Normal</tickerType>
+		<rotatable>true</rotatable>
+		<selectable>true</selectable>
+		<hasCustomRectForSelector>true</hasCustomRectForSelector>
+		<drawerType>RealtimeOnly</drawerType>
+		<drawOffscreen>true</drawOffscreen>
+		<minifiedDef>NCS_MiniTentBag</minifiedDef>
+		<drawPlaceWorkersWhileInstallBlueprintSelected>true</drawPlaceWorkersWhileInstallBlueprintSelected>
+		<canLoadIntoCaravan>true</canLoadIntoCaravan>
+		<graphicData>
+			<graphicClass>Graphic_Single</graphicClass>
+			<texPath>CampingStuff/TentBag</texPath>
+			<shaderType>Transparent</shaderType>
+			<drawRotated>false</drawRotated>
+			<allowFlip>false</allowFlip>
+		</graphicData>
+		
+		<costStuffCount>100</costStuffCount>
+		<statBases>
+			<MaxHitPoints>150</MaxHitPoints>
+			<WorkToMake>10000</WorkToMake>
+			<Mass>2</Mass>
+		</statBases>
+		
+		<comps>
+			<li Class="Camping_Stuff.CompProperties_TentBag"/>
+		</comps>
+		
+		<building>
+			<blueprintGraphicData>
+				<graphicClass>Graphic_Single</graphicClass>
+				<texPath>CampingStuff/TentSupport</texPath>
+				<shaderType>Transparent</shaderType>
+				<drawRotated>false</drawRotated>
+				<allowFlip>false</allowFlip>
+			</blueprintGraphicData>
+		</building>
+		
+		<placeWorkers>
+			<li>PlaceWorker_MonumentMarker</li>
+		</placeWorkers>
+	</ThingDef>
+</Defs>
