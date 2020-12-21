@@ -69,7 +69,7 @@ namespace Camping_Stuff
 
 			if (partType == TentPart.pole)
 			{
-				int m = Math.Min(Part.stackCount, Bag.TryGetComp<ThingComp_MiniTentBag>().maxPoles);
+				int m = Math.Min(Part.stackCount, Bag.TryGetComp<ThingComp_MiniTentBag>().MaxPoles);
   				return m;
 			}
 

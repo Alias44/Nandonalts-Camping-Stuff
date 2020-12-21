@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+	<Operation Class="PatchOperationAdd">
+		<xpath>Defs/StatDef[defName="Mass"]/parts</xpath>
+		<value>
+			<li Class="Camping_Stuff.StatPart_Mass"></li>
+		</value>
+	</Operation>
+	
+	<Operation Class="PatchOperationAdd">
+		<xpath>Defs/StatDef[@Name="MarketValueBase"]/parts</xpath>
+		<value>
+			<li Class="Camping_Stuff.StatPart_MktValue"></li>
+		</value>
+	</Operation>
+</Patch>
