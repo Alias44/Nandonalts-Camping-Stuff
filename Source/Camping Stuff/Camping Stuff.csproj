@@ -62,11 +62,13 @@
     <Compile Include="JobDriver_PackBag.cs" />
     <Compile Include="JobDriver_UnPackBag.cs" />
     <Compile Include="NCS_Tent.cs" />
+    <Compile Include="PlaceWorker_Tent.cs" />
     <Compile Include="StatParts.cs" />
     <Compile Include="TentBagComp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TentCoverComp.cs" />
     <Compile Include="TentPartComp.cs" />
+    <Compile Include="TentDefOf.cs" />
     <Compile Include="ThingComp_MiniTentBag.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -13,21 +13,12 @@ using UnityEngine;
 
 namespace Camping_Stuff
 {
-	public enum TentPart
-	{
-		other = -1,
-		bag,
-		pole,
-		cover,
-		floor
-	}
-
 	public class ThingComp_MiniTentBag : ThingComp //(Thing)
 	{
 		TentBagComp Bag {
 			get {
 				var f = this.parent.GetInnerIfMinified().TryGetComp<TentBagComp>();
- 				return f;
+    				return f;
 			}
 		}
 

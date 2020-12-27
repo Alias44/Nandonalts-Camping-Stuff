@@ -12,6 +12,15 @@ using UnityEngine;
 
 namespace Camping_Stuff
 {
+	public enum TentPart
+	{
+		other = -1,
+		bag,
+		pole,
+		cover,
+		floor
+	}
+
 	public class TentBagComp : ThingComp //(Thing)
 	{
 		ThingComp_MiniTentBag Inner => this.parent.SpawnedParentOrMe.TryGetComp<ThingComp_MiniTentBag>();
@@ -20,9 +29,11 @@ namespace Camping_Stuff
 		public int maxPoles = DefDatabase<ThingDef>.AllDefs.Where(d => d.HasComp(typeof(TentCoverComp))).Min(cover => cover.GetCompProperties<CompProperties_TentCover>().numPoles);
 
 		//public Dictionary<ThingDef, Thing> poles = new Dictionary<ThingDef, Thing>();
-		public List<Thing> poles = new List<Thing>();
-		public Thing cover;
-		public Thing floor;
+		private List<Thing> poles = new List<Thing>();
+		private Thing cover;
+		private Thing floor;
+
+		//private Sketch sketch = new Sketch();
 
 		public void PackPart(Thing part)
 		{
@@ -72,6 +83,11 @@ namespace Camping_Stuff
 			{
 				GenPlace.TryPlaceThing(t, this.parent.PositionHeld, this.parent.MapHeld, ThingPlaceMode.Near);
 			}
+		}
+
+		public bool ready()
+		{
+			return cover != null && poleCount >= cover.TryGetComp<TentCoverComp>().Props.numPoles;
 		}
 
 		public void ReplaceCover(Thing newCover)
@@ -182,6 +198,51 @@ namespace Camping_Stuff
 			}
 
 			AdjustPoles();
+
+			//sketch.Clear();
+		}
+
+		/*public Sketch GetSketch()
+		{
+			if(ready() == false)
+			{
+				return null;
+			}
+
+			Sketch sketch = this.cover.TryGetComp<TentCoverComp>().Props.sketch;
+
+			sketch.
+
+			//List<IntVec3> positions = new List<IntVec3>();
+
+			return sketch;
+		}*/
+
+		public void DrawGhost_NewTmp(IntVec3 at, bool placingMode, Rot4 rotation)
+		{
+			//Sketch sketch = this.cover.TryGetComp<TentCoverComp>().Props.sketch;
+			var coverProps = this.cover.TryGetComp<TentCoverComp>().Props;
+			Sketch sketch = new Sketch();
+
+			int rowOffset = coverProps.height / 2;
+			int colOffset = coverProps.width / 2;
+
+			for(int r = 0; r < coverProps.layoutS.Count; r++)
+			{
+				for(int c = 0; c < coverProps.layoutS[r].Count; c++)
+				{
+					sketch.AddThing(TentDefOf.NCS_TentWall, new IntVec3(r - rowOffset, 0, c - colOffset), Rot4.South, this.parent.Stuff); // r&c may be flipped
+				}
+			}
+			sketch.Rotate(rotation);
+
+			Func<SketchEntity, IntVec3, List<Thing>, Map, bool> validator = (Func<SketchEntity, IntVec3, List<Thing>, Map, bool>)null;
+			if (placingMode)
+			{
+				//validator = (Func<SketchEntity, IntVec3, List<Thing>, Map, bool>)((entity, offset, things, map) => MonumentMarkerUtility.GetFirstAdjacentBuilding(entity, offset, things, map) == null);
+			}
+
+			sketch.DrawGhost_NewTmp(at, Sketch.SpawnPosType.Unchanged, placingMode, null, validator);
 		}
 
 		public float GetValue(StatDef sd)
@@ -216,17 +277,12 @@ namespace Camping_Stuff
 
 		public override string CompInspectStringExtra()
 		{
-			if (cover != null && poleCount >= cover.TryGetComp<TentCoverComp>().Props.numPoles)
+			if (ready())
 			{
 				return "Ready to deploy";
 			}
 
 			return "Not ready to deploy";
-			/*
-			"Cover: {0}\nPoles: {1}\nFloor: {2}".Formatted(
-			cover == null ? "<color=red>None</color>" : cover.LabelShortCap,
-			poles == null ? "<color=red>None</color>" : poles.Count.ToString,
-			floor == null ? "<color=red>None</color>" : cover.LabelShortCap);*/
 		}
 
 		public override string GetDescriptionPart()

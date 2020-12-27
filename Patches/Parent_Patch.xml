@@ -5,4 +5,10 @@
 		<attribute>Name</attribute>
 		<value>MinifiedThingBase</value>
 	</Operation>
+	
+	<Operation Class="PatchOperationAttributeAdd">
+		<xpath>Defs/ThingDef[defName="Campfire"]</xpath>
+		<attribute>Name</attribute>
+		<value>Campfire</value>
+	</Operation>
 </Patch>

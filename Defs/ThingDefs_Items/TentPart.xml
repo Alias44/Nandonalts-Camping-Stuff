@@ -16,7 +16,7 @@
 
 	<!-- Pole -->
 	<ThingDef ParentName="TentPartSmith">
-		<defName>TentPole</defName>
+		<defName>NCS_TentPole</defName>
 		<label>Tent Pole</label>
 		<description>A set of short interlocking rods intended to hold up tents or other temporary structures</description>
 		<graphicData>
@@ -293,7 +293,7 @@
 		</building>
 		
 		<placeWorkers>
-			<li>PlaceWorker_MonumentMarker</li>
+			<li>Camping_Stuff.PlaceWorker_Tent</li>
 		</placeWorkers>
 	</ThingDef>
 </Defs>
