@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <!--TerrainDef ParentName="CarpetBase">
+    <defName>NCS_TentFloor</defName>
+    <label>tent floor</label>
+    <renderPrecedence>200</renderPrecedence>
+    <description>Plush carpet in a lovely rose hue.</description>
+    <color>(118,49,57)</color>
+    
+    <costList>
+      <Cloth>7</Cloth>
+    </costList>
+	 
+  </TerrainDef-->
+</Defs>

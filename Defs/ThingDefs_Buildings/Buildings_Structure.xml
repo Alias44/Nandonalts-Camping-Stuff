@@ -13,6 +13,7 @@
 				<enabled>false</enabled>
 			</damageData>
 		</graphicData>
+		<uiIconPath>Things/Building/Door/DoorSimple_MenuIcon</uiIconPath>
 		<statBases>
 			<MaxHitPoints>15</MaxHitPoints>
 			<WorkToBuild>85</WorkToBuild>
@@ -31,7 +32,6 @@
 				<multiplier>4</multiplier>
 			</li>
 		</damageMultipliers>
-		<designationHotKey>Misc1</designationHotKey>
 	</ThingDef>
 	
 	<ThingDef ParentName="Wall" Name="NCS_TentWallBase">

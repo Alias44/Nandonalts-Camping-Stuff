@@ -16,7 +16,7 @@
 
 	<!-- Pole -->
 	<ThingDef ParentName="TentPartSmith">
-		<defName>NCS_TentPole</defName>
+		<defName>NCS_TentPart_Pole</defName>
 		<label>Tent Pole</label>
 		<description>A set of short interlocking rods intended to hold up tents or other temporary structures</description>
 		<graphicData>
@@ -66,7 +66,7 @@
 
 	<!-- Cover -->
 	<ThingDef ParentName="TentPartTailored">
-		<defName>NCS_TentCover_Small</defName>
+		<defName>NCS_TentPart_Cover_Small</defName>
 		<label>Tent Cover</label>
 		<description>A 4x5 tent.</description>
 		<graphicData>
@@ -103,7 +103,7 @@
 	</ThingDef>
 	
 	<ThingDef ParentName="TentPartTailored">
-		<defName>NCS_TentCover_Med</defName>
+		<defName>NCS_TentPart_Cover_Med</defName>
 		<label>Medium Tent Cover</label>
 		<description>A 7x7 rounded tent.</description>
 		<graphicData>
@@ -138,7 +138,7 @@
 	</ThingDef>
 	
 	<ThingDef ParentName="TentPartTailored">
-		<defName>NCS_TentCover_Large</defName>
+		<defName>NCS_TentPart_Cover_Large</defName>
 		<label>Large Tent Cover</label>
 		<description>A 8x7 tent with three internal rooms.</description>
 		<graphicData>
@@ -174,7 +174,7 @@
 	</ThingDef>
 	
 	<ThingDef ParentName="TentPartTailored">
-		<defName>NCS_TentCover_Long</defName>
+		<defName>NCS_TentPart_Cover_Long</defName>
 		<label>Long Tent Cover</label>
 		<description>A 9x7 tent.</description>
 		<graphicData>
@@ -212,7 +212,7 @@
 	
 	<!-- Floor -->
 	<ThingDef ParentName="TentPartTailored">
-		<defName>NCS_TentFloor</defName>
+		<defName>NCS_TentPart_Floor</defName>
 		<label>tent mat</label>
 		<description>TBD</description>
 		<graphicData>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <RoofDef>
+    <defName>NCS_TentRoof</defName>
+    <label>tent roof</label>
+    <isThickRoof>false</isThickRoof>
+    <soundPunchThrough>PunchThroughRoofMetal</soundPunchThrough>
+  </RoofDef>
+
+</Defs>

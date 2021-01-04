@@ -4,3 +4,4 @@ C:\Program Files (x86)\Games\Steam\steamapps\common\RimWorld\Mods\NCS_TEST\Assem
 C:\Program Files (x86)\Games\Steam\steamapps\common\RimWorld\Mods\NCS_TEST\Source\Camping Stuff\obj\Debug\Camping Stuff.pdb
 C:\Program Files (x86)\Games\Steam\steamapps\common\RimWorld\Mods\NCS_TEST\Source\Camping Stuff\obj\Debug\Camping Stuff.csproj.CoreCompileInputs.cache
 C:\Program Files (x86)\Games\Steam\steamapps\common\RimWorld\Mods\NCS_TEST\Source\Camping Stuff\obj\Debug\Camping Stuff.csproj.CopyComplete
+C:\Program Files (x86)\Games\Steam\steamapps\common\RimWorld\Mods\NCS_TEST\Source\Camping Stuff\obj\Debug\Camping Stuff.csprojAssemblyReference.cache

@@ -33,7 +33,7 @@ namespace Camping_Stuff
 		private Thing cover;
 		private Thing floor;
 
-		//private Sketch sketch = new Sketch();
+		private Sketch sketch = new Sketch();
 
 		public void PackPart(Thing part)
 		{
@@ -73,8 +73,6 @@ namespace Camping_Stuff
 			{
 				part.DeSpawn(DestroyMode.Vanish);
 			}
-
-			UpdateStats();
 		}
 
 		private void Eject(Thing t)
@@ -85,7 +83,7 @@ namespace Camping_Stuff
 			}
 		}
 
-		public bool ready()
+		public bool Ready()
 		{
 			return cover != null && poleCount >= cover.TryGetComp<TentCoverComp>().Props.numPoles;
 		}
@@ -102,6 +100,18 @@ namespace Camping_Stuff
 			}
 
 			this.cover = newCover;
+
+			if (this.cover == null)
+			{
+				maxPoles = DefDatabase<ThingDef>.AllDefs.Where(d => d.HasComp(typeof(TentCoverComp))).Min(cover => cover.GetCompProperties<CompProperties_TentCover>().numPoles);
+			}
+			else
+			{
+				maxPoles = cover.TryGetComp<TentCoverComp>().Props.numPoles;
+			}
+
+			AdjustPoles();
+			UpdateSketch();
 		}
 
 		public void EjectCover()
@@ -144,6 +154,7 @@ namespace Camping_Stuff
 				}
 			}
 		}
+
 		private void EjectPole(int poleIndex, int qtyOut)
 		{
 			Thing src = poles[poleIndex];
@@ -186,54 +197,67 @@ namespace Camping_Stuff
 			}
 		}
 
-		private void UpdateStats()
+		private void UpdateSketch()
 		{
 			if (cover == null)
 			{
-				maxPoles = DefDatabase<ThingDef>.AllDefs.Where(d => d.HasComp(typeof(TentCoverComp))).Min(cover => cover.GetCompProperties<CompProperties_TentCover>().numPoles);
+				return;
 			}
-			else
+
+			sketch = new Sketch();
+			sketch.Rotate(Rot4.South);
+
+			CompProperties_TentCover coverProps = this.cover.TryGetComp<TentCoverComp>().Props;
+
+			for (int r = 0; r < coverProps.layoutS.Count; r++)
 			{
-				maxPoles = cover.TryGetComp<TentCoverComp>().Props.numPoles;
+				for (int c = 0; c < coverProps.layoutS[r].Count; c++)
+				{
+					ThingDef thing = null;
+					ThingDef stuff = cover.Stuff; //this.parent.Stuff
+					IntVec3 loc = new IntVec3(c, 0, r) - coverProps.center;
+
+					switch (coverProps.layoutS[r][c])
+					{
+						case TentLayout.other:
+							break;
+						case TentLayout.empty:
+							break;
+						case TentLayout.wall:
+							thing = TentDefOf.NCS_TentWall;
+							break;
+						case TentLayout.door:
+							thing = TentDefOf.NCS_TentDoor;
+							break;
+						case TentLayout.pole:
+							//thing = TentDefOf.NCS_TentBag;
+							break;
+						case TentLayout.roofedEmpty:
+							break;
+						default:
+							break;
+					}
+
+					if (thing != null) {
+						sketch.AddThing(thing, loc, Rot4.South, stuff); 
+					}
+				}
 			}
-
-			AdjustPoles();
-
-			//sketch.Clear();
+			
+			//sketch.MoveOccupiedCenterToZero(); // does a thing?
 		}
-
-		/*public Sketch GetSketch()
-		{
-			if(ready() == false)
-			{
-				return null;
-			}
-
-			Sketch sketch = this.cover.TryGetComp<TentCoverComp>().Props.sketch;
-
-			sketch.
-
-			//List<IntVec3> positions = new List<IntVec3>();
-
-			return sketch;
-		}*/
 
 		public void DrawGhost_NewTmp(IntVec3 at, bool placingMode, Rot4 rotation)
 		{
-			//Sketch sketch = this.cover.TryGetComp<TentCoverComp>().Props.sketch;
-			var coverProps = this.cover.TryGetComp<TentCoverComp>().Props;
-			Sketch sketch = new Sketch();
-
-			int rowOffset = coverProps.height / 2;
-			int colOffset = coverProps.width / 2;
-
-			for(int r = 0; r < coverProps.layoutS.Count; r++)
+			if (!Ready())
 			{
-				for(int c = 0; c < coverProps.layoutS[r].Count; c++)
-				{
-					sketch.AddThing(TentDefOf.NCS_TentWall, new IntVec3(r - rowOffset, 0, c - colOffset), Rot4.South, this.parent.Stuff); // r&c may be flipped
-				}
+				return;
 			}
+			if(sketch.Empty)
+			{
+				UpdateSketch();
+			}
+
 			sketch.Rotate(rotation);
 
 			Func<SketchEntity, IntVec3, List<Thing>, Map, bool> validator = (Func<SketchEntity, IntVec3, List<Thing>, Map, bool>)null;
@@ -242,7 +266,7 @@ namespace Camping_Stuff
 				//validator = (Func<SketchEntity, IntVec3, List<Thing>, Map, bool>)((entity, offset, things, map) => MonumentMarkerUtility.GetFirstAdjacentBuilding(entity, offset, things, map) == null);
 			}
 
-			sketch.DrawGhost_NewTmp(at, Sketch.SpawnPosType.Unchanged, placingMode, null, validator);
+			sketch.DrawGhost_NewTmp(at, Sketch.SpawnPosType.Unchanged, false, null, validator);
 		}
 
 		public float GetValue(StatDef sd)
@@ -277,7 +301,7 @@ namespace Camping_Stuff
 
 		public override string CompInspectStringExtra()
 		{
-			if (ready())
+			if (Ready())
 			{
 				return "Ready to deploy";
 			}
@@ -360,6 +384,7 @@ namespace Camping_Stuff
 			Scribe_Deep.Look(ref cover, "tentCover");
 			Scribe_Deep.Look(ref floor, "tentFloor");
 			Scribe_Collections.Look<Thing>(ref poles, "poleList", LookMode.Deep);
+			//Scribe_Deep.Look<Sketch>(ref this.sketch, "sketch"); //Saving the sketch so the tent can still be packed if the layout changed
 
 			if (Scribe.mode != LoadSaveMode.Saving)
 			{
@@ -367,21 +392,27 @@ namespace Camping_Stuff
 				{
 					poles = new List<Thing>();
 				}
+
+				if (sketch == null)
+				{
+					UpdateSketch();
+				}
 			}
 		}
 
 		public override IEnumerable<FloatMenuOption> CompFloatMenuOptions(Pawn selPawn)
 		{
 			JobDef jd = DefDatabase<JobDef>.GetNamed("NCS_UnpackBag");
+			Thing target = this.parent.SpawnedParentOrMe;
 
-			if (selPawn.CanReserveAndReach(this.parent, PathEndMode.Touch, Danger.Deadly))
+			if (selPawn.CanReserveAndReach(target, PathEndMode.Touch, Danger.Deadly))
 			{
 				if (cover != null)
 				{
 					yield return new FloatMenuOption("Unpack " + cover.LabelCap, delegate
 					{
 						jd.driverClass = typeof(JobDriver_UnpackBagCover);
-						Job j = JobMaker.MakeJob(jd, parent);
+						Job j = JobMaker.MakeJob(jd, target);
 
 						selPawn.jobs.TryTakeOrderedJob(j);
 					});
@@ -394,7 +425,7 @@ namespace Camping_Stuff
 						yield return new FloatMenuOption("Unpack " + pole.LabelCap + (pole.stackCount == 1 ? " x1" : ""), delegate
 						{
 							jd.driverClass = typeof(JobDriver_UnpackBagPole);
-							Job j = JobMaker.MakeJob(jd, parent, pole);
+							Job j = JobMaker.MakeJob(jd, target, pole);
 
 							selPawn.jobs.TryTakeOrderedJob(j);
 						});
@@ -403,7 +434,7 @@ namespace Camping_Stuff
 					yield return new FloatMenuOption("Unpack all poles (x" + poleCount + ")", delegate
 					{
 						jd.driverClass = typeof(JobDriver_UnpackBagAllPoles);
-						Job j = JobMaker.MakeJob(jd, parent);
+						Job j = JobMaker.MakeJob(jd, target);
 
 						selPawn.jobs.TryTakeOrderedJob(j);
 					});
@@ -414,7 +445,7 @@ namespace Camping_Stuff
 					yield return new FloatMenuOption("Unpack " + floor.LabelCap, delegate
 					{
 						jd.driverClass = typeof(JobDriver_UnpackBagFloor);
-						Job j = JobMaker.MakeJob(jd, parent);
+						Job j = JobMaker.MakeJob(jd, target);
 
 						selPawn.jobs.TryTakeOrderedJob(j);
 					});
@@ -425,7 +456,7 @@ namespace Camping_Stuff
 					yield return new FloatMenuOption("Unpack all parts", delegate
 					{
 						jd.driverClass = typeof(JobDriver_UnpackBagAll);
-						Job j = JobMaker.MakeJob(jd, parent);
+						Job j = JobMaker.MakeJob(jd, target);
 
 						selPawn.jobs.TryTakeOrderedJob(j);
 					});
