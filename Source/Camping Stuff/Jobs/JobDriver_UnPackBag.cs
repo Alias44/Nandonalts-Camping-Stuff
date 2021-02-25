@@ -14,7 +14,7 @@ namespace Camping_Stuff
 	{
 		protected const TargetIndex bagTarget = TargetIndex.A;
 
-		protected Thing Bag => this.job.GetTarget(bagTarget).Thing;
+		protected NCS_Tent Bag => (NCS_Tent) this.job.GetTarget(bagTarget).Thing;
 		protected int UseDuration
 		{
 			get
@@ -56,7 +56,7 @@ namespace Camping_Stuff
 			{
 				initAction = delegate ()
 				{
-					Bag.TryGetComp<ThingComp_MiniTentBag>().EjectCover();
+					Bag.Cover = null;
 				},
 				defaultCompleteMode = ToilCompleteMode.Instant
 			};
@@ -76,7 +76,7 @@ namespace Camping_Stuff
 			{
 				initAction = delegate ()
 				{
-					Bag.TryGetComp<ThingComp_MiniTentBag>().EjectFloor();
+					Bag.Floor = null;
 				},
 				defaultCompleteMode = ToilCompleteMode.Instant
 			};
@@ -100,7 +100,7 @@ namespace Camping_Stuff
 				{
 					//find pole in list
 
-					Bag.TryGetComp<ThingComp_MiniTentBag>().EjectPole(pole);
+					Bag.EjectPole(pole);
 				},
 				defaultCompleteMode = ToilCompleteMode.Instant
 			};
@@ -120,7 +120,7 @@ namespace Camping_Stuff
 			{
 				initAction = delegate ()
 				{
-					Bag.TryGetComp<ThingComp_MiniTentBag>().EjectAllPoles();
+					Bag.EjectAllPoles();
 				},
 				defaultCompleteMode = ToilCompleteMode.Instant
 			};
@@ -140,7 +140,7 @@ namespace Camping_Stuff
 			{
 				initAction = delegate ()
 				{
-					Bag.TryGetComp<ThingComp_MiniTentBag>().EjectAll();
+					Bag.EjectAll();
 				},
 				defaultCompleteMode = ToilCompleteMode.Instant
 			};

@@ -1,5 +1,41 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
+	<ThingDef>
+		<defName>NCS_TentSupport</defName>
+		<label>Tent Support</label>
+		<thingClass>Building</thingClass>
+		<description>Supports the tent.</description>
+		<designationCategory Inherit="False"></designationCategory><!--removes recipe from menu-->
+		<stuffCategories>
+			<li>Metallic</li>
+			<li>Woody</li>
+		</stuffCategories>
+		<graphicData>
+			<texPath>CampingStuff/TentSupport</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+			<shaderType>CutoutComplex</shaderType>
+			<shadowData>
+				<volume>(0.25, 0.5, 0.25)</volume>
+				<offset>(0,0,-0.1)</offset>
+			</shadowData>
+			<damageData>
+				<rect>(0.2,0.2,0.6,0.6)</rect>
+			</damageData>
+		</graphicData>
+		<comps>
+		</comps>
+		<tickerType>Normal</tickerType>
+		<altitudeLayer>Building</altitudeLayer>
+		<useHitPoints>false</useHitPoints>
+		<statBases>
+			<Mass>2</Mass>
+		</statBases>
+		<fillPercent>0.15</fillPercent>
+		<leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+		<resourcesFractionWhenDeconstructed>0</resourcesFractionWhenDeconstructed>
+		<pathCost>25</pathCost>
+	</ThingDef>
+
 	<ThingDef ParentName="DoorBase" Name="NCS_TentDoor">
 		<defName>NCS_TentDoor</defName>
 		<label>Tent Door</label>

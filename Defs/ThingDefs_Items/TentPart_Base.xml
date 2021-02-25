@@ -20,6 +20,9 @@
 			<li>
 				<compClass>CompColorable</compClass>
 			</li>
+			<li>
+				<compClass>CompQuality</compClass>
+			</li>
 		</comps>
 	</ThingDef>
 	

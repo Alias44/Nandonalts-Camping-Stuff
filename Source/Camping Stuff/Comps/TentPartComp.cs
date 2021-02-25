@@ -33,7 +33,7 @@ namespace Camping_Stuff
 				canTargetMechs = false,
 				canTargetItems = true,
 				mapObjectTargetsMustBeAutoAttackable = false,
-				validator = (Predicate<TargetInfo>)(t => t.Thing is MinifiedThing && t.Thing.def.HasComp(typeof(ThingComp_MiniTentBag)))
+				validator = (Predicate<TargetInfo>)(t => t.Thing is NCS_Tent)
 			};
 		}
 
@@ -41,7 +41,7 @@ namespace Camping_Stuff
 		{
 			if (selPawn.CanReserveAndReach(this.parent, PathEndMode.Touch, Danger.Deadly))
 			{
-				yield return new FloatMenuOption("Pack " + parent.def.label+ " into bag", delegate
+				yield return new FloatMenuOption("Pack " + parent.def.LabelCap + " into bag", delegate
 				 {
 					 Find.Targeter.BeginTargeting(this.GetTargetingParameters(), delegate (LocalTargetInfo t)
 					 {
@@ -54,6 +54,11 @@ namespace Camping_Stuff
 				yield return new FloatMenuOption("Unable to reach or reserve target", null);
 			}
 		}
+
+		/*public override IEnumerable<Gizmo> CompGetGizmosExtra()
+		{
+			yield return new Gizmo
+		}*/
 	}
 
 	public class CompProperties_TentPart : CompProperties_Usable //(Def)

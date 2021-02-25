@@ -19,11 +19,9 @@ namespace Camping_Stuff
 
 		public string ExplanationPart(StatRequest req, StatDef sd)
 		{
-			if (req.HasThing && req.Thing.def.HasComp(typeof(TentBagComp)))
+			if (req.HasThing && req.Thing is NCS_Tent tent)
 			{
-				ThingWithComps t = (ThingWithComps)req.Thing;
-
-				return t.TryGetComp<TentBagComp>().GetExplanation(sd, format);
+				return tent.GetExplanation(sd, format);
 			}
 
 			return null;
@@ -31,10 +29,9 @@ namespace Camping_Stuff
 
 		public void TransformValue(StatRequest req, ref float val, StatDef sd)
 		{
-			if (req.HasThing && req.Thing.def.HasComp(typeof(TentBagComp)))
+			if (req.HasThing && req.Thing is NCS_Tent tent)
 			{
-				ThingWithComps t = (ThingWithComps)req.Thing;
-				val += t.TryGetComp<TentBagComp>().GetValue(sd);
+				val += tent.GetValue(sd);
 			}
 		}
 	}
