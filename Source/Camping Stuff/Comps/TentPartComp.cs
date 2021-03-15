@@ -33,7 +33,7 @@ namespace Camping_Stuff
 				canTargetMechs = false,
 				canTargetItems = true,
 				mapObjectTargetsMustBeAutoAttackable = false,
-				validator = (Predicate<TargetInfo>)(t => t.Thing is MinifiedThing && t.Thing.def.HasComp(typeof(ThingComp_MiniTentBag)))
+				validator = (Predicate<TargetInfo>)(t => t.Thing is NCS_MiniTent)
 			};
 		}
 

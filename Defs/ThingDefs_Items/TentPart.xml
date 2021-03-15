@@ -237,22 +237,21 @@
 	<!-- Bag -->
 	<ThingDef ParentName="MinifiedThingBase">
 		<defName>NCS_MiniTentBag</defName>
-		<thingClass>MinifiedThing</thingClass>
+		<label>tent bag</label>
+		<description>A bag to hold tent parts</description>
+		<thingClass>Camping_Stuff.NCS_MiniTent</thingClass>
 		<statBases>
+			<MaxHitPoints>150</MaxHitPoints>
+			<WorkToMake>10000</WorkToMake>
 			<Mass>2</Mass>
 		</statBases>
-		
-		<comps>
-			<li Class="Camping_Stuff.CompProperties_MiniTentBag"/>
-		</comps>
 	</ThingDef>
-	
 	
 	<ThingDef ParentName="TentPartTailored">
 		<defName>NCS_TentBag</defName>
-		<label>tent bag</label>
-		<description>A bag to hold tent parts</description>
-		<!--thingClass>NCS_Tent</thingClass-->
+		<label>tent</label>
+		<description>A temporary structure</description>
+		<thingClass>Camping_Stuff.NCS_Tent</thingClass>
 		<useSameGraphicForGhost>true</useSameGraphicForGhost>
 		<tickerType>Normal</tickerType>
 		<rotatable>true</rotatable>
@@ -270,17 +269,13 @@
 			<drawRotated>false</drawRotated>
 			<allowFlip>false</allowFlip>
 		</graphicData>
-		
+		<!--Minifiable>true</Minifiable-->
 		<costStuffCount>100</costStuffCount>
+		<useHitPoints>false</useHitPoints>
 		<statBases>
-			<MaxHitPoints>150</MaxHitPoints>
 			<WorkToMake>10000</WorkToMake>
 			<Mass>2</Mass>
 		</statBases>
-		
-		<comps>
-			<li Class="Camping_Stuff.CompProperties_TentBag"/>
-		</comps>
 		
 		<building>
 			<blueprintGraphicData>

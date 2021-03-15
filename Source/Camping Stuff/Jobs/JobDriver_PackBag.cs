@@ -17,7 +17,7 @@ namespace Camping_Stuff
 		private const TargetIndex bagTarget = TargetIndex.B;
 
 		protected Thing Part => this.job.GetTarget(partTarget).Thing;
-		protected Thing Bag => this.job.GetTarget(bagTarget).Thing;
+		protected NCS_MiniTent MiniBag => (NCS_MiniTent) this.job.GetTarget(bagTarget).Thing;
 
 		protected int Qty => this.GetHaulQty();
 
@@ -57,7 +57,7 @@ namespace Camping_Stuff
 			{
 				initAction = delegate ()
 				{
-					Bag.TryGetComp<ThingComp_MiniTentBag>().PackPart(Part.SplitOff(Qty));
+					MiniBag.Bag.PackPart(Part.SplitOff(Qty));
 				},
 				defaultCompleteMode = ToilCompleteMode.Instant
 			};
@@ -69,7 +69,7 @@ namespace Camping_Stuff
 
 			if (partType == TentPart.pole)
 			{
-				int m = Math.Min(Part.stackCount, Bag.TryGetComp<ThingComp_MiniTentBag>().MaxPoles);
+				int m = Math.Min(Part.stackCount, MiniBag.Bag.maxPoles);
   				return m;
 			}
 
