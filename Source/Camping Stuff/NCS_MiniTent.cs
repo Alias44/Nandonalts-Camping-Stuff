@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 using Verse;
 using Verse.AI;
 
@@ -29,6 +30,22 @@ namespace Camping_Stuff
 			}
 
 			return readyStr + " to deploy\n" + base.GetInspectString();
+		}
+
+		// Overriding graphinc and draw at allows me to draw a graphig instead of the boxed inner thing (if one is specified)
+		public override Graphic Graphic
+		{
+			get
+			{
+				if(this.def.graphicData != null)
+				{
+					return this.def.graphicData.GraphicColoredFor(this.InnerThing);
+				}
+				else
+				{
+					return base.Graphic;
+				}
+			}
 		}
 
 		public override IEnumerable<FloatMenuOption> GetFloatMenuOptions(Pawn selPawn)
@@ -92,6 +109,20 @@ namespace Camping_Stuff
 						selPawn.jobs.TryTakeOrderedJob(j);
 					});
 				}
+			}
+		}
+
+		public override IEnumerable<Gizmo> GetGizmos()
+		{
+			foreach (Gizmo gizmo in base.GetGizmos())
+			{
+				if (gizmo is Designator_Install)
+				{
+					gizmo.disabled = !Bag.Ready;
+					gizmo.disabledReason = Bag.MissingMsg;
+				}
+
+				yield return gizmo;
 			}
 		}
 	}

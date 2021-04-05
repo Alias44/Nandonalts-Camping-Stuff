@@ -27,8 +27,7 @@ namespace Camping_Stuff
 		private List<string> tentLayoutSouth = new List<string>();
 		public List<List<TentLayout>> layoutS = new List<List<TentLayout>>();
 		public IntVec3 center;
-		//public int height;
-		//public int width;
+		public int layoutParts = 0;
 
 		//public Sketch sketch = null;
 
@@ -45,7 +44,10 @@ namespace Camping_Stuff
 
 		public override void ResolveReferences(ThingDef parentDef)
 		{
-			//height = tentLayoutSouth.Count;
+			int height = tentLayoutSouth.Count; //num rows
+			int width = 0; // max num cols
+			layoutParts = 0;
+
 			for (int r = 0; r < tentLayoutSouth.Count; r++)
 			{
 				List<TentLayout> parts = tentLayoutSouth[r].Split(',').Select(val => (TentLayout) Enum.Parse(typeof(TentLayout), val)).ToList();
@@ -57,7 +59,14 @@ namespace Camping_Stuff
 				{
 					center = new IntVec3(c, 0, r);
 				}
-				//width = Math.Max(width, parts.Count);
+
+				width = Math.Max(width, parts.Count);
+				layoutParts += parts.Count<TentLayout>(square => square == TentLayout.wall || square == TentLayout.door); // Count the number of doors and walls (used for deploying damaged tents
+			}
+
+			if(center == null)
+			{
+				center = new IntVec3(width / 2, 0, height / 2);
 			}
 		}
 	}

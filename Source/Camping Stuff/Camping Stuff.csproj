@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="NCS_MiniTent.cs" />
+    <Compile Include="SketchRoof.cs" />
     <Compile Include="Statpart\AliasContainer.cs" />
     <Compile Include="Jobs\JobDriver_PackBag.cs" />
     <Compile Include="Jobs\JobDriver_UnPackBag.cs" />

@@ -83,6 +83,7 @@ namespace Camping_Stuff
 				}
 
 				this.floor = value;
+				UpdateSketch();
 			}
 		}
 
@@ -94,20 +95,58 @@ namespace Camping_Stuff
 			}
 		}
 
-		/*public override string GetInspectString()
+		public string MissingMsg
 		{
-			string readyStr;
-			if (Ready)
+			get
 			{
-				readyStr = "Ready";
-			}
-			else
-			{
-				readyStr = "Not ready";
-			}
+				string baseMsg = "Tent not ready to deploy: ";
+				if (cover == null)
+				{
+					return baseMsg += "no cover packed";
+				}
+				else if (PoleCount < maxPoles)
+				{
+					return baseMsg + $"not enough polls packed ({PoleCount}/{maxPoles} poles for {cover.LabelCapNoCount})";
+				}
 
-			return readyStr + " to deploy\n" + base.GetInspectString();
-		}*/
+				return "";
+			}
+		}
+
+		// Overriding label and descritpion (while spawned/ installed/ deployed), since minified things don't really have their own.
+		public override string LabelNoCount
+		{
+			get
+			{
+				if (this.Spawned)
+					return "Tent";
+				return base.LabelNoCount;
+			}
+		}
+
+		public override string DescriptionFlavor
+		{
+			get
+			{
+				if (this.Spawned)
+					return "A temporary structure";
+				return base.DescriptionFlavor;
+			}
+		}
+
+		public override Graphic Graphic
+		{
+			get
+			{
+				if (Ready)
+					return this.cover.Graphic;
+				else
+				{
+					return base.Graphic;
+				}
+
+			}
+		}
 
 		public override CellRect? CustomRectForSelector
 		{
@@ -131,22 +170,22 @@ namespace Camping_Stuff
 			if (!respawningAfterLoad)
 			{
 				this.sketch.Rotate(this.Rotation);
-				this.sketch.Spawn(this.Map, this.Position, Faction.OfPlayer, Sketch.SpawnPosType.Unchanged, Sketch.SpawnMode.Normal, false, false, (List<Thing>)null, false, false, (Func<SketchEntity, IntVec3, bool>)null, (Action<IntVec3, SketchEntity>)null);
-			}
 
-			Log.Message("SpawnSetup");
+				this.sketch.Spawn(this.Map, this.Position, Faction.OfPlayer, Sketch.SpawnPosType.Unchanged, Sketch.SpawnMode.Normal, false, false, (List<Thing>)null, false, true, (Func<SketchEntity, IntVec3, bool>)null, (Action<IntVec3, SketchEntity>)null);
+			}
+		}
+
+		public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
+		{
+			base.DeSpawn(mode);
 		}
 
 		public override void ExposeData()
 		{
 			base.ExposeData();
-
-			//Scribe_Values.Look(ref PoleCount, "PoleCount");
-			//Scribe_Values.Look(ref deployed, "deployed", false);
 			Scribe_Deep.Look(ref cover, "tentCover");
 			Scribe_Deep.Look(ref floor, "tentFloor");
 			Scribe_Collections.Look<Thing>(ref poles, "poleList", LookMode.Deep);
-			//Scribe_Deep.Look<Sketch>(ref this.sketch, "sketch"); //Saving the sketch so the tent can still be packed if the layout changed
 
 			if (Scribe.mode == LoadSaveMode.PostLoadInit)
 			{
@@ -200,18 +239,6 @@ namespace Camping_Stuff
 
 			sketch.DrawGhost_NewTmp(at, Sketch.SpawnPosType.Unchanged, placingMode, null, validator);
 		}
-
-		/*public override IEnumerable<Gizmo> GetGizmos()
-		{
-			if(deployed)
-			{
-				//pack
-			}
-			else if(Ready)
-			{
-				// deploy (unless install isnt' in the set???
-			}
-		}*/
 
 		#region PartPacking
 		private bool IsTentPart(Thing t, TentPart partType)
@@ -419,8 +446,9 @@ namespace Camping_Stuff
 				for (int c = 0; c < coverProps.layoutS[r].Count; c++)
 				{
 					ThingDef thing = null;
-					ThingDef stuff = cover.Stuff; //this.parent.Stuff
 					IntVec3 loc = new IntVec3(c, 0, r) - coverProps.center;
+					bool placeFloor = false;
+					bool placeRoof = false;
 
 					switch (coverProps.layoutS[r][c])
 					{
@@ -430,14 +458,20 @@ namespace Camping_Stuff
 							break;
 						case TentLayout.wall:
 							thing = TentDefOf.NCS_TentWall;
+							placeFloor = true;
+							placeRoof = true;
 							break;
 						case TentLayout.door:
 							thing = TentDefOf.NCS_TentDoor;
+							placeFloor = true;
+							placeRoof = true;
 							break;
 						case TentLayout.pole:
-							//thing = TentDefOf.NCS_TentBag;
-							break;
+							// Flow through, because a pole is pretty much a roofed empty tile.
 						case TentLayout.roofedEmpty:
+							placeRoof = true;
+							placeFloor = true;
+							//thing = TentDefOf.NCS_TentRoof;
 							break;
 						default:
 							break;
@@ -445,7 +479,23 @@ namespace Camping_Stuff
 
 					if (thing != null)
 					{
-						sketch.AddThing(thing, loc, Rot4.South, stuff);
+						sketch.AddThing(thing, loc, Rot4.South, cover.Stuff);
+					}
+
+					if (placeRoof)
+					{
+						SketchRoof sr = new SketchRoof
+						{
+							pos = loc,
+							roof = TentDefOf.NCS_TentRoof
+						};
+
+						sketch.Add(sr, false);
+					}
+
+					if (placeFloor && floor != null)
+					{
+						sketch.AddTerrain(TentDefOf.NCS_TentFloor, loc);
 					}
 				}
 			}

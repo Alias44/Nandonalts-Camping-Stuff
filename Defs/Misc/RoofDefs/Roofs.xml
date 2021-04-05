@@ -5,7 +5,7 @@
     <defName>NCS_TentRoof</defName>
     <label>tent roof</label>
     <isThickRoof>false</isThickRoof>
-    <soundPunchThrough>PunchThroughRoofMetal</soundPunchThrough>
+    <soundPunchThrough>Recipe_Tailor</soundPunchThrough>
   </RoofDef>
 
 </Defs>

@@ -214,7 +214,7 @@
 	<ThingDef ParentName="TentPartTailored">
 		<defName>NCS_TentPart_Floor</defName>
 		<label>tent mat</label>
-		<description>TBD</description>
+		<description>A soft mat to keep the dirt outside of your tent.</description>
 		<graphicData>
 			<texPath>CampingStuff/Blanket</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
@@ -238,46 +238,54 @@
 	<ThingDef ParentName="MinifiedThingBase">
 		<defName>NCS_MiniTentBag</defName>
 		<label>tent bag</label>
-		<description>A bag to hold tent parts</description>
-		<thingClass>Camping_Stuff.NCS_MiniTent</thingClass>
 		<statBases>
 			<MaxHitPoints>150</MaxHitPoints>
-			<WorkToMake>10000</WorkToMake>
-			<Mass>2</Mass>
+			<Mass>0</Mass> <!-- mass is derived from tent bag itself-->
 		</statBases>
+		
+		<graphicData>
+			<graphicClass>Graphic_Single</graphicClass>
+			<texPath>CampingStuff/TentBag</texPath>
+			<shaderType>CutoutComplex</shaderType>
+			<drawRotated>false</drawRotated>
+			<allowFlip>false</allowFlip>
+		</graphicData>
+
 	</ThingDef>
 	
 	<ThingDef ParentName="TentPartTailored">
+    <category>Building</category>
+    <drawerType>None</drawerType>
+	 <!--isFrameInt>true</isFrameInt-->
+	<stackLimit>1</stackLimit>
 		<defName>NCS_TentBag</defName>
-		<label>tent</label>
-		<description>A temporary structure</description>
+		<label>tent bag</label> <!--label and description are modified when the inner thing exists-->
+		<description>A bag to hold tent parts</description>
 		<thingClass>Camping_Stuff.NCS_Tent</thingClass>
+		<altitudeLayer>Building</altitudeLayer>
+		<statBases Inherit="False">
+			<Mass>2</Mass>
+			<WorkToMake>10000</WorkToMake>
+		</statBases>
 		<useSameGraphicForGhost>true</useSameGraphicForGhost>
-		<tickerType>Normal</tickerType>
 		<rotatable>true</rotatable>
-		<selectable>true</selectable>
 		<hasCustomRectForSelector>true</hasCustomRectForSelector>
-		<drawerType>RealtimeOnly</drawerType>
+		<!--drawerType>RealtimeOnly</drawerType-->
 		<drawOffscreen>true</drawOffscreen>
 		<minifiedDef>NCS_MiniTentBag</minifiedDef>
 		<drawPlaceWorkersWhileInstallBlueprintSelected>true</drawPlaceWorkersWhileInstallBlueprintSelected>
 		<canLoadIntoCaravan>true</canLoadIntoCaravan>
 		<graphicData>
 			<graphicClass>Graphic_Single</graphicClass>
-			<texPath>CampingStuff/TentBag</texPath>
+			<texPath>CampingStuff/TentSupport</texPath>
 			<shaderType>Transparent</shaderType>
 			<drawRotated>false</drawRotated>
 			<allowFlip>false</allowFlip>
 		</graphicData>
-		<!--Minifiable>true</Minifiable-->
 		<costStuffCount>100</costStuffCount>
 		<useHitPoints>false</useHitPoints>
-		<statBases>
-			<WorkToMake>10000</WorkToMake>
-			<Mass>2</Mass>
-		</statBases>
-		
 		<building>
+			<deconstructible>false</deconstructible>
 			<blueprintGraphicData>
 				<graphicClass>Graphic_Single</graphicClass>
 				<texPath>CampingStuff/TentSupport</texPath>
@@ -286,7 +294,6 @@
 				<allowFlip>false</allowFlip>
 			</blueprintGraphicData>
 		</building>
-		
 		<placeWorkers>
 			<li>Camping_Stuff.PlaceWorker_Tent</li>
 		</placeWorkers>

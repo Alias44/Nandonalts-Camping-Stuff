@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
 	<ThingDef ParentName="ResourceBase" Name="TentPartBase" Abstract="True">
-		<thingClass>ThingWithComps</thingClass>
+		<!--thingClass>ThingWithComps</thingClass>
 		<category>Item</category>
-		<selectable>True</selectable>
-		<useHitPoints>True</useHitPoints>
+		<resourceReadoutPriority>Middle</resourceReadoutPriority>
+		<useHitPoints>true</useHitPoints>
+		<selectable>true</selectable>
+		<altitudeLayer>Item</altitudeLayer>
+		<stackLimit>75</stackLimit-->
 		<techLevel>Neolithic</techLevel>
 		<thingCategories>
 			<li>BuildingsSpecial</li>
 		</thingCategories>
-		<altitudeLayer>Item</altitudeLayer>
-		<alwaysHaulable>True</alwaysHaulable>
 		<tickerType>Never</tickerType>
 		<tradeTags>
 			<li>Furniture</li>
 		</tradeTags>
 		<comps>
-			<li Class="CompProperties_Forbiddable"/>
+			<!--li Class="CompProperties_Forbiddable"/-->
 			<li>
 				<compClass>CompColorable</compClass>
 			</li>
