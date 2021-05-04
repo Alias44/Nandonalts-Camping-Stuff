@@ -40,6 +40,9 @@
 				<li>HandTailoringBench</li>
 			</recipeUsers>
 		</recipeMaker>
+		<comps>
+			<li Class="Camping_Stuff.CompProperties_TentDammage"/>
+		</comps>
 	</ThingDef>
 	
 	<ThingDef ParentName="TentPartBase" Name="TentPartSmith" Abstract="True">

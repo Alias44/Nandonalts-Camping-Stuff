@@ -59,6 +59,7 @@
 		</stuffCategories>
 		<building>
 			<deconstructible>false</deconstructible>
+			<allowAutoroof>false</allowAutoroof>
 		</building>
 		<damageMultipliers Inherit="False">
 			<li>

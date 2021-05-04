@@ -166,18 +166,77 @@ namespace Camping_Stuff
 
 		public override void SpawnSetup(Map map, bool respawningAfterLoad)
 		{
-			base.SpawnSetup(map, respawningAfterLoad);
-			if (!respawningAfterLoad)
+			base.SpawnSetup(map, respawningAfterLoad); 
+  			if (!respawningAfterLoad)
 			{
 				this.sketch.Rotate(this.Rotation);
 
-				this.sketch.Spawn(this.Map, this.Position, Faction.OfPlayer, Sketch.SpawnPosType.Unchanged, Sketch.SpawnMode.Normal, false, false, (List<Thing>)null, false, true, (Func<SketchEntity, IntVec3, bool>)null, (Action<IntVec3, SketchEntity>)null);
+				foreach (SketchEntity se in this.sketch.Entities.OrderBy<SketchEntity, float>((Func<SketchEntity, float>)(x => x.SpawnOrder)))
+				//foreach (SketchEntity se in this.sketch.Entities)
+				{
+					IntVec3 cell = se.pos + this.Position;
+
+					if (se is SketchTerrain && this.floor.TryGetComp<CompTentDammage>().dammagedCells.Contains(se))
+					{
+						// spawn damaged message
+					}
+					else if (se is SketchThing && this.cover.TryGetComp<CompTentDammage>().dammagedCells.Contains(se))
+					{
+						// spawn damaged message
+					}
+					else
+					{
+ 						bool roofArea = this.Map.areaManager.BuildRoof[cell];
+						 
+						se.Spawn(cell, this.Map, Faction.OfPlayer);
+
+						this.Map.areaManager.BuildRoof[cell] = roofArea;
+ 						//this.Map.areaManager.BuildRoof[cell] = false;
+						this.Map.areaManager.NoRoof[cell] = false;
+					}
+				}
 			}
 		}
 
 		public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
 		{
-			base.DeSpawn(mode);
+			this.sketch.Rotate(this.Rotation);
+
+			foreach (SketchEntity se in this.sketch.Entities.OrderByDescending<SketchEntity, float>((Func<SketchEntity, float>)(x => x.SpawnOrder)))
+			{
+				IntVec3 cell = se.pos + this.Position;
+
+				if (se is SketchRoof sr && sr.IsSameSpawned(cell, this.Map))
+				{
+					Map.roofGrid.SetRoof(cell, null);
+					//this.Map.areaManager.BuildRoof[cell] = false;
+				}
+				else if (se is SketchThing thing)
+				{
+					if (thing.IsSameSpawned(cell, this.Map))
+					{
+						thing.GetSameSpawned(cell, this.Map).DeSpawn(DestroyMode.Vanish);
+					}
+					else
+					{
+						this.cover.TryGetComp<CompTentDammage>().dammagedCells.Add(se);
+					}
+				}
+				else if (se is SketchTerrain terrain)
+				{
+					if (terrain.IsSameSpawned(cell, this.Map))
+					{
+						Map.terrainGrid.RemoveTopLayer(terrain.pos + this.Position, false);
+					}
+					else
+					{
+						this.floor.TryGetComp<CompTentDammage>().dammagedCells.Add(terrain);
+					}
+				}
+			}
+
+
+			base.DeSpawn(mode); // incorrect minified thing ???
 		}
 
 		public override void ExposeData()
@@ -445,45 +504,13 @@ namespace Camping_Stuff
 			{
 				for (int c = 0; c < coverProps.layoutS[r].Count; c++)
 				{
-					ThingDef thing = null;
 					IntVec3 loc = new IntVec3(c, 0, r) - coverProps.center;
-					bool placeFloor = false;
-					bool placeRoof = false;
 
-					switch (coverProps.layoutS[r][c])
-					{
-						case TentLayout.other:
-							break;
-						case TentLayout.empty:
-							break;
-						case TentLayout.wall:
-							thing = TentDefOf.NCS_TentWall;
-							placeFloor = true;
-							placeRoof = true;
-							break;
-						case TentLayout.door:
-							thing = TentDefOf.NCS_TentDoor;
-							placeFloor = true;
-							placeRoof = true;
-							break;
-						case TentLayout.pole:
-							// Flow through, because a pole is pretty much a roofed empty tile.
-						case TentLayout.roofedEmpty:
-							placeRoof = true;
-							placeFloor = true;
-							//thing = TentDefOf.NCS_TentRoof;
-							break;
-						default:
-							break;
-					}
+					TentLayout cellLayout = coverProps.layoutS[r][c];
 
-					if (thing != null)
+					if(cellLayout != TentLayout.empty && cellLayout != TentLayout.other)
 					{
-						sketch.AddThing(thing, loc, Rot4.South, cover.Stuff);
-					}
-
-					if (placeRoof)
-					{
+						// Add roof
 						SketchRoof sr = new SketchRoof
 						{
 							pos = loc,
@@ -491,11 +518,22 @@ namespace Camping_Stuff
 						};
 
 						sketch.Add(sr, false);
+
+						// Add floor if applicable
+						if (floor != null) // && !floor.TryGetComp<CompTentDammage>().dammagedCells.Contains(loc)
+						{
+							sketch.AddTerrain(TentDefOf.NCS_TentFloor, loc);
+						}
 					}
 
-					if (placeFloor && floor != null)
+					if(cellLayout == TentLayout.wall) //  && !this.cover.TryGetComp<CompTentDammage>().dammagedCells.Contains(loc)
 					{
-						sketch.AddTerrain(TentDefOf.NCS_TentFloor, loc);
+						sketch.AddThing(TentDefOf.NCS_TentWall, loc, Rot4.South, cover.Stuff);
+					}
+
+					else if (cellLayout == TentLayout.door)
+					{
+						sketch.AddThing(TentDefOf.NCS_TentDoor, loc, Rot4.South, cover.Stuff);
 					}
 				}
 			}
