@@ -15,6 +15,13 @@
 		<allowOpportunisticPrefix>false</allowOpportunisticPrefix>
 	</JobDef>
 	
+	
+	<JobDef>
+		<defName>NCS_RepairPart</defName>
+		<driverClass>Camping_Stuff.JobDriver_RepairTent</driverClass>
+		<reportString>repairing a tent part</reportString>
+		<allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+	</JobDef>
 	<!--JobDef>
 		<defName>NCS_UnpackBag</defName>
 		<driverClass>Camping_Stuff.</driverClass>

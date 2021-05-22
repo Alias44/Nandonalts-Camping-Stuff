@@ -13,5 +13,9 @@ namespace Camping_Stuff
 		public static RoofDef NCS_TentRoof;
 
 		public static TerrainDef NCS_TentFloor;
+
+		public static JobDef NCS_PackBag;
+		public static JobDef NCS_UnpackBag;
+		public static JobDef NCS_RepairPart;
 	}
 }

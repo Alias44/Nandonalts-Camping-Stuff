@@ -16,18 +16,25 @@ namespace Camping_Stuff
 		roofedEmpty,
 	}
 
-	public class TentCoverComp : ThingComp //(Thing)
+	public class TentCoverComp : CompTentPartDamage //(Thing)
 	{
 		public CompProperties_TentCover Props => (CompProperties_TentCover)this.props;
+
+		//public HashSet<SketchEntity> dammagedCells = new HashSet<SketchEntity>();
+
+		//float RepairCost => this.dammagedCells.Count / this.Props.layoutParts * this.parent.def.costStuffCount;
+
+		protected override int DamageUnit => Math.Max((int)Math.Floor((1.0 / this.Props.layoutParts) * this.parent.MaxHitPoints), 1);
 	}
 
-	public class CompProperties_TentCover : CompProperties //(Def)
+	public class CompProperties_TentCover : CompProperties_TentPartDamage //(Def)
 	{
 		public int numPoles;
 		private List<string> tentLayoutSouth = new List<string>();
 		public List<List<TentLayout>> layoutS = new List<List<TentLayout>>();
 		public IntVec3 center;
 		public int layoutParts = 0;
+		public int tiles = 0;
 
 		//public Sketch sketch = null;
 
@@ -61,7 +68,8 @@ namespace Camping_Stuff
 				}
 
 				width = Math.Max(width, parts.Count);
-				layoutParts += parts.Count<TentLayout>(square => square == TentLayout.wall || square == TentLayout.door); // Count the number of doors and walls (used for deploying damaged tents
+				layoutParts += parts.Count<TentLayout>(square => square == TentLayout.wall || square == TentLayout.door); // Count the number of doors and walls (used for deploying damaged covers)
+				tiles += parts.Count<TentLayout>(square => square != TentLayout.empty && square != TentLayout.other); // Count the number of tiles the tent should occupy (used for deploying damaged floors)
 			}
 
 			if(center == null)

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
-
-  <!-- Failure messages -->
-  <CannotPlaceTentOver>Cannot place tent over: {0}.</CannotPlaceTentOver>
-  <CannotPlaceTentOnTerrain>Cannot place tent on: {0}.</CannotPlaceTentOnTerrain>
-  <TentOverlapsBuilding>Cannot place tent over: {0}.</TentOverlapsBuilding>
+	<!-- Failure messages -->
+	<CannotPlaceTentOver>Cannot place tent over: {0}.</CannotPlaceTentOver>
+	<CannotPlaceTentOnTerrain>Cannot place tent on: {0}.</CannotPlaceTentOnTerrain>
+	<TentOverlapsBuilding>Cannot place tent over: {0}.</TentOverlapsBuilding>
 
 </LanguageData>

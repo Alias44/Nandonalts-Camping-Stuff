@@ -11,7 +11,7 @@ using Verse.AI;
 
 namespace Camping_Stuff
 {
-	public class JobDriver_PackBag : JobDriver_UseItem // JobDriver
+	public class JobDriver_PackBag : JobDriver_Fetch // JobDriver
 	{
 		private const TargetIndex partTarget = TargetIndex.A;
 		private const TargetIndex bagTarget = TargetIndex.B;
@@ -19,39 +19,14 @@ namespace Camping_Stuff
 		protected Thing Part => this.job.GetTarget(partTarget).Thing;
 		protected NCS_MiniTent MiniBag => (NCS_MiniTent) this.job.GetTarget(bagTarget).Thing;
 
-		protected int Qty => this.GetHaulQty();
-
-		protected int UseDuration
-		{
-			get
-			{
-				return (int)typeof(JobDriver_PackBag).BaseType.GetField("useDuration", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(this);
-			}
-		}
-
-		public override bool TryMakePreToilReservations(bool errorOnFailed)
-		{
-			return this.pawn.Reserve(this.job.GetTarget(partTarget).Thing, this.job, 1, Qty) && this.pawn.Reserve(this.job.GetTarget(bagTarget).Thing, this.job);
-		}
+		protected override int Qty => this.GetHaulQty();
 
 		protected override IEnumerable<Toil> MakeNewToils()
 		{
-			this.FailOnIncapable<JobDriver_UseItem>(PawnCapacityDefOf.Manipulation);
-
-			this.FailOnDestroyedNullOrForbidden(partTarget);
-
-			Toil reservePart = Toils_Reserve.Reserve(partTarget);
-			yield return reservePart;
-			yield return Toils_Goto.GotoThing(partTarget, PathEndMode.ClosestTouch).FailOnDespawnedNullOrForbidden<Toil>(partTarget).FailOnSomeonePhysicallyInteracting<Toil>(partTarget);
-			pawn.CurJob.count = 1;
-
-			yield return Toils_Haul.StartCarryThing(partTarget).FailOnDespawnedNullOrForbidden<Toil>(partTarget);
-			yield return Toils_Haul.CheckForGetOpportunityDuplicate(reservePart, partTarget, TargetIndex.None, true);
-			yield return Toils_Goto.GotoThing(bagTarget, PathEndMode.ClosestTouch);
-
-			Toil toil = Toils_General.Wait(UseDuration, TargetIndex.None);
-			toil.WithProgressBarToilDelay(partTarget, false, -0.5f);
-			yield return toil;
+			foreach (Toil t in base.MakeNewToils())
+			{
+				yield return t;
+			}
 
 			yield return new Toil
 			{

@@ -48,9 +48,18 @@ namespace Camping_Stuff
 			}
 		}
 
+		public override void DrawAt(Vector3 drawLoc, bool flip = false)
+		{
+			if (this.Graphic is Graphic_Single)
+				this.Graphic.Draw(drawLoc, Rot4.North, (Thing)this, 0.0f);
+			else
+				this.Graphic.Draw(drawLoc, Rot4.South, (Thing)this, 0.0f);
+		}
+
 		public override IEnumerable<FloatMenuOption> GetFloatMenuOptions(Pawn selPawn)
 		{
-			JobDef jd = DefDatabase<JobDef>.GetNamed("NCS_UnpackBag");
+			//JobDef jd = DefDatabase<JobDef>.GetNamed("NCS_UnpackBag");
+			JobDef jd = TentDefOf.NCS_UnpackBag;
 			Thing target = this.SpawnedParentOrMe;
 
 			if (selPawn.CanReserveAndReach(target, PathEndMode.Touch, Danger.Deadly))

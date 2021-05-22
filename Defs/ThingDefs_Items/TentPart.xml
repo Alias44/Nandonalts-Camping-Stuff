@@ -85,6 +85,11 @@
 			</recipeUsers>
 		</recipeMaker>
 		<comps>
+			<li Class="Camping_Stuff.CompProperties_TentPart">
+				<compClass>Camping_Stuff.CompUsable_TentPart</compClass>
+				<useJob>NCS_PackBag</useJob>
+				<partType>2</partType>
+			</li>
 			<li Class="Camping_Stuff.CompProperties_TentCover">
 				<numPoles>5</numPoles>
 				<tentLayoutSouth>
@@ -93,11 +98,6 @@
 					<li>1,4,4,4,1</li>
 					<li>1,1,2,1,1</li>
 				</tentLayoutSouth>
-			</li>
-			<li Class="Camping_Stuff.CompProperties_TentPart">
-				<compClass>Camping_Stuff.CompUsable_TentPart</compClass>
-				<useJob>NCS_PackBag</useJob>
-				<partType>2</partType>
 			</li>
 		</comps>
 	</ThingDef>
@@ -117,6 +117,11 @@
 			<Mass>2</Mass>
 		</statBases>
 		<comps>
+			<li Class="Camping_Stuff.CompProperties_TentPart">
+				<compClass>Camping_Stuff.CompUsable_TentPart</compClass>
+				<useJob>NCS_PackBag</useJob>
+				<partType>2</partType>
+			</li>
 			<li Class="Camping_Stuff.CompProperties_TentCover">
 				<numPoles>7</numPoles>
 				<tentLayoutSouth>
@@ -128,11 +133,6 @@
 					<li>1,1,4,4,4,1,1</li>
 					<li>0,1,1,2,1,1,0</li>
 				</tentLayoutSouth>
-			</li>
-			<li Class="Camping_Stuff.CompProperties_TentPart">
-				<compClass>Camping_Stuff.CompUsable_TentPart</compClass>
-				<useJob>NCS_PackBag</useJob>
-				<partType>2</partType>
 			</li>
 		</comps>
 	</ThingDef>
@@ -152,6 +152,11 @@
 			<Mass>2</Mass>
 		</statBases>
 		<comps>
+			<li Class="Camping_Stuff.CompProperties_TentPart">
+				<compClass>Camping_Stuff.CompUsable_TentPart</compClass>
+				<useJob>NCS_PackBag</useJob>
+				<partType>2</partType>
+			</li>
 			<li Class="Camping_Stuff.CompProperties_TentCover">
 				<numPoles>10</numPoles>
 				<tentLayoutSouth>
@@ -164,11 +169,6 @@
 					<li>1,4,4,4,4,4,1</li>
 					<li>1,1,1,2,1,1,1</li>
 				</tentLayoutSouth>
-			</li>
-			<li Class="Camping_Stuff.CompProperties_TentPart">
-				<compClass>Camping_Stuff.CompUsable_TentPart</compClass>
-				<useJob>NCS_PackBag</useJob>
-				<partType>2</partType>
 			</li>
 		</comps>
 	</ThingDef>
@@ -188,6 +188,11 @@
 			<Mass>2</Mass>
 		</statBases>
 		<comps>
+			<li Class="Camping_Stuff.CompProperties_TentPart">
+				<compClass>Camping_Stuff.CompUsable_TentPart</compClass>
+				<useJob>NCS_PackBag</useJob>
+				<partType>2</partType>
+			</li>
 			<li Class="Camping_Stuff.CompProperties_TentCover">
 				<numPoles>15</numPoles>
 				<tentLayoutSouth>
@@ -201,11 +206,6 @@
 					<li>1,4,4,4,4,4,1</li>
 					<li>1,1,1,2,1,1,1</li>
 				</tentLayoutSouth>
-			</li>
-			<li Class="Camping_Stuff.CompProperties_TentPart">
-				<compClass>Camping_Stuff.CompUsable_TentPart</compClass>
-				<useJob>NCS_PackBag</useJob>
-				<partType>2</partType>
 			</li>
 		</comps>
 	</ThingDef>
@@ -231,12 +231,14 @@
 				<useJob>NCS_PackBag</useJob>
 				<partType>3</partType>
 			</li>
+			<li Class="Camping_Stuff.CompProperties_TentPartDamage"/>
 		</comps>
 	</ThingDef>
 		
 	<!-- Bag -->
 	<ThingDef ParentName="MinifiedThingBase">
 		<defName>NCS_MiniTentBag</defName>
+		<thingClass>Camping_Stuff.NCS_MiniTent</thingClass>
 		<label>tent bag</label>
 		<statBases>
 			<MaxHitPoints>150</MaxHitPoints>

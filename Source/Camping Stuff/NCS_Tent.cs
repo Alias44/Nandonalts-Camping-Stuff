@@ -113,6 +113,36 @@ namespace Camping_Stuff
 			}
 		}
 
+		public string ContainsMsg
+		{
+			get
+			{
+				string msg = "\nContains: \n";
+
+				if (Cover != null)
+				{
+					msg += "Cover: " + Cover.Label + "\n";
+				}
+
+				if(PoleCount > 0)
+				{
+					msg += "Poles:\n";
+					foreach(Thing pole in Poles)
+					{
+						msg += "\t" + pole.Label + "\n";
+					}
+				}
+
+				if(Floor != null)
+				{
+					msg = "Floor: " + Floor.Label + "\n";
+				}
+
+				return msg;
+			}
+		}
+
+
 		// Overriding label and descritpion (while spawned/ installed/ deployed), since minified things don't really have their own.
 		public override string LabelNoCount
 		{
@@ -120,7 +150,7 @@ namespace Camping_Stuff
 			{
 				if (this.Spawned)
 					return "Tent";
-				return base.LabelNoCount;
+				return base.LabelNoCount; // + "(" +(Ready? "Ready" : "Not ready") + ")";
 			}
 		}
 
@@ -130,7 +160,9 @@ namespace Camping_Stuff
 			{
 				if (this.Spawned)
 					return "A temporary structure";
-				return base.DescriptionFlavor;
+
+
+				return base.DescriptionFlavor + ContainsMsg;
 			}
 		}
 
@@ -166,33 +198,37 @@ namespace Camping_Stuff
 
 		public override void SpawnSetup(Map map, bool respawningAfterLoad)
 		{
-			base.SpawnSetup(map, respawningAfterLoad); 
+			base.SpawnSetup(map, respawningAfterLoad);
+
+			this.sketch.Rotate(this.Rotation);
+
   			if (!respawningAfterLoad)
 			{
-				this.sketch.Rotate(this.Rotation);
+ 				if (floor != null && this.floor.TryGetComp<CompTentPartDamage>().HasDamagedCells())
+				{
+					Messages.Message("Tent mat is damaged, some floors may be missing.", MessageTypeDefOf.NegativeEvent);
+				}
+
+				if (this.cover.TryGetComp<CompTentPartDamage>().HasDamagedCells())
+				{
+					Messages.Message("Tent cover is damaged, some walls/ doors will be missing.", MessageTypeDefOf.NegativeEvent);
+				}
 
 				foreach (SketchEntity se in this.sketch.Entities.OrderBy<SketchEntity, float>((Func<SketchEntity, float>)(x => x.SpawnOrder)))
-				//foreach (SketchEntity se in this.sketch.Entities)
 				{
 					IntVec3 cell = se.pos + this.Position;
 
-					if (se is SketchTerrain && this.floor.TryGetComp<CompTentDammage>().dammagedCells.Contains(se))
+					if (se is SketchTerrain && this.floor.TryGetComp<CompTentPartDamage>().CheckCell(se))
 					{
 						// spawn damaged message
 					}
-					else if (se is SketchThing && this.cover.TryGetComp<CompTentDammage>().dammagedCells.Contains(se))
+					else if (se is SketchThing && this.cover.TryGetComp<CompTentPartDamage>().CheckCell(se))
 					{
 						// spawn damaged message
 					}
 					else
 					{
- 						bool roofArea = this.Map.areaManager.BuildRoof[cell];
-						 
 						se.Spawn(cell, this.Map, Faction.OfPlayer);
-
-						this.Map.areaManager.BuildRoof[cell] = roofArea;
- 						//this.Map.areaManager.BuildRoof[cell] = false;
-						this.Map.areaManager.NoRoof[cell] = false;
 					}
 				}
 			}
@@ -219,7 +255,7 @@ namespace Camping_Stuff
 					}
 					else
 					{
-						this.cover.TryGetComp<CompTentDammage>().dammagedCells.Add(se);
+						this.cover.TryGetComp<CompTentPartDamage>().AddCell(se);
 					}
 				}
 				else if (se is SketchTerrain terrain)
@@ -230,13 +266,13 @@ namespace Camping_Stuff
 					}
 					else
 					{
-						this.floor.TryGetComp<CompTentDammage>().dammagedCells.Add(terrain);
+						this.floor.TryGetComp<CompTentPartDamage>().AddCell(terrain);
 					}
 				}
 			}
 
 
-			base.DeSpawn(mode); // incorrect minified thing ???
+			base.DeSpawn(mode);
 		}
 
 		public override void ExposeData()
@@ -265,6 +301,8 @@ namespace Camping_Stuff
 
 		public void DrawGhost_NewTmp(IntVec3 at, bool placingMode, Rot4 rotation)
 		{
+			tmp_sketch = sketch.DeepCopy();
+
 			if (!Ready)
 			{
 				return;
@@ -274,7 +312,7 @@ namespace Camping_Stuff
 				UpdateSketch();
 			}
 
-			sketch.Rotate(rotation);
+			tmp_sketch.Rotate(rotation);
 
 			Func<SketchEntity, IntVec3, List<Thing>, Map, bool> validator = (Func<SketchEntity, IntVec3, List<Thing>, Map, bool>)null;
 			if (placingMode)
@@ -296,7 +334,7 @@ namespace Camping_Stuff
 				};
 			}
 
-			sketch.DrawGhost_NewTmp(at, Sketch.SpawnPosType.Unchanged, placingMode, null, validator);
+			tmp_sketch.DrawGhost_NewTmp(at, Sketch.SpawnPosType.Unchanged, placingMode, null, validator);
 		}
 
 		#region PartPacking
@@ -520,13 +558,13 @@ namespace Camping_Stuff
 						sketch.Add(sr, false);
 
 						// Add floor if applicable
-						if (floor != null) // && !floor.TryGetComp<CompTentDammage>().dammagedCells.Contains(loc)
+						if (floor != null)
 						{
 							sketch.AddTerrain(TentDefOf.NCS_TentFloor, loc);
 						}
 					}
 
-					if(cellLayout == TentLayout.wall) //  && !this.cover.TryGetComp<CompTentDammage>().dammagedCells.Contains(loc)
+					if(cellLayout == TentLayout.wall)
 					{
 						sketch.AddThing(TentDefOf.NCS_TentWall, loc, Rot4.South, cover.Stuff);
 					}
