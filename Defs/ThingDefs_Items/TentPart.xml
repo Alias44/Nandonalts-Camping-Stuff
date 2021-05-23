@@ -58,7 +58,7 @@
 		<comps>
 			<li Class="Camping_Stuff.CompProperties_TentPart">
 				<compClass>Camping_Stuff.CompUsable_TentPart</compClass>
-				<useJob>NCS_PackBag</useJob>
+				<!--useJob>NCS_PackBag</useJob-->
 				<partType>1</partType>
 			</li>
 		</comps>
@@ -87,7 +87,7 @@
 		<comps>
 			<li Class="Camping_Stuff.CompProperties_TentPart">
 				<compClass>Camping_Stuff.CompUsable_TentPart</compClass>
-				<useJob>NCS_PackBag</useJob>
+				<!--useJob>NCS_PackBag</useJob-->
 				<partType>2</partType>
 			</li>
 			<li Class="Camping_Stuff.CompProperties_TentCover">
@@ -119,7 +119,7 @@
 		<comps>
 			<li Class="Camping_Stuff.CompProperties_TentPart">
 				<compClass>Camping_Stuff.CompUsable_TentPart</compClass>
-				<useJob>NCS_PackBag</useJob>
+				<!--useJob>NCS_PackBag</useJob-->
 				<partType>2</partType>
 			</li>
 			<li Class="Camping_Stuff.CompProperties_TentCover">
@@ -154,7 +154,7 @@
 		<comps>
 			<li Class="Camping_Stuff.CompProperties_TentPart">
 				<compClass>Camping_Stuff.CompUsable_TentPart</compClass>
-				<useJob>NCS_PackBag</useJob>
+				<!--useJob>NCS_PackBag</useJob-->
 				<partType>2</partType>
 			</li>
 			<li Class="Camping_Stuff.CompProperties_TentCover">
@@ -190,7 +190,7 @@
 		<comps>
 			<li Class="Camping_Stuff.CompProperties_TentPart">
 				<compClass>Camping_Stuff.CompUsable_TentPart</compClass>
-				<useJob>NCS_PackBag</useJob>
+				<!--useJob>NCS_PackBag</useJob-->
 				<partType>2</partType>
 			</li>
 			<li Class="Camping_Stuff.CompProperties_TentCover">
@@ -228,7 +228,7 @@
 		<comps>
 			<li Class="Camping_Stuff.CompProperties_TentPart">
 				<compClass>Camping_Stuff.CompUsable_TentPart</compClass>
-				<useJob>NCS_PackBag</useJob>
+				<!--useJob>NCS_PackBag</useJob-->
 				<partType>3</partType>
 			</li>
 			<li Class="Camping_Stuff.CompProperties_TentPartDamage"/>

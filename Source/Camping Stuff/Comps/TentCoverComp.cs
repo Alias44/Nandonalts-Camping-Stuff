@@ -25,6 +25,7 @@ namespace Camping_Stuff
 		//float RepairCost => this.dammagedCells.Count / this.Props.layoutParts * this.parent.def.costStuffCount;
 
 		protected override int DamageUnit => Math.Max((int)Math.Floor((1.0 / this.Props.layoutParts) * this.parent.MaxHitPoints), 1);
+		protected override double DamageCost => (double)(this.parent.def.costStuffCount / this.Props.layoutParts);
 	}
 
 	public class CompProperties_TentCover : CompProperties_TentPartDamage //(Def)

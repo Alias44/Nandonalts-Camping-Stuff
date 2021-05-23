@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using RimWorld;
 using Verse;
+using Verse.AI;
 
 namespace Camping_Stuff
 {
@@ -21,6 +22,18 @@ namespace Camping_Stuff
 		public SketchEntityWraper(SketchEntity se)
 		{
 			entity = se;
+		}
+
+		public SketchEntityWraper(SketchEntity se, Rot4 sketchRot)
+		{
+			entity = se.DeepCopy();
+			 
+			int newRot = Rot4.North.AsInt - sketchRot.AsInt;
+			if (newRot < 0)
+				newRot += 4;
+			Rot4 rot1 = new Rot4(newRot);
+
+ 			entity.pos = entity.pos.RotatedBy(rot1);
 		}
 
 		public override bool Equals(object obj)
@@ -71,18 +84,18 @@ namespace Camping_Stuff
 		//protected virtual int DamageUnit => Math.Round((decimal) (this.parent.MaxHitPoints / maxTiles)); // Hitpoints to subtract per cell in damagedCells
 		protected virtual int DamageUnit => (int)Math.Ceiling((1.0 / maxTiles) * this.parent.MaxHitPoints);
 
-		protected virtual double DamageCost => (double) (this.parent.def.costStuffCount / maxTiles) ;
-		public virtual int RepairCost => (int)Math.Ceiling(DamageCost * (this.parent.MaxHitPoints - this.parent.HitPoints));
+		protected virtual double DamageCost => (double)(this.parent.def.costStuffCount / maxTiles);
+		public virtual int RepairCost => (int)Math.Ceiling(DamageCost * damagedCells.Count);
 
-		public bool CheckCell(SketchEntity cell)
+		public bool CheckCell(SketchEntity cell, Rot4 sketchRot)
 		{
-			bool check = damagedCells.Contains(new SketchEntityWraper(cell));
+			bool check = damagedCells.Contains(new SketchEntityWraper(cell, sketchRot));
  			return check;
 		}
 
-		public bool AddCell(SketchEntity cell)
+		public bool AddCell(SketchEntity cell, Rot4 sketchRot)
 		{
-			bool added = damagedCells.Add(new SketchEntityWraper(cell));
+			bool added = damagedCells.Add(new SketchEntityWraper(cell, sketchRot));
 
 			if (added)
 			{
@@ -105,7 +118,8 @@ namespace Camping_Stuff
 				{
 					Thing material = GenClosest.ClosestThingReachable(this.parent.Position, this.parent.Map, ThingRequest.ForDef(this.parent.Stuff), Verse.AI.PathEndMode.ClosestTouch, TraverseParms.For(selPawn, selPawn.NormalMaxDanger())); // validator?
 
-					selPawn.jobs.TryTakeOrderedJob(JobMaker.MakeJob(TentDefOf.NCS_RepairPart, this.parent, material));
+					//selPawn.jobs.TryTakeOrderedJob(HaulAIUtility.HaulToContainerJob(selPawn, material, this.parent));
+					selPawn.jobs.TryTakeOrderedJob(JobMaker.MakeJob(TentDefOf.NCS_RepairPart, material, this.parent));
 				});
 			}
 		}

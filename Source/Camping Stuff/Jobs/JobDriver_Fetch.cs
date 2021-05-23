@@ -11,7 +11,7 @@ using Verse.AI;
 
 namespace Camping_Stuff
 {
-	public class JobDriver_Fetch : JobDriver_UseItem // JobDriver
+	public class JobDriver_Fetch : JobDriver // JobDriver
 	{
 		protected const TargetIndex fetch = TargetIndex.A;
 		protected const TargetIndex target = TargetIndex.B;
@@ -40,7 +40,7 @@ namespace Camping_Stuff
 
 		protected override IEnumerable<Toil> MakeNewToils()
 		{
-			this.FailOnIncapable<JobDriver_UseItem>(PawnCapacityDefOf.Manipulation);
+			this.FailOnIncapable<JobDriver>(PawnCapacityDefOf.Manipulation);
 
 			this.FailOnDestroyedNullOrForbidden(fetch);
 

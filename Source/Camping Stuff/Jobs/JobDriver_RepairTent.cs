@@ -11,10 +11,15 @@ namespace Camping_Stuff
 {
 	public class JobDriver_RepairTent : JobDriver_Fetch
 	{
-		private const TargetIndex partTarget = TargetIndex.A;
-		private const TargetIndex materialTarget = TargetIndex.B;
+		private const TargetIndex materialTarget = TargetIndex.A;
+		private const TargetIndex partTarget = TargetIndex.B;
 
-		protected override int Qty => this.job.GetTarget(partTarget).Thing.TryGetComp<CompTentPartDamage>().RepairCost;
+		protected override int Qty {
+			get
+			{
+				return this.job.GetTarget(partTarget).Thing.TryGetComp<CompTentPartDamage>().RepairCost;
+			}
+		}
 
 		protected override IEnumerable<Toil> MakeNewToils()
 		{

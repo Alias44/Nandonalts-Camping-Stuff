@@ -19,7 +19,21 @@ namespace Camping_Stuff
 		protected Thing Part => this.job.GetTarget(partTarget).Thing;
 		protected NCS_MiniTent MiniBag => (NCS_MiniTent) this.job.GetTarget(bagTarget).Thing;
 
-		protected override int Qty => this.GetHaulQty();
+		protected override int Qty
+		{
+			get
+			{
+				TentPart partType = Part.TryGetComp<CompUsable_TentPart>().Props.partType;
+
+				if (partType == TentPart.pole)
+				{
+					int m = Math.Min(Part.stackCount, MiniBag.Bag.maxPoles);
+  					return m;
+				}
+
+				return 1;
+			}
+		}
 
 		protected override IEnumerable<Toil> MakeNewToils()
 		{
@@ -36,19 +50,6 @@ namespace Camping_Stuff
 				},
 				defaultCompleteMode = ToilCompleteMode.Instant
 			};
-		}
-
-		private int GetHaulQty()
-		{
-			TentPart partType = Part.TryGetComp<CompUsable_TentPart>().Props.partType;
-
-			if (partType == TentPart.pole)
-			{
-				int m = Math.Min(Part.stackCount, MiniBag.Bag.maxPoles);
-  				return m;
-			}
-
-			return 1;
 		}
 	}
 }

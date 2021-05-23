@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace Camping_Stuff
 {
-	public class CompUsable_TentPart : CompUsable //(Thing)
+	public class CompUsable_TentPart : ThingComp //(Thing)
 	{
 		public CompProperties_TentPart Props
 		{
@@ -43,10 +43,10 @@ namespace Camping_Stuff
 			{
 				yield return new FloatMenuOption("Pack " + parent.def.label+ " into bag", delegate
 				 {
-					 Find.Targeter.BeginTargeting(this.GetTargetingParameters(), delegate (LocalTargetInfo t)
-					 {
-						 TryStartUseJob(selPawn, t);
-					 });
+					Find.Targeter.BeginTargeting(this.GetTargetingParameters(), delegate (LocalTargetInfo t)
+					{
+						selPawn.jobs.TryTakeOrderedJob(JobMaker.MakeJob(TentDefOf.NCS_PackBag, this.parent, t));
+					});
 				 });
 			}
 			else
@@ -56,7 +56,7 @@ namespace Camping_Stuff
 		}
 	}
 
-	public class CompProperties_TentPart : CompProperties_Usable //(Def)
+	public class CompProperties_TentPart : CompProperties //(Def)
 	{
 		public TentPart partType;
 

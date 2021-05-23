@@ -22,7 +22,7 @@ namespace Camping_Stuff
 	public class NCS_Tent : Building
 	{
 		public Sketch sketch = new Sketch();
-
+		private Rot4 deployedRot = Rot4.North;
 		public int PoleCount { get; private set; } = 0;
 		public int maxPoles = DefDatabase<ThingDef>.AllDefs.Where(d => d.HasComp(typeof(TentCoverComp))).Min(cover => cover.GetCompProperties<CompProperties_TentCover>().numPoles);
 
@@ -171,6 +171,7 @@ namespace Camping_Stuff
 			get
 			{
 				if (Ready)
+					//this.cover.Rotation = this.Rotation;
 					return this.cover.Graphic;
 				else
 				{
@@ -184,6 +185,7 @@ namespace Camping_Stuff
 		{
 			get
 			{
+				this.sketch.Rotate(this.Rotation);
 				return !this.Spawned ? new CellRect?() : new CellRect?(this.sketch.OccupiedRect.MovedBy(this.Position));
 			}
 		}
@@ -218,11 +220,11 @@ namespace Camping_Stuff
 				{
 					IntVec3 cell = se.pos + this.Position;
 
-					if (se is SketchTerrain && this.floor.TryGetComp<CompTentPartDamage>().CheckCell(se))
+					if (se is SketchTerrain && this.floor.TryGetComp<CompTentPartDamage>().CheckCell(se, this.Rotation))
 					{
 						// spawn damaged message
 					}
-					else if (se is SketchThing && this.cover.TryGetComp<CompTentPartDamage>().CheckCell(se))
+					else if (se is SketchThing && this.cover.TryGetComp<CompTentPartDamage>().CheckCell(se, this.Rotation))
 					{
 						// spawn damaged message
 					}
@@ -232,11 +234,13 @@ namespace Camping_Stuff
 					}
 				}
 			}
+
+			deployedRot = this.Rotation;
 		}
 
 		public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
 		{
-			this.sketch.Rotate(this.Rotation);
+			this.sketch.Rotate(deployedRot);
 
 			foreach (SketchEntity se in this.sketch.Entities.OrderByDescending<SketchEntity, float>((Func<SketchEntity, float>)(x => x.SpawnOrder)))
 			{
@@ -255,7 +259,7 @@ namespace Camping_Stuff
 					}
 					else
 					{
-						this.cover.TryGetComp<CompTentPartDamage>().AddCell(se);
+						this.cover.TryGetComp<CompTentPartDamage>().AddCell(se, deployedRot);
 					}
 				}
 				else if (se is SketchTerrain terrain)
@@ -266,7 +270,7 @@ namespace Camping_Stuff
 					}
 					else
 					{
-						this.floor.TryGetComp<CompTentPartDamage>().AddCell(terrain);
+						this.floor.TryGetComp<CompTentPartDamage>().AddCell(terrain, deployedRot);
 					}
 				}
 			}
@@ -301,8 +305,6 @@ namespace Camping_Stuff
 
 		public void DrawGhost_NewTmp(IntVec3 at, bool placingMode, Rot4 rotation)
 		{
-			tmp_sketch = sketch.DeepCopy();
-
 			if (!Ready)
 			{
 				return;
@@ -312,7 +314,7 @@ namespace Camping_Stuff
 				UpdateSketch();
 			}
 
-			tmp_sketch.Rotate(rotation);
+			sketch.Rotate(rotation);
 
 			Func<SketchEntity, IntVec3, List<Thing>, Map, bool> validator = (Func<SketchEntity, IntVec3, List<Thing>, Map, bool>)null;
 			if (placingMode)
@@ -334,7 +336,7 @@ namespace Camping_Stuff
 				};
 			}
 
-			tmp_sketch.DrawGhost_NewTmp(at, Sketch.SpawnPosType.Unchanged, placingMode, null, validator);
+			sketch.DrawGhost_NewTmp(at, Sketch.SpawnPosType.Unchanged, placingMode, null, validator);
 		}
 
 		#region PartPacking

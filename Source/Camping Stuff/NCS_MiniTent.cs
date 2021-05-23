@@ -49,7 +49,7 @@ namespace Camping_Stuff
 		}
 
 		public override void DrawAt(Vector3 drawLoc, bool flip = false)
-		{
+ 		{
 			if (this.Graphic is Graphic_Single)
 				this.Graphic.Draw(drawLoc, Rot4.North, (Thing)this, 0.0f);
 			else
