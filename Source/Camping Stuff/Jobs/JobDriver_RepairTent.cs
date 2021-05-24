@@ -14,12 +14,10 @@ namespace Camping_Stuff
 		private const TargetIndex materialTarget = TargetIndex.A;
 		private const TargetIndex partTarget = TargetIndex.B;
 
-		protected override int Qty {
-			get
-			{
-				return this.job.GetTarget(partTarget).Thing.TryGetComp<CompTentPartDamage>().RepairCost;
-			}
-		}
+		protected Thing Material => this.job.GetTarget(materialTarget).Thing;
+		protected Thing Part => this.job.GetTarget(partTarget).Thing;
+
+		protected override int DesiredQty => this.job.GetTarget(partTarget).Thing.TryGetComp<CompTentPartDamage>().RepairCost;
 
 		protected override IEnumerable<Toil> MakeNewToils()
 		{
@@ -32,7 +30,8 @@ namespace Camping_Stuff
 			{
 				initAction = delegate ()
 				{
-					Log.Message("fix a thing");
+					Material.Destroy();
+					Part.TryGetComp<CompTentPartDamage>().ClearCells();
 				},
 				defaultCompleteMode = ToilCompleteMode.Instant
 			};

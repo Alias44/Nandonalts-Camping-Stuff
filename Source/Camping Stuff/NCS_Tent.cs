@@ -19,6 +19,7 @@ namespace Camping_Stuff
 		floor
 	}
 
+	// Implimnet IThingHolder so packing can be done with DepositHauledThingInContainer ???
 	public class NCS_Tent : Building
 	{
 		public Sketch sketch = new Sketch();

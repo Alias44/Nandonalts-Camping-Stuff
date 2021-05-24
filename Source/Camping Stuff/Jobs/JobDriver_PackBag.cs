@@ -19,7 +19,7 @@ namespace Camping_Stuff
 		protected Thing Part => this.job.GetTarget(partTarget).Thing;
 		protected NCS_MiniTent MiniBag => (NCS_MiniTent) this.job.GetTarget(bagTarget).Thing;
 
-		protected override int Qty
+		protected override int DesiredQty
 		{
 			get
 			{
@@ -27,8 +27,7 @@ namespace Camping_Stuff
 
 				if (partType == TentPart.pole)
 				{
-					int m = Math.Min(Part.stackCount, MiniBag.Bag.maxPoles);
-  					return m;
+					return MiniBag.Bag.maxPoles;
 				}
 
 				return 1;
@@ -46,7 +45,7 @@ namespace Camping_Stuff
 			{
 				initAction = delegate ()
 				{
-					MiniBag.Bag.PackPart(Part.SplitOff(Qty));
+					MiniBag.Bag.PackPart(Part.SplitOff(AvailQty));
 				},
 				defaultCompleteMode = ToilCompleteMode.Instant
 			};

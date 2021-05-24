@@ -110,6 +110,12 @@ namespace Camping_Stuff
  			return damagedCells.Count > 0;
 		}
 
+		public void ClearCells()
+		{
+			this.parent.HitPoints = this.parent.MaxHitPoints;
+			this.damagedCells.Clear();
+		}
+
 		public override IEnumerable<FloatMenuOption> CompFloatMenuOptions(Pawn selPawn)
 		{
 			if (RepairCost > 0)
@@ -118,7 +124,6 @@ namespace Camping_Stuff
 				{
 					Thing material = GenClosest.ClosestThingReachable(this.parent.Position, this.parent.Map, ThingRequest.ForDef(this.parent.Stuff), Verse.AI.PathEndMode.ClosestTouch, TraverseParms.For(selPawn, selPawn.NormalMaxDanger())); // validator?
 
-					//selPawn.jobs.TryTakeOrderedJob(HaulAIUtility.HaulToContainerJob(selPawn, material, this.parent));
 					selPawn.jobs.TryTakeOrderedJob(JobMaker.MakeJob(TentDefOf.NCS_RepairPart, material, this.parent));
 				});
 			}
