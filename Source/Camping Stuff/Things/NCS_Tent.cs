@@ -30,15 +30,12 @@ namespace Camping_Stuff
 		//public Dictionary<ThingDef, Thing> poles = new Dictionary<ThingDef, Thing>();
 		private List<Thing> poles = new List<Thing>();
 
-		public List<Thing> Poles
-		{
-			get { return poles; }
-		}
+		public List<Thing> Poles => poles;
 
 		private Thing cover = null;
 		public Thing Cover
 		{
-			get { return cover; }
+			get => cover;
 			set
 			{
 				if (!IsTentPart(value, TentPart.cover) && value != null)
@@ -70,7 +67,7 @@ namespace Camping_Stuff
 		private Thing floor = null;
 		public Thing Floor
 		{
-			get { return floor; }
+			get => floor;
 			set
 			{
 				if (!IsTentPart(value, TentPart.floor) && value != null)
@@ -88,13 +85,7 @@ namespace Camping_Stuff
 			}
 		}
 
-		public bool Ready
-		{
-			get
-			{
-				return cover != null && PoleCount >= cover.TryGetComp<TentCoverComp>().Props.numPoles;
-			}
-		}
+		public bool Ready => cover != null && PoleCount >= cover.TryGetComp<TentCoverComp>().Props.numPoles;
 
 		public string MissingMsg
 		{
@@ -136,7 +127,7 @@ namespace Camping_Stuff
 
 				if(Floor != null)
 				{
-					msg = $"Floor: {Floor.LabelCap} ({Floor.HitPoints}/{Floor.MaxHitPoints})\n";
+					msg = $"Floor: {Floor.LabelCap} ({Floor.HitPoints} / {Floor.MaxHitPoints})\n";
 				}
 
 				return msg;
@@ -145,15 +136,7 @@ namespace Camping_Stuff
 
 
 		// Overriding label and descritpion (while spawned/ installed/ deployed), since minified things don't really have their own.
-		public override string LabelNoCount
-		{
-			get
-			{
-				if (this.Spawned)
-					return "Tent";
-				return base.LabelNoCount; // + "(" +(Ready? "Ready" : "Not ready") + ")";
-			}
-		}
+		public override string LabelNoCount => this.Spawned ? "Tent" : base.LabelNoCount;
 
 		public override string DescriptionFlavor
 		{
@@ -167,20 +150,7 @@ namespace Camping_Stuff
 			}
 		}
 
-		public override Graphic Graphic
-		{
-			get
-			{
-				if (Ready)
-					//this.cover.Rotation = this.Rotation;
-					return this.cover.Graphic;
-				else
-				{
-					return base.Graphic;
-				}
-
-			}
-		}
+		public override Graphic Graphic => Ready ? this.cover.Graphic : base.Graphic;
 
 		public override CellRect? CustomRectForSelector
 		{
@@ -196,13 +166,7 @@ namespace Camping_Stuff
 			return this.Ready ? this.sketch.OccupiedRect.MovedBy(pos) : new CellRect();
 		}
 
-		public IntVec2 Size
-		{
-			get
-			{
-				return this.sketch.OccupiedSize;
-			}
-		}
+		public IntVec2 Size => this.sketch.OccupiedSize;
 
 		public override void SpawnSetup(Map map, bool respawningAfterLoad)
 		{
