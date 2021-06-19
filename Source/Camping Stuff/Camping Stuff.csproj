@@ -32,8 +32,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="0Harmony, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Lib.Harmony.2.0.1\lib\net472\0Harmony.dll</HintPath>
+    <Reference Include="0Harmony, Version=2.0.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Lib.Harmony.2.0.4\lib\net472\0Harmony.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Comps\CompTentPartDamage.cs" />
+    <Compile Include="HarmonyPatches.cs" />
     <Compile Include="Jobs\JobDriver_Fetch.cs" />
     <Compile Include="Jobs\JobDriver_RepairTent.cs" />
     <Compile Include="NCS_MiniTent.cs" />
@@ -76,6 +77,7 @@
     <Compile Include="Comps\TentCoverComp.cs" />
     <Compile Include="Comps\TentPartComp.cs" />
     <Compile Include="TentDefOf.cs" />
+    <Compile Include="TentBlueprintInstall.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

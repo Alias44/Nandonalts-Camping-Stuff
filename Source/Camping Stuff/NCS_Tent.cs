@@ -122,7 +122,7 @@ namespace Camping_Stuff
 
 				if (Cover != null)
 				{
-					msg += "Cover: " + Cover.Label + "\n";
+					msg += $"Cover: {Cover.LabelCap} ({Cover.HitPoints} / {Cover.MaxHitPoints})\n";
 				}
 
 				if(PoleCount > 0)
@@ -130,13 +130,13 @@ namespace Camping_Stuff
 					msg += "Poles:\n";
 					foreach(Thing pole in Poles)
 					{
-						msg += "\t" + pole.Label + "\n";
+						msg += "\t" + pole.LabelCap + "\n";
 					}
 				}
 
 				if(Floor != null)
 				{
-					msg = "Floor: " + Floor.Label + "\n";
+					msg = $"Floor: {Floor.LabelCap} ({Floor.HitPoints}/{Floor.MaxHitPoints})\n";
 				}
 
 				return msg;
@@ -191,6 +191,11 @@ namespace Camping_Stuff
 			}
 		}
 
+		public CellRect CandidateRect(IntVec3 pos)
+		{
+			return this.Ready ? this.sketch.OccupiedRect.MovedBy(pos) : new CellRect();
+		}
+
 		public IntVec2 Size
 		{
 			get
@@ -209,12 +214,12 @@ namespace Camping_Stuff
 			{
  				if (floor != null && this.floor.TryGetComp<CompTentPartDamage>().HasDamagedCells())
 				{
-					Messages.Message("Tent mat is damaged, some floors may be missing.", MessageTypeDefOf.NegativeEvent);
+					Messages.Message("DamagedMat".Translate(), MessageTypeDefOf.NegativeEvent);
 				}
 
 				if (this.cover.TryGetComp<CompTentPartDamage>().HasDamagedCells())
 				{
-					Messages.Message("Tent cover is damaged, some walls/ doors will be missing.", MessageTypeDefOf.NegativeEvent);
+					Messages.Message("DamagedCover".Translate(), MessageTypeDefOf.NegativeEvent);
 				}
 
 				foreach (SketchEntity se in this.sketch.Entities.OrderBy<SketchEntity, float>((Func<SketchEntity, float>)(x => x.SpawnOrder)))
@@ -250,7 +255,6 @@ namespace Camping_Stuff
 				if (se is SketchRoof sr && sr.IsSameSpawned(cell, this.Map))
 				{
 					Map.roofGrid.SetRoof(cell, null);
-					//this.Map.areaManager.BuildRoof[cell] = false;
 				}
 				else if (se is SketchThing thing)
 				{
@@ -275,7 +279,6 @@ namespace Camping_Stuff
 					}
 				}
 			}
-
 
 			base.DeSpawn(mode);
 		}
@@ -323,17 +326,11 @@ namespace Camping_Stuff
 				validator = delegate (SketchEntity se, IntVec3 targetLoc, List<Thing> list, Map map)
 				{
 					IntVec3 loc = se.pos + targetLoc;
-					Building bldg = loc.GetFirstBuilding(map);
-					Plant plant = loc.GetPlant(map);
 
 					return
-					loc.InBounds(map) &&
-					se.CanBuildOnTerrain(loc, map) &&
-					!(loc.GetFirstItem(map) != null ||
-					loc.GetFirstPawn(map) != null ||
-					loc.GetFirstHaulable(map) != null) &&
-					!(bldg != null && bldg.def.IsEdifice()) &&
-					!(plant != null && plant.def.plant.IsTree);
+						loc.InBounds(map) &&
+						se.CanBuildOnTerrain(loc, map);
+					//GenConstruct.BlocksConstructions()
 				};
 			}
 

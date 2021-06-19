@@ -22,14 +22,14 @@ namespace Camping_Stuff
 			string readyStr;
 			if (Bag.Ready)
 			{
-				readyStr = "Ready";
+				readyStr = "DeployReady".Translate();
 			}
 			else
 			{
-				readyStr = "Not ready";
+				readyStr = "DeployNotReady".Translate();
 			}
 
-			return readyStr + " to deploy\n" + base.GetInspectString();
+			return readyStr + "\n" + base.GetInspectString();
 		}
 
 		// Overriding graphinc and draw at allows me to draw a graphig instead of the boxed inner thing (if one is specified)
@@ -66,7 +66,7 @@ namespace Camping_Stuff
 			{
 				if (Bag.Cover != null)
 				{
-					yield return new FloatMenuOption("Unpack " + Bag.Cover.LabelCap, delegate
+					yield return new FloatMenuOption("UnpackPartHP".Translate(Bag.Cover.LabelCap, Bag.Cover.HitPoints, Bag.Cover.MaxHitPoints), delegate
 					{
 						jd.driverClass = typeof(JobDriver_UnpackBagCover);
 						Job j = JobMaker.MakeJob(jd, target);
@@ -134,5 +134,7 @@ namespace Camping_Stuff
 				yield return gizmo;
 			}
 		}
+
+		// override DrawExtraSelectionOverlays to pass tent to blueprint?
 	}
 }

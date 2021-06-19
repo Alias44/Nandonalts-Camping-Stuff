@@ -252,11 +252,16 @@
 			<drawRotated>false</drawRotated>
 			<allowFlip>false</allowFlip>
 		</graphicData>
+		
+	<!--building>
+			<blueprintClass>Camping_Stuff.TentBlueprint_Install</blueprintClass>
+	</building-->
 
 	</ThingDef>
 	
 	<ThingDef ParentName="TentPartTailored">
-    <category>Building</category>
+    <category>Ethereal</category>
+	 <isFrameInt>true</isFrameInt>
     <drawerType>None</drawerType>
 	 <!--isFrameInt>true</isFrameInt-->
 	<stackLimit>1</stackLimit>
@@ -286,6 +291,7 @@
 		</graphicData>
 		<costStuffCount>100</costStuffCount>
 		<useHitPoints>false</useHitPoints>
+		<!--designationCategory>Misc</designationCategory-->
 		<building>
 			<deconstructible>false</deconstructible>
 			<blueprintGraphicData>
@@ -295,6 +301,7 @@
 				<drawRotated>false</drawRotated>
 				<allowFlip>false</allowFlip>
 			</blueprintGraphicData>
+			<blueprintClass>Camping_Stuff.TentBlueprint_Install</blueprintClass>
 		</building>
 		<placeWorkers>
 			<li>Camping_Stuff.PlaceWorker_Tent</li>

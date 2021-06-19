@@ -10,6 +10,8 @@ using Verse.AI;
 
 namespace Camping_Stuff
 {
+	//IEqualityComparer (https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.hashset-1.-ctor?view=net-5.0#System_Collections_Generic_HashSet_1__ctor_System_Collections_Generic_IEqualityComparer__0__ ) 
+
 	public class SketchEntityWraper : IExposable
 	{
 		private SketchEntity entity;

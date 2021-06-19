@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
-	<!-- Failure messages -->
-	<CannotPlaceTentOver>Cannot place tent over: {0}.</CannotPlaceTentOver>
-	<CannotPlaceTentOnTerrain>Cannot place tent on: {0}.</CannotPlaceTentOnTerrain>
-	<TentOverlapsBuilding>Cannot place tent over: {0}.</TentOverlapsBuilding>
+	<!-- Parts -->
+	<DeployReady>Ready to deploy</DeployReady>
+	<DeployNotReady>Not ready to deploy</DeployNotReady>
+	
+	<!-- Packing -->
+	<UnpackPartHP>Unpack {0} ({1}/{2})</UnpackPartHP>
 
+	<!-- Warnings -->
+	<DamagedCover>Tent cover is damaged, some walls/ doors will be missing.</DamagedCover>
+	<DamagedMat>Tent mat is damaged, some floors may be missing.</DamagedMat>
+
+	<!-- Failure messages -->
+	<CannotPlaceItemOver>Cannot place {0} over: {1}.</CannotPlaceItemOver>
+	<CannotPlaceTentOver>Cannot place tent over: {0}.</CannotPlaceTentOver>
+	<CannotPlaceTentOn>Cannot place tent on: {0}.</CannotPlaceTentOn>
 </LanguageData>
