@@ -10,94 +10,53 @@ using Verse.AI;
 
 namespace Camping_Stuff
 {
-	//IEqualityComparer (https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.hashset-1.-ctor?view=net-5.0#System_Collections_Generic_HashSet_1__ctor_System_Collections_Generic_IEqualityComparer__0__ ) 
-
-	public class SketchEntityWraper : IExposable
+	internal class SketchEntityComparer : IEqualityComparer<SketchEntity>
 	{
-		private SketchEntity entity;
-
-		public SketchEntityWraper()
+		public bool Equals(SketchEntity x, SketchEntity y)
 		{
-			entity = null;
+			if (y == null && x == null)
+				return true;
+			else if (x == null ^ y == null)
+				return false;
+
+			return
+				x.Equals(y) || (
+					x.Label.Equals(y.Label) &&
+					x.OccupiedRect.Equals(y.OccupiedRect) &&
+					x.SpawnOrder.Equals(y.SpawnOrder) &&
+					x.pos.Equals(y.pos)
+				);
 		}
 
-		public SketchEntityWraper(SketchEntity se)
+		public int GetHashCode(SketchEntity obj)
 		{
-			entity = se;
+			return new Tuple<string, CellRect, float, IntVec3>(obj.Label, obj.OccupiedRect, obj.SpawnOrder, obj.pos).GetHashCode();
 		}
-
-		public SketchEntityWraper(SketchEntity se, Rot4 sketchRot)
-		{
-			entity = se.DeepCopy();
-			 
-			int newRot = Rot4.North.AsInt - sketchRot.AsInt;
-			if (newRot < 0)
-				newRot += 4;
-			Rot4 rot1 = new Rot4(newRot);
-
- 			entity.pos = entity.pos.RotatedBy(rot1);
-		}
-
-		public override bool Equals(object obj)
-		{
-			SketchEntity se = null;
-			if(obj is SketchEntityWraper sew)
-			{
-				se = sew.entity;
-			}
-			else if(obj is SketchEntity)
-			{
-				se = (SketchEntity) obj;
-			}
-
-			if(se != null)
-			{
-				return
-					entity.Equals(se) || (
-						entity.Label.Equals(se.Label) &&
-						entity.OccupiedRect.Equals(se.OccupiedRect) &&
-						entity.SpawnOrder.Equals(se.SpawnOrder) &&
-						entity.pos.Equals(se.pos)
-					);
-			}
-			return false;
-		}
-
-		public override int GetHashCode()
-		{
-			return new Tuple<string, CellRect, float, IntVec3>(entity.Label, entity.OccupiedRect, entity.SpawnOrder, entity.pos).GetHashCode();
-		}
-
-		public void ExposeData()
-		{
-			Scribe_Deep.Look(ref entity, "WrapedSketchEntity");
-		}
-
 	}
 
 	public class CompTentPartDamage : ThingComp // put damage int here and override protected in child cover?
 	{
 		public CompProperties_TentPartDamage Props => (CompProperties_TentPartDamage)this.props;
 
-		protected HashSet<SketchEntityWraper> damagedCells = new HashSet<SketchEntityWraper>();
+		protected HashSet<SketchEntity> damagedCells = new HashSet<SketchEntity>(new SketchEntityComparer());
 
 		public static int maxTiles = DefDatabase<ThingDef>.AllDefs.Where(d => d.HasComp(typeof(TentCoverComp))).Max(cover => cover.GetCompProperties<CompProperties_TentCover>().tiles);
 
 		//protected virtual int DamageUnit => Math.Round((decimal) (this.parent.MaxHitPoints / maxTiles)); // Hitpoints to subtract per cell in damagedCells
 		protected virtual int DamageUnit => (int)Math.Ceiling((1.0 / maxTiles) * this.parent.MaxHitPoints);
 
-		protected virtual double DamageCost => (double)(this.parent.def.costStuffCount / maxTiles);
+		protected virtual double DamageCost => ((double)this.parent.def.costStuffCount / maxTiles);
 		public virtual int RepairCost => (int)Math.Ceiling(DamageCost * damagedCells.Count);
 
 		public bool CheckCell(SketchEntity cell, Rot4 sketchRot)
 		{
-			bool check = damagedCells.Contains(new SketchEntityWraper(cell, sketchRot));
+			bool check = damagedCells.Contains(cell.Normalize(sketchRot));
  			return check;
 		}
 
 		public bool AddCell(SketchEntity cell, Rot4 sketchRot)
 		{
-			bool added = damagedCells.Add(new SketchEntityWraper(cell, sketchRot));
+			bool added = damagedCells.Add(cell.Normalize(sketchRot));
 
 			if (added)
 			{
@@ -118,26 +77,49 @@ namespace Camping_Stuff
 			this.damagedCells.Clear();
 		}
 
-		public override IEnumerable<FloatMenuOption> CompFloatMenuOptions(Pawn selPawn)
+		public Thing RepairMaterial(IntVec3 pos, Map map, Pawn selPawn)
+		{
+			return GenClosest.ClosestThingReachable(pos, map,
+				ThingRequest.ForDef(this.parent.Stuff), Verse.AI.PathEndMode.ClosestTouch,
+				TraverseParms.For(selPawn, selPawn.NormalMaxDanger())); // validator?
+		}
+
+		public Thing RepairMaterial(Pawn selPawn)
+		{
+			return RepairMaterial(selPawn.Position, selPawn.Map, selPawn);
+		}
+
+		public FloatMenuOption RepairMenuOption(Pawn selPawn, JobDef jobDef, LocalTargetInfo destination)
 		{
 			if (RepairCost > 0)
 			{
-				yield return new FloatMenuOption($"Repair {this.parent.def.label} ({RepairCost} {this.parent.Stuff.label} needed)", delegate
+				Thing material = RepairMaterial(selPawn);
+				if (material != null)
 				{
-					Thing material = GenClosest.ClosestThingReachable(this.parent.Position, this.parent.Map, ThingRequest.ForDef(this.parent.Stuff), Verse.AI.PathEndMode.ClosestTouch, TraverseParms.For(selPawn, selPawn.NormalMaxDanger())); // validator?
-
-					selPawn.jobs.TryTakeOrderedJob(JobMaker.MakeJob(TentDefOf.NCS_RepairPart, material, this.parent));
-				});
+					return new FloatMenuOption($"Repair {this.parent.def.label} ({RepairCost} {this.parent.Stuff.label} needed)", delegate
+					{
+						selPawn.jobs.TryTakeOrderedJob(JobMaker.MakeJob(jobDef, material, destination));
+					});
+				}
 			}
+
+			return new FloatMenuOption($"Unable to repair {this.parent.LabelNoCount}, need {RepairCost} {this.parent.Stuff.label}", null);
+		}
+
+		public override IEnumerable<FloatMenuOption> CompFloatMenuOptions(Pawn selPawn)
+		{
+			yield return RepairMenuOption(selPawn, TentDefOf.NCS_RepairPart, this.parent);
 		}
 
 		public override void PostExposeData()
 		{
 			Scribe_Collections.Look(ref damagedCells, "damagedCells", LookMode.Deep);
 
-			if (Scribe.mode == LoadSaveMode.PostLoadInit && damagedCells == null)
+			if (Scribe.mode == LoadSaveMode.PostLoadInit)
 			{
-				damagedCells = new HashSet<SketchEntityWraper>();
+				damagedCells = damagedCells == null
+					? new HashSet<SketchEntity>(new SketchEntityComparer())
+					: new HashSet<SketchEntity>(damagedCells, new SketchEntityComparer());
 			}
 		}
 

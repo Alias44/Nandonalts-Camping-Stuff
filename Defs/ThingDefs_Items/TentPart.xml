@@ -252,18 +252,11 @@
 			<drawRotated>false</drawRotated>
 			<allowFlip>false</allowFlip>
 		</graphicData>
-		
-	<!--building>
-			<blueprintClass>Camping_Stuff.TentBlueprint_Install</blueprintClass>
-	</building-->
-
 	</ThingDef>
 	
 	<ThingDef ParentName="TentPartTailored">
-    <category>Ethereal</category>
-	 <isFrameInt>true</isFrameInt>
+    <category>Building</category>
     <drawerType>None</drawerType>
-	 <!--isFrameInt>true</isFrameInt-->
 	<stackLimit>1</stackLimit>
 		<defName>NCS_TentBag</defName>
 		<label>tent bag</label> <!--label and description are modified when the inner thing exists-->
@@ -291,7 +284,6 @@
 		</graphicData>
 		<costStuffCount>100</costStuffCount>
 		<useHitPoints>false</useHitPoints>
-		<!--designationCategory>Misc</designationCategory-->
 		<building>
 			<deconstructible>false</deconstructible>
 			<blueprintGraphicData>

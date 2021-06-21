@@ -17,5 +17,7 @@ namespace Camping_Stuff
 		public static JobDef NCS_PackBag;
 		public static JobDef NCS_UnpackBag;
 		public static JobDef NCS_RepairPart;
+		public static JobDef NCS_RepairCoverInBag;
+		public static JobDef NCS_RepairFloorInBag;
 	}
 }

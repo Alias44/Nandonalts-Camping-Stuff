@@ -9,15 +9,14 @@ using Verse.AI;
 
 namespace Camping_Stuff
 {
-	public class JobDriver_RepairTent : JobDriver_Fetch
+	public class JobDriver_RepairPart : JobDriver_Fetch
 	{
-		private const TargetIndex materialTarget = TargetIndex.A;
-		private const TargetIndex partTarget = TargetIndex.B;
+		protected Thing Material => this.job.GetTarget(fetch).Thing;
+		protected NCS_MiniTent MiniBag => (this.job.GetTarget(target).Thing is NCS_MiniTent mini) ? mini : null;
 
-		protected Thing Material => this.job.GetTarget(materialTarget).Thing;
-		protected Thing Part => this.job.GetTarget(partTarget).Thing;
+		protected virtual Thing Part => this.job.GetTarget(target).Thing;
 
-		protected override int DesiredQty => this.job.GetTarget(partTarget).Thing.TryGetComp<CompTentPartDamage>().RepairCost;
+		protected override int DesiredQty => Part.TryGetComp<CompTentPartDamage>().RepairCost;
 
 		protected override IEnumerable<Toil> MakeNewToils()
 		{
@@ -30,7 +29,7 @@ namespace Camping_Stuff
 			{
 				initAction = delegate ()
 				{
-					Material.Destroy();
+ 					Material.Destroy();
 					Part.TryGetComp<CompTentPartDamage>().ClearCells();
 				},
 				defaultCompleteMode = ToilCompleteMode.Instant

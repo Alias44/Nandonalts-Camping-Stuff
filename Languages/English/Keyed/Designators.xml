@@ -5,7 +5,6 @@
 	<DeployNotReady>Not ready to deploy</DeployNotReady>
 	
 	<!-- Packing -->
-	<UnpackPartHP>Unpack {0} ({1}/{2})</UnpackPartHP>
 
 	<!-- Warnings -->
 	<DamagedCover>Tent cover is damaged, some walls/ doors will be missing.</DamagedCover>

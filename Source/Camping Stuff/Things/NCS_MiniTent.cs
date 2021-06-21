@@ -66,13 +66,20 @@ namespace Camping_Stuff
 			{
 				if (Bag.Cover != null)
 				{
-					yield return new FloatMenuOption("UnpackPartHP".Translate(Bag.Cover.LabelCap, Bag.Cover.HitPoints, Bag.Cover.MaxHitPoints), delegate
+					yield return new FloatMenuOption("Unpack " + Bag.Cover.LabelCapHpFrac(), delegate
 					{
 						jd.driverClass = typeof(JobDriver_UnpackBagCover);
 						Job j = JobMaker.MakeJob(jd, target);
 
 						selPawn.jobs.TryTakeOrderedJob(j);
 					});
+
+					CompTentPartDamage damage = Bag.Cover.TryGetComp<CompTentPartDamage>();
+
+					if (damage != null)
+					{
+						yield return damage.RepairMenuOption(selPawn, TentDefOf.NCS_RepairCoverInBag, this);
+					}
 				}
 
 				if (Bag.Poles != null && Bag.Poles.Count > 0)
@@ -99,7 +106,7 @@ namespace Camping_Stuff
 
 				if (Bag.Floor != null)
 				{
-					yield return new FloatMenuOption("Unpack " + Bag.Floor.LabelCap, delegate
+					yield return new FloatMenuOption("Unpack " + Bag.Floor.LabelCapHpFrac(), delegate
 					{
 						jd.driverClass = typeof(JobDriver_UnpackBagFloor);
 						Job j = JobMaker.MakeJob(jd, target);

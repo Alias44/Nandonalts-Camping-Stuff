@@ -13,11 +13,8 @@ namespace Camping_Stuff
 {
 	public class JobDriver_PackBag : JobDriver_Fetch // JobDriver
 	{
-		private const TargetIndex partTarget = TargetIndex.A;
-		private const TargetIndex bagTarget = TargetIndex.B;
-
-		protected Thing Part => this.job.GetTarget(partTarget).Thing;
-		protected NCS_MiniTent MiniBag => (NCS_MiniTent) this.job.GetTarget(bagTarget).Thing;
+		protected Thing Part => this.job.GetTarget(fetch).Thing;
+		protected NCS_MiniTent MiniBag => (NCS_MiniTent) this.job.GetTarget(target).Thing;
 
 		protected override int DesiredQty
 		{

@@ -113,7 +113,7 @@ namespace Camping_Stuff
 
 				if (Cover != null)
 				{
-					msg += $"Cover: {Cover.LabelCap} ({Cover.HitPoints} / {Cover.MaxHitPoints})\n";
+					msg += $"Cover: {Cover.LabelCapHpFrac()}\n";
 				}
 
 				if(PoleCount > 0)
@@ -127,7 +127,7 @@ namespace Camping_Stuff
 
 				if(Floor != null)
 				{
-					msg = $"Floor: {Floor.LabelCap} ({Floor.HitPoints} / {Floor.MaxHitPoints})\n";
+					msg = $"Floor: {Floor.LabelCapHpFrac()})\n";
 				}
 
 				return msg;
@@ -299,6 +299,14 @@ namespace Camping_Stuff
 			}
 
 			sketch.DrawGhost_NewTmp(at, Sketch.SpawnPosType.Unchanged, placingMode, null, validator);
+		}
+
+		public override IEnumerable<Gizmo> GetGizmos()
+		{
+			foreach (Gizmo gizmo in base.GetGizmos())
+			{
+				yield return gizmo;
+			}
 		}
 
 		#region PartPacking

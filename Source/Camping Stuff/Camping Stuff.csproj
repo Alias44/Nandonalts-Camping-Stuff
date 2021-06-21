@@ -64,7 +64,8 @@
     <Compile Include="Comps\CompTentPartDamage.cs" />
     <Compile Include="HarmonyPatches.cs" />
     <Compile Include="Jobs\JobDriver_Fetch.cs" />
-    <Compile Include="Jobs\JobDriver_RepairTent.cs" />
+    <Compile Include="Jobs\JobDriver_RepairPartInBag.cs" />
+    <Compile Include="Jobs\JobDriver_RepairPart.cs" />
     <Compile Include="Things\NCS_MiniTent.cs" />
     <Compile Include="SketchRoof.cs" />
     <Compile Include="Statparts\AliasContainer.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="Comps\TentPartComp.cs" />
     <Compile Include="TentDefOf.cs" />
     <Compile Include="Things\TentBlueprintInstall.cs" />
+    <Compile Include="Util.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
