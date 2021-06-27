@@ -30,7 +30,7 @@ namespace Camping_Stuff
 				initAction = delegate ()
 				{
  					Material.Destroy();
-					Part.TryGetComp<CompTentPartDamage>().ClearCells();
+					Part.TryGetComp<CompTentPartDamage>().Repair();
 				},
 				defaultCompleteMode = ToilCompleteMode.Instant
 			};

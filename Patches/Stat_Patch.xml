@@ -13,4 +13,11 @@
 			<li Class="Camping_Stuff.StatPart_MktValue"></li>
 		</value>
 	</Operation>
+	
+	<Operation Class="PatchOperationAdd">
+		<xpath>Defs/StatDef[defName="Beauty"]/parts</xpath>
+		<value>
+			<li Class="Camping_Stuff.PoleFactors"></li>
+		</value>
+	</Operation>
 </Patch>

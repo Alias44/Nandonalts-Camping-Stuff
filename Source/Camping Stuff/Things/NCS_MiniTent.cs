@@ -56,6 +56,12 @@ namespace Camping_Stuff
 				this.Graphic.Draw(drawLoc, Rot4.South, (Thing)this, 0.0f);
 		}
 
+		public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
+		{
+			this.Bag.EjectAll();
+			base.DeSpawn(mode);
+		}
+
 		public override IEnumerable<FloatMenuOption> GetFloatMenuOptions(Pawn selPawn)
 		{
 			//JobDef jd = DefDatabase<JobDef>.GetNamed("NCS_UnpackBag");
@@ -76,7 +82,7 @@ namespace Camping_Stuff
 
 					CompTentPartDamage damage = Bag.Cover.TryGetComp<CompTentPartDamage>();
 
-					if (damage != null)
+					if (damage != null && damage.CanRepair)
 					{
 						yield return damage.RepairMenuOption(selPawn, TentDefOf.NCS_RepairCoverInBag, this);
 					}
@@ -113,6 +119,13 @@ namespace Camping_Stuff
 
 						selPawn.jobs.TryTakeOrderedJob(j);
 					});
+
+					CompTentPartDamage damage = Bag.Floor.TryGetComp<CompTentPartDamage>();
+
+					if (damage != null && damage.CanRepair)
+					{
+						yield return damage.RepairMenuOption(selPawn, TentDefOf.NCS_RepairCoverInBag, this);
+					}
 				}
 
 				if (Bag.Cover != null || (Bag.Poles != null && Bag.Poles.Count > 0) || Bag.Floor != null)
@@ -125,6 +138,11 @@ namespace Camping_Stuff
 						selPawn.jobs.TryTakeOrderedJob(j);
 					});
 				}
+			}
+
+			foreach (var opt in base.GetFloatMenuOptions(selPawn))
+			{
+				yield return opt;
 			}
 		}
 

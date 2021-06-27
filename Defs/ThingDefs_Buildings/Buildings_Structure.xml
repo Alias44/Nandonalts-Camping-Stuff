@@ -18,6 +18,7 @@
 			<MaxHitPoints>15</MaxHitPoints>
 			<WorkToBuild>85</WorkToBuild>
 			<SellPriceFactor>0</SellPriceFactor>
+			<Beauty>1</Beauty>
 		</statBases>		
 		<stuffCategories Inherit="False">
 			<li>Fabric</li>
@@ -52,6 +53,7 @@
 			<MaxHitPoints>10</MaxHitPoints>
 			<WorkToBuild>75</WorkToBuild>
 			<SellPriceFactor>0</SellPriceFactor>
+			<Beauty>1</Beauty>
 		</statBases>
 		<stuffCategories Inherit="False">
 			<li>Fabric</li>

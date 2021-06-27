@@ -62,10 +62,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Comps\CompTentPartDamage.cs" />
+    <Compile Include="Comps\CompTentPartWithCellsDamage.cs" />
+    <Compile Include="Comps\CompTentBagDamageComp.cs" />
+    <Compile Include="Comps\TentSpawnedComp.cs" />
     <Compile Include="HarmonyPatches.cs" />
     <Compile Include="Jobs\JobDriver_Fetch.cs" />
     <Compile Include="Jobs\JobDriver_RepairPartInBag.cs" />
     <Compile Include="Jobs\JobDriver_RepairPart.cs" />
+    <Compile Include="Statparts\PoleFactors.cs" />
     <Compile Include="Things\NCS_MiniTent.cs" />
     <Compile Include="SketchRoof.cs" />
     <Compile Include="Statparts\AliasContainer.cs" />

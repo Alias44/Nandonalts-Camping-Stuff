@@ -176,12 +176,12 @@ namespace Camping_Stuff
 
   			if (!respawningAfterLoad)
 			{
- 				if (floor != null && this.floor.TryGetComp<CompTentPartDamage>().HasDamagedCells())
+ 				if (floor != null && this.floor.TryGetComp<CompTentPartWithCellsDamage>().HasDamagedCells())
 				{
 					Messages.Message("DamagedMat".Translate(), MessageTypeDefOf.NegativeEvent);
 				}
 
-				if (this.cover.TryGetComp<CompTentPartDamage>().HasDamagedCells())
+				if (this.cover.TryGetComp<TentCoverComp>().HasDamagedCells())
 				{
 					Messages.Message("DamagedCover".Translate(), MessageTypeDefOf.NegativeEvent);
 				}
@@ -190,17 +190,29 @@ namespace Camping_Stuff
 				{
 					IntVec3 cell = se.pos + this.Position;
 
-					if (se is SketchTerrain && this.floor.TryGetComp<CompTentPartDamage>().CheckCell(se, this.Rotation))
+					if (se is SketchTerrain && this.floor.TryGetComp<CompTentPartWithCellsDamage>().CheckCell(se, this.Rotation))
 					{
 						// spawn damaged message
 					}
-					else if (se is SketchThing && this.cover.TryGetComp<CompTentPartDamage>().CheckCell(se, this.Rotation))
+					else if (se is SketchThing && this.cover.TryGetComp<TentCoverComp>().CheckCell(se, this.Rotation))
 					{
 						// spawn damaged message
 					}
 					else
 					{
-						se.Spawn(cell, this.Map, Faction.OfPlayer);
+						var spawnedThings = new List<Thing>();
+						se.Spawn(cell, this.Map, Faction.OfPlayer, spawnedThings: spawnedThings);
+
+						foreach (var t in spawnedThings)
+						{
+							if (t is ThingWithComps twc)
+							{
+								twc.AllComps.Add(new TentSpawnedComp
+								{
+									tent = this
+								});
+							}
+						}
 					}
 				}
 			}
@@ -228,7 +240,7 @@ namespace Camping_Stuff
 					}
 					else
 					{
-						this.cover.TryGetComp<CompTentPartDamage>().AddCell(se, deployedRot);
+						this.cover.TryGetComp<TentCoverComp>().AddCell(se, deployedRot);
 					}
 				}
 				else if (se is SketchTerrain terrain)
@@ -239,7 +251,7 @@ namespace Camping_Stuff
 					}
 					else
 					{
-						this.floor.TryGetComp<CompTentPartDamage>().AddCell(terrain, deployedRot);
+						this.floor.TryGetComp<CompTentPartWithCellsDamage>().AddCell(terrain, deployedRot);
 					}
 				}
 			}

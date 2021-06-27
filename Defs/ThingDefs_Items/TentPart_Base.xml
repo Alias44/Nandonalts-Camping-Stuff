@@ -16,6 +16,9 @@
 		<tradeTags>
 			<li>Furniture</li>
 		</tradeTags>
+		<statBases>
+			<Flammability>1</Flammability>
+		</statBases>
 		<comps>
 			<!--li Class="CompProperties_Forbiddable"/-->
 			<li>

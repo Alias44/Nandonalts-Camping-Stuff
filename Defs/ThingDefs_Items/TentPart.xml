@@ -35,7 +35,7 @@
 			<SharpDamageMultiplier>0.40</SharpDamageMultiplier>
 			<BluntDamageMultiplier>0.9</BluntDamageMultiplier>
 		</statBases>
-		<stuffProps>
+		<!--stuffProps>
 			<soundImpactStuff>BulletImpact_Metal</soundImpactStuff>
 			<soundMeleeHitSharp>MeleeHit_Metal_Sharp</soundMeleeHitSharp>
 			<soundMeleeHitBlunt>MeleeHit_Metal_Blunt</soundMeleeHitBlunt>
@@ -44,7 +44,7 @@
 				<Beauty>1</Beauty>
 				<Flammability>0.4</Flammability>
 			</statFactors>
-		</stuffProps>
+		</stuffProps-->
 		<tools>
 			<li>
 				<label>pole</label>
@@ -61,6 +61,7 @@
 				<!--useJob>NCS_PackBag</useJob-->
 				<partType>1</partType>
 			</li>
+			<li Class="Camping_Stuff.CompProperties_TentPartDamage"/>
 		</comps>
 	</ThingDef>
 
@@ -231,7 +232,7 @@
 				<!--useJob>NCS_PackBag</useJob-->
 				<partType>3</partType>
 			</li>
-			<li Class="Camping_Stuff.CompProperties_TentPartDamage"/>
+			<li Class="Camping_Stuff.CompProperties_CompTentPartWithCellsDamage"/>
 		</comps>
 	</ThingDef>
 		
@@ -240,11 +241,6 @@
 		<defName>NCS_MiniTentBag</defName>
 		<thingClass>Camping_Stuff.NCS_MiniTent</thingClass>
 		<label>tent bag</label>
-		<statBases>
-			<MaxHitPoints>150</MaxHitPoints>
-			<Mass>0</Mass> <!-- mass is derived from tent bag itself-->
-		</statBases>
-		
 		<graphicData>
 			<graphicClass>Graphic_Single</graphicClass>
 			<texPath>CampingStuff/TentBag</texPath>
@@ -252,6 +248,14 @@
 			<drawRotated>false</drawRotated>
 			<allowFlip>false</allowFlip>
 		</graphicData>
+		<statBases>
+			<MaxHitPoints>150</MaxHitPoints>
+			<Mass>0</Mass> <!-- mass is derived from tent bag itself-->
+			<Flammability>1</Flammability>
+		</statBases>
+		<comps>
+			<li Class="Camping_Stuff.CompProperties_TentBagDamageComp"/>
+		</comps>
 	</ThingDef>
 	
 	<ThingDef ParentName="TentPartTailored">

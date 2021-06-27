@@ -16,7 +16,7 @@ namespace Camping_Stuff
 		roofedEmpty,
 	}
 
-	public class TentCoverComp : CompTentPartDamage //(Thing)
+	public class TentCoverComp : CompTentPartWithCellsDamage //(Thing)
 	{
 		public CompProperties_TentCover Props => (CompProperties_TentCover)this.props;
 
