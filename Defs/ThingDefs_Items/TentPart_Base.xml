@@ -17,6 +17,7 @@
 			<li>Furniture</li>
 		</tradeTags>
 		<statBases>
+			<Beauty>1</Beauty>
 			<Flammability>1</Flammability>
 		</statBases>
 		<comps>

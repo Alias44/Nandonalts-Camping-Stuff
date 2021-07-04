@@ -17,7 +17,16 @@
 	<Operation Class="PatchOperationAdd">
 		<xpath>Defs/StatDef[defName="Beauty"]/parts</xpath>
 		<value>
-			<li Class="Camping_Stuff.PoleFactors"></li>
+			<li Class="Camping_Stuff.PoleBeauty"></li>
+		</value>
+	</Operation>
+	
+	<Operation Class="PatchOperationAdd">
+		<xpath>Defs/StatDef[defName="MaxHitPoints"]</xpath>
+		<value>
+			<parts>
+				<li Class="Camping_Stuff.PoleMaxHp"></li>
+			</parts>
 		</value>
 	</Operation>
 </Patch>

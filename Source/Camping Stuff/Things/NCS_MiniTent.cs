@@ -58,7 +58,11 @@ namespace Camping_Stuff
 
 		public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
 		{
-			this.Bag.EjectAll();
+			if (mode == DestroyMode.KillFinalize)
+			{
+				this.Bag.EjectAll();
+			}
+
 			base.DeSpawn(mode);
 		}
 

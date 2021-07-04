@@ -2,7 +2,7 @@
 <Defs>
 	<ThingDef ParentName="DoorBase" Name="NCS_TentDoor">
 		<defName>NCS_TentDoor</defName>
-		<label>Tent Door</label>
+		<label>tent door</label>
 		<menuHidden>true</menuHidden>
 		<description>Divides rooms. Must be manually opened and closed, which slows people down.</description>
 		<designationCategory Inherit="False"></designationCategory><!--removes recipe from menu-->
@@ -33,11 +33,14 @@
 				<multiplier>4</multiplier>
 			</li>
 		</damageMultipliers>
+		<!--comps>
+			<li Class="Camping_Stuff.CompProperties_TentSpawnedComp"/>
+		</comps-->
 	</ThingDef>
 	
 	<ThingDef ParentName="Wall" Name="NCS_TentWallBase">
 		<defName>NCS_TentWall</defName>
-		<label>Tent Wall</label>
+		<label>tent wall</label>
 		<menuHidden>true</menuHidden>
 		<description>A fragile yet practical wall.</description>
 		<designationCategory Inherit="False"></designationCategory><!--removes recipe from menu-->
@@ -69,5 +72,8 @@
 				<multiplier>4</multiplier>
 			</li>
 		</damageMultipliers>
+		<!--comps>
+			<li Class="Camping_Stuff.CompProperties_TentSpawnedComp"/>
+		</comps-->
 	</ThingDef>
 </Defs>

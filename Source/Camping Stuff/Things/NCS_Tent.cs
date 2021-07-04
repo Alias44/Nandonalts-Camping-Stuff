@@ -145,7 +145,6 @@ namespace Camping_Stuff
 				if (this.Spawned)
 					return "A temporary structure";
 
-
 				return base.DescriptionFlavor + ContainsMsg;
 			}
 		}
@@ -207,10 +206,17 @@ namespace Camping_Stuff
 						{
 							if (t is ThingWithComps twc)
 							{
-								twc.AllComps.Add(new TentSpawnedComp
+								try
 								{
-									tent = this
-								});
+									t.TryGetComp<TentSpawnedComp>().tent = this;
+								}
+								catch (NullReferenceException)
+								{
+									twc.AllComps.Add(new TentSpawnedComp
+									{
+										tent = this
+									});
+								}
 							}
 						}
 					}

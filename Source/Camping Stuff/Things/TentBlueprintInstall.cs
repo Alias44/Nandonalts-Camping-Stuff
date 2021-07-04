@@ -24,6 +24,6 @@ namespace Camping_Stuff
 			}
 		}
 
-		//public override Graphic Graphic => this.ThingToInstall.Graphic;
+		public override Graphic Graphic => (this.ThingToInstall is NCS_Tent tent) ? tent.Graphic : base.Graphic;
 	}
 }

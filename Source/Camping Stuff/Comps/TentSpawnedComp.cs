@@ -23,6 +23,13 @@ namespace Camping_Stuff
 		}
 
 		public NCS_Tent tent;
+
+		public override void PostExposeData()
+		{
+			base.PostExposeData();
+
+ 			Scribe_References.Look(ref this.tent, "tentSpawnedBy");
+		}
 	}
 
 	public class CompProperties_TentSpawnedComp : CompProperties //(Def)
