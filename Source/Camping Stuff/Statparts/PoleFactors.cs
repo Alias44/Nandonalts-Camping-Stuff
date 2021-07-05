@@ -26,32 +26,44 @@ namespace Camping_Stuff
 
 			return distributedOffset;
 		}
+
+		public string ExplanationPart(StatRequest req, StatDef sd)
+		{
+			try
+			{
+				NCS_Tent tent = req.Thing.TryGetComp<TentSpawnedComp>().tent;
+
+				string str = $"Poles x{AvgPoleFactor(tent, sd)}\nPoles +{DistributedPoleOffset(tent, sd)}";
+
+				return str;
+			}
+			catch (Exception) { } // do nothing
+
+			return null;
+		}
+
+		public void TransformValue(StatRequest req, ref float val, StatDef sd)
+		{
+			try
+			{
+				NCS_Tent tent = req.Thing.TryGetComp<TentSpawnedComp>().tent;
+
+				val = (val * AvgPoleFactor(tent, sd)) + DistributedPoleOffset(tent, sd);
+			}
+			catch (Exception) { } // do nothing
+		}
 	}
 
 	public class PoleBeauty : PoleFactors
 	{
 		public override string ExplanationPart(StatRequest req)
 		{
-			if (req.HasThing && req.Thing is ThingWithComps twc && twc.TryGetComp<TentSpawnedComp>() != null)
-			{
-				NCS_Tent tent = twc.TryGetComp<TentSpawnedComp>().tent;
-
-				string str = $"Poles x{AvgPoleFactor(tent, StatDefOf.Beauty)}\nPoles +{DistributedPoleOffset(tent, StatDefOf.Beauty)}";
-
-				return str;
-			}
-
-			return null;
+			return ExplanationPart(req, StatDefOf.Beauty);
 		}
 
 		public override void TransformValue(StatRequest req, ref float val)
 		{
-			if (req.HasThing && req.Thing is ThingWithComps twc && twc.TryGetComp<TentSpawnedComp>() != null)
-			{
-				NCS_Tent tent = twc.TryGetComp<TentSpawnedComp>().tent;
-
-				val = (val * AvgPoleFactor(tent, StatDefOf.Beauty)) + DistributedPoleOffset(tent, StatDefOf.Beauty);
-			}
+			this.TransformValue(req, ref val, StatDefOf.Beauty);
 		}
 	}
 
@@ -59,26 +71,12 @@ namespace Camping_Stuff
 	{
 		public override string ExplanationPart(StatRequest req)
 		{
-			if (req.HasThing && req.Thing is ThingWithComps twc && twc.TryGetComp<TentSpawnedComp>() != null)
-			{
-				NCS_Tent tent = twc.TryGetComp<TentSpawnedComp>().tent;
-
-				string str = $"Poles x{AvgPoleFactor(tent, StatDefOf.MaxHitPoints)}\nPoles +{DistributedPoleOffset(tent, StatDefOf.MaxHitPoints)}";
-
-				return str;
-			}
-
-			return null;
+			return ExplanationPart(req, StatDefOf.MaxHitPoints);
 		}
 
 		public override void TransformValue(StatRequest req, ref float val)
 		{
-			if (req.HasThing && req.Thing is ThingWithComps twc && twc.TryGetComp<TentSpawnedComp>() != null)
-			{
-				NCS_Tent tent = twc.TryGetComp<TentSpawnedComp>().tent;
-
-				val = (val * AvgPoleFactor(tent, StatDefOf.MaxHitPoints)) + DistributedPoleOffset(tent, StatDefOf.MaxHitPoints);
-			}
+			this.TransformValue(req, ref val, StatDefOf.MaxHitPoints);
 		}
 	}
 }

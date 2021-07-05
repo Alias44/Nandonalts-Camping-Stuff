@@ -15,9 +15,12 @@ namespace Camping_Stuff
 		public HarmonyPatches(ModContentPack content) : base(content)
 		{
 			var harmony = new Harmony("Nandonalt_CampingStuff.main");
+
+			harmony.Patch(AccessTools.Method(typeof(ThingDef), "get_CanHaveFaction"), null,
+				new HarmonyMethod(typeof(HarmonyPatches), nameof(TentCanHaveFaction)));
+
 			harmony.Patch(AccessTools.Method(typeof(ThingDefGenerator_Buildings), "NewBlueprintDef_Thing"), null, new HarmonyMethod(typeof(HarmonyPatches), nameof(NewBlueprintDef_Tent)));
 
-			harmony.Patch(AccessTools.Method(typeof(Designator_Uninstall), "DesignateThing"), null, null, new HarmonyMethod(typeof(HarmonyPatches), nameof(DesignateThingTranspiler)));
 			harmony.Patch(AccessTools.Method(typeof(Designator_Uninstall), "CanDesignateThing"), null, new HarmonyMethod(typeof(HarmonyPatches), nameof(CanDesignateThingTent)));
 
 			harmony.Patch(AccessTools.Method(typeof(GenConstruct), "FirstBlockingThing"), null, new HarmonyMethod(typeof(HarmonyPatches), nameof(TentBlueprintRect)));
@@ -25,56 +28,25 @@ namespace Camping_Stuff
 			harmony.PatchAll(Assembly.GetExecutingAssembly());
 		}
 
+		/// <summary>Allows tents to be marked with a faction (why isn't there a boolean override for that?!), resolves issues with setting them as frames</summary>
+		[HarmonyPostfix]
+		public static void TentCanHaveFaction(ThingDef __instance, ref bool __result)
+		{
+			if (__instance.Equals(TentDefOf.NCS_TentBag))
+			{
+				__result = true;
+			}
+		}
+
 		/// <summary>Assigns the tent blueprint class (without having to be flagged as constructable)</summary>
 		[HarmonyPostfix]
 		public static void NewBlueprintDef_Tent(ThingDef def, ref ThingDef __result)
 		{
-			if (def.Equals(TentDefOf.NCS_TentBag) && __result.defName.Equals(ThingDefGenerator_Buildings.BlueprintDefNamePrefix + ThingDefGenerator_Buildings.InstallBlueprintDefNamePrefix + def.defName)) // Tent bag match should only happen once, but just to be sure sting match the install blueprint
+			if (def.Equals(TentDefOf.NCS_TentBag) && __result.defName.Equals(ThingDefGenerator_Buildings.BlueprintDefNamePrefix + ThingDefGenerator_Buildings.InstallBlueprintDefNamePrefix + def.defName)) // Tent bag match should only happen once, but just to be sure string match the install blueprint
 			{
 				__result.thingClass = typeof(TentBlueprint_Install);
 			}
 		}
-
-		///<summary>
-		/// Converts the second if statement of Designator_Uninstall.DesignateThing to:
-		/// (DebugSettings.godMode || (double) t.GetStatValue(StatDefOf.WorkToBuild) == 0.0 || !(t is NCS_Tent) || t.def.IsFrame)
-		/// </summary>
-		[HarmonyTranspiler]
-		public static IEnumerable<CodeInstruction> DesignateThingTranspiler(IEnumerable<CodeInstruction> instructions)
-		{
-			var codes = new List<CodeInstruction>(instructions);
-			
-			CodeInstruction jumpLoc = null;
-
-			int insertIndex = -1;
-
-
-			for (int i = 0; i < codes.Count - 2; i++)
-			{
-				if (codes[i].opcode == OpCodes.Call && codes[i + 2].opcode == OpCodes.Beq_S) // look for (double) t.GetStatValue(StatDefOf.WorkToBuild) == 0.0
-				{
-					insertIndex = i + 3;
-				}
-
-				if (codes[i].opcode == OpCodes.Callvirt && codes[i].operand.ToString().Equals("Boolean get_IsFrame()")) // look for the fail jump of t.def.IsFrame
-				{
-					jumpLoc = new CodeInstruction(codes[i + 1]);
-				}
-			}
-
-			if (insertIndex > -1 && jumpLoc != null)
-			{
-				CodeInstruction loadT = new CodeInstruction(OpCodes.Ldarg_1);
-				CodeInstruction isClass = new CodeInstruction(OpCodes.Isinst, typeof(NCS_Tent));
-
-				jumpLoc.opcode = OpCodes.Brtrue;
-
-				codes.InsertRange(insertIndex, new[] {loadT, isClass, jumpLoc});
-			}
-
-			return codes.AsEnumerable();
-		}
-
 
 		/// <summary>Allows tents to be selected by the uninstall designator</summary>
 		[HarmonyPostfix]

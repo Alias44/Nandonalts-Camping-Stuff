@@ -32,6 +32,17 @@ namespace Camping_Stuff
 
 		public List<Thing> Poles => poles;
 
+		public int PoleKindCount(ThingDef stuff)
+		{
+			try
+			{
+				return poles.Find(p => p.Stuff.Equals(stuff)).stackCount;
+			}
+			catch (NullReferenceException) {}
+
+			return 0;
+		}
+
 		private Thing cover = null;
 		public Thing Cover
 		{
@@ -127,7 +138,7 @@ namespace Camping_Stuff
 
 				if(Floor != null)
 				{
-					msg = $"Floor: {Floor.LabelCapHpFrac()})\n";
+					msg += $"Floor: {Floor.LabelCapHpFrac()}\n";
 				}
 
 				return msg;
@@ -135,7 +146,7 @@ namespace Camping_Stuff
 		}
 
 
-		// Overriding label and descritpion (while spawned/ installed/ deployed), since minified things don't really have their own.
+		// Overriding label and description (while spawned/ installed/ deployed), since minified things don't really have their own.
 		public override string LabelNoCount => this.Spawned ? "Tent" : base.LabelNoCount;
 
 		public override string DescriptionFlavor
@@ -189,34 +200,28 @@ namespace Camping_Stuff
 				{
 					IntVec3 cell = se.pos + this.Position;
 
-					if (se is SketchTerrain && this.floor.TryGetComp<CompTentPartWithCellsDamage>().CheckCell(se, this.Rotation))
-					{
-						// spawn damaged message
-					}
-					else if (se is SketchThing && this.cover.TryGetComp<TentCoverComp>().CheckCell(se, this.Rotation))
-					{
-						// spawn damaged message
-					}
-					else
+					if (!(se is SketchTerrain && this.floor.TryGetComp<CompTentPartWithCellsDamage>().CheckCell(se, this.Rotation)) && // 
+					    !(se is SketchThing && this.cover.TryGetComp<TentCoverComp>().CheckCell(se, this.Rotation)))
 					{
 						var spawnedThings = new List<Thing>();
-						se.Spawn(cell, this.Map, Faction.OfPlayer, spawnedThings: spawnedThings);
+ 						se.Spawn(cell, this.Map, Faction.OfPlayer, spawnedThings: spawnedThings);
 
-						foreach (var t in spawnedThings)
+						foreach (var twc in spawnedThings.Where(t => t is ThingWithComps).Cast<ThingWithComps>())
 						{
-							if (t is ThingWithComps twc)
+							try
 							{
-								try
+								twc.TryGetComp<TentSpawnedComp>().tent = this;
+							}
+							catch (NullReferenceException) // Edge case buffer (This is non-ideal, since dynamicly added comps aren't replacde on load)
+							{
+								twc.AllComps.Add(new TentSpawnedComp
 								{
-									t.TryGetComp<TentSpawnedComp>().tent = this;
-								}
-								catch (NullReferenceException)
-								{
-									twc.AllComps.Add(new TentSpawnedComp
-									{
-										tent = this
-									});
-								}
+									tent = this
+								});
+							}
+							finally // top up the HP after the tent refence has been set (this helps account for any pole factors that would spawn the tent at its base health)
+							{
+								twc.HitPoints = twc.MaxHitPoints;
 							}
 						}
 					}
@@ -352,7 +357,7 @@ namespace Camping_Stuff
 			switch (partType)
 			{
 				case TentPart.pole:
-					int typeIndex = poles.FindIndex(p => p.Stuff.Equals(part.Stuff));
+ 					int typeIndex = poles.FindIndex(p => p.Stuff.Equals(part.Stuff));
 
 					if (typeIndex >= 0)
 					{
@@ -363,7 +368,7 @@ namespace Camping_Stuff
 						poles.Add(part);
 					}
 					PoleCount += part.stackCount;
-					AdjustPoles();
+					AdjustPoles(typeIndex);
 					break;
 
 				case TentPart.cover:
@@ -442,11 +447,25 @@ namespace Camping_Stuff
 
 		private void AdjustPoles()
 		{
+			AdjustPoles(-1);
+		}
+
+		private void AdjustPoles(int excludeIndex)
+		{
 			for (int i = 0; i < poles.Count && PoleCount > maxPoles; i++)
 			{
-				EjectPole(i, Math.Min(PoleCount - maxPoles, poles[i].stackCount));
+				if (i != excludeIndex)
+				{
+					EjectPole(i, Math.Min(PoleCount - maxPoles, poles[i].stackCount));
+				}
+			}
+
+			if (PoleCount > maxPoles)
+			{
+				AdjustPoles(-1);
 			}
 		}
+
 		#endregion
 		public float GetValue(StatDef sd)
 		{

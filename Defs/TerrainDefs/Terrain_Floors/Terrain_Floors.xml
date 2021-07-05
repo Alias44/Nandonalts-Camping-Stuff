@@ -5,6 +5,7 @@
     <label>tent floor</label>
     <renderPrecedence>200</renderPrecedence>
     <description>A mat to cover the inside of a tent.</description>
-	 <color>(81,81,81)</color>
+	 <color>(162,157,152)</color>
+	 <resourcesFractionWhenDeconstructed>0</resourcesFractionWhenDeconstructed>
   </TerrainDef>
 </Defs>

@@ -97,7 +97,7 @@ namespace Camping_Stuff
 	{
 		public CompProperties_CompTentPartWithCellsDamage()
 		{
-			this.compClass = typeof(CompProperties_CompTentPartWithCellsDamage);
+			this.compClass = typeof(CompTentPartWithCellsDamage);
 		}
 	}
 }

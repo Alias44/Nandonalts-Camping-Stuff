@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+	<RecipeDef Name="NCS_PartRecipe" Abstract="True">
+	
+	</RecipeDef>
+	
+	<RecipeDef Name="NCS_PartSmithRecipe" ParentName="NCS_PartRecipe" Abstract="True">
+		<workSpeedStat>GeneralLaborSpeed</workSpeedStat> <!--SmithingSpeed-->
+		<effectWorking>Smith</effectWorking>
+		<workSkill>Crafting</workSkill>
+		<soundWorking>Recipe_Smith</soundWorking>
+		<allowMixingIngredients>false</allowMixingIngredients>
+		
+		<fixedIngredientFilter>
+        <stuffCategoriesToAllow>
+          <li>Metallic</li>
+        </stuffCategoriesToAllow>
+      </fixedIngredientFilter>
+		<defaultIngredientFilter>
+			<categories>
+				<li>Root</li>
+			</categories>
+			<disallowedThingDefs>
+				<li>Silver</li>
+				<li>Gold</li>
+			</disallowedThingDefs>
+		</defaultIngredientFilter>
+		<unfinishedThingDef>UnfinishedWeapon</unfinishedThingDef>
+		<recipeUsers>
+			<li>ElectricSmithy</li>
+			<li>FueledSmithy</li>
+		</recipeUsers>
+	</RecipeDef>
+	
+	<RecipeDef ParentName="NCS_PartSmithRecipe">
+		<defName>NCS_Make_TentPoles</defName>
+		<label>make tent pole</label>
+		<description>Make tent poles, A set of short interlocking rods intended to hold up tents or other temporary structures.</description>
+		<jobString>Making tent poles.</jobString>
+		<workAmount>500</workAmount>
+		<ingredients>
+			<li>
+				<filter>
+					<stuffCategoriesToAllow>
+						<li>Metallic</li>
+					</stuffCategoriesToAllow>
+				</filter>
+				<count>5</count>
+			</li>
+		</ingredients>
+		<products>
+			<NCS_TentPart_Pole>1</NCS_TentPart_Pole>
+		</products>
+		<recipeUsers>
+			<li>CraftingSpot</li>
+		</recipeUsers>
+	</RecipeDef>
+
+	<RecipeDef ParentName="NCS_PartSmithRecipe">
+		<defName>NCS_Make_TentPolesBulk</defName>
+		<label>make tent poles x5</label>
+		<description>Make 5 tent poles, A set of short interlocking rods intended to hold up tents or other temporary structures.</description>
+		<jobString>Making bulk tent poles.</jobString>
+		<workAmount>2000</workAmount>
+		<ingredients>
+			<li>
+				<filter>
+					<stuffCategoriesToAllow>
+						<li>Metallic</li>
+					</stuffCategoriesToAllow>
+				</filter>
+				<count>25</count>
+			</li>
+		</ingredients>
+		<products>
+			<NCS_TentPart_Pole>5</NCS_TentPart_Pole>
+		</products>
+	</RecipeDef>
+</Defs>

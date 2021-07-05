@@ -33,9 +33,10 @@
 				<multiplier>4</multiplier>
 			</li>
 		</damageMultipliers>
-		<!--comps>
+		<comps>
 			<li Class="Camping_Stuff.CompProperties_TentSpawnedComp"/>
-		</comps-->
+		</comps>
+		<resourcesFractionWhenDeconstructed>0</resourcesFractionWhenDeconstructed>
 	</ThingDef>
 	
 	<ThingDef ParentName="Wall" Name="NCS_TentWallBase">
@@ -72,8 +73,9 @@
 				<multiplier>4</multiplier>
 			</li>
 		</damageMultipliers>
-		<!--comps>
+		<comps>
 			<li Class="Camping_Stuff.CompProperties_TentSpawnedComp"/>
-		</comps-->
+		</comps>
+		<resourcesFractionWhenDeconstructed>0</resourcesFractionWhenDeconstructed>
 	</ThingDef>
 </Defs>

@@ -51,16 +51,7 @@
 			<li>Metallic</li>
 			<!--li>Woody</li-->
 		</stuffCategories>
-		<recipeMaker>
-			<unfinishedThingDef>UnfinishedWeapon</unfinishedThingDef>
-			<workSpeedStat>GeneralLaborSpeed</workSpeedStat> <!--SmithingSpeed-->
-			<workSkill>Crafting</workSkill>
-			<effectWorking>Smith</effectWorking>
-			<soundWorking>Recipe_Smith</soundWorking>
-			<recipeUsers>
-				<li>ElectricSmithy</li>
-				<li>FueledSmithy</li>
-			</recipeUsers>
-		</recipeMaker>
+
+		<!--recipe moved to RecipeDef to accommodate bulk pole crafting-->
 	</ThingDef>
 </Defs>

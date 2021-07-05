@@ -18,12 +18,11 @@
 	<ThingDef ParentName="TentPartSmith">
 		<defName>NCS_TentPart_Pole</defName>
 		<label>tent pole</label>
-		<description>A set of short interlocking rods intended to hold up tents or other temporary structures</description>
+		<description>A set of short interlocking rods intended to hold up tents or other temporary structures.</description>
 		<graphicData>
 			<texPath>CampingStuff/TentPole</texPath>
 			<graphicClass>Graphic_StackCount</graphicClass>
 		</graphicData>
-		<costStuffCount>5</costStuffCount>
 		<soundInteract>Metal_Drop</soundInteract>
 		<soundDrop>Metal_Drop</soundDrop>
 		<statBases>
@@ -35,16 +34,6 @@
 			<SharpDamageMultiplier>0.40</SharpDamageMultiplier>
 			<BluntDamageMultiplier>0.9</BluntDamageMultiplier>
 		</statBases>
-		<!--stuffProps>
-			<soundImpactStuff>BulletImpact_Metal</soundImpactStuff>
-			<soundMeleeHitSharp>MeleeHit_Metal_Sharp</soundMeleeHitSharp>
-			<soundMeleeHitBlunt>MeleeHit_Metal_Blunt</soundMeleeHitBlunt>
-			<statFactors>
-				<MaxHitPoints>1</MaxHitPoints>
-				<Beauty>1</Beauty>
-				<Flammability>0.4</Flammability>
-			</statFactors>
-		</stuffProps-->
 		<tools>
 			<li>
 				<label>pole</label>
@@ -58,7 +47,6 @@
 		<comps>
 			<li Class="Camping_Stuff.CompProperties_TentPart">
 				<compClass>Camping_Stuff.CompUsable_TentPart</compClass>
-				<!--useJob>NCS_PackBag</useJob-->
 				<partType>1</partType>
 			</li>
 			<li Class="Camping_Stuff.CompProperties_TentPartDamage"/>
@@ -88,7 +76,6 @@
 		<comps>
 			<li Class="Camping_Stuff.CompProperties_TentPart">
 				<compClass>Camping_Stuff.CompUsable_TentPart</compClass>
-				<!--useJob>NCS_PackBag</useJob-->
 				<partType>2</partType>
 			</li>
 			<li Class="Camping_Stuff.CompProperties_TentCover">
@@ -120,7 +107,6 @@
 		<comps>
 			<li Class="Camping_Stuff.CompProperties_TentPart">
 				<compClass>Camping_Stuff.CompUsable_TentPart</compClass>
-				<!--useJob>NCS_PackBag</useJob-->
 				<partType>2</partType>
 			</li>
 			<li Class="Camping_Stuff.CompProperties_TentCover">
@@ -155,7 +141,6 @@
 		<comps>
 			<li Class="Camping_Stuff.CompProperties_TentPart">
 				<compClass>Camping_Stuff.CompUsable_TentPart</compClass>
-				<!--useJob>NCS_PackBag</useJob-->
 				<partType>2</partType>
 			</li>
 			<li Class="Camping_Stuff.CompProperties_TentCover">
@@ -191,7 +176,6 @@
 		<comps>
 			<li Class="Camping_Stuff.CompProperties_TentPart">
 				<compClass>Camping_Stuff.CompUsable_TentPart</compClass>
-				<!--useJob>NCS_PackBag</useJob-->
 				<partType>2</partType>
 			</li>
 			<li Class="Camping_Stuff.CompProperties_TentCover">
@@ -229,7 +213,6 @@
 		<comps>
 			<li Class="Camping_Stuff.CompProperties_TentPart">
 				<compClass>Camping_Stuff.CompUsable_TentPart</compClass>
-				<!--useJob>NCS_PackBag</useJob-->
 				<partType>3</partType>
 			</li>
 			<li Class="Camping_Stuff.CompProperties_CompTentPartWithCellsDamage"/>
@@ -260,7 +243,6 @@
 	
 	<ThingDef ParentName="TentPartTailored">
 	 <category>Ethereal</category> <!--Ethereal so that other buildings can exist in the same space -->
-	 <isFrameInt>true</isFrameInt> <!--Frame so that the player's faction can own the tent-->
     <drawerType>None</drawerType>
 	<stackLimit>1</stackLimit>
 		<defName>NCS_TentBag</defName>
@@ -275,15 +257,14 @@
 		<useSameGraphicForGhost>true</useSameGraphicForGhost>
 		<rotatable>true</rotatable>
 		<hasCustomRectForSelector>true</hasCustomRectForSelector>
-		<!--drawerType>RealtimeOnly</drawerType-->
 		<drawOffscreen>true</drawOffscreen>
 		<minifiedDef>NCS_MiniTentBag</minifiedDef>
 		<drawPlaceWorkersWhileInstallBlueprintSelected>true</drawPlaceWorkersWhileInstallBlueprintSelected>
 		<canLoadIntoCaravan>true</canLoadIntoCaravan>
 		<graphicData>
 			<graphicClass>Graphic_Single</graphicClass>
-			<texPath>CampingStuff/TentSupport</texPath>
-			<shaderType>Transparent</shaderType>
+			<texPath>CampingStuff/TentBag</texPath>
+			<shaderType>CutoutComplex</shaderType>
 			<drawRotated>false</drawRotated>
 			<allowFlip>false</allowFlip>
 		</graphicData>

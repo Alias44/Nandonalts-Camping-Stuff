@@ -14,13 +14,7 @@ namespace Camping_Stuff
 {
 	public class CompUsable_TentPart : ThingComp //(Thing)
 	{
-		public CompProperties_TentPart Props
-		{
-			get
-			{
-				return (CompProperties_TentPart)this.props;
-			}
-		}
+		public CompProperties_TentPart Props => (CompProperties_TentPart)this.props;
 
 		protected TargetingParameters GetTargetingParameters()
 		{
@@ -41,7 +35,7 @@ namespace Camping_Stuff
 		{
 			if (selPawn.CanReserveAndReach(this.parent, PathEndMode.Touch, Danger.Deadly))
 			{
-				yield return new FloatMenuOption("Pack " + parent.def.label+ " into bag", delegate
+				yield return new FloatMenuOption("Pack " + parent.LabelNoCount + " into bag", delegate
 				 {
 					Find.Targeter.BeginTargeting(this.GetTargetingParameters(), delegate (LocalTargetInfo t)
 					{
