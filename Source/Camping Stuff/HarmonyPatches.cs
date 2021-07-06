@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
 using RimWorld;
+using RimWorld.Planet;
 using Verse;
 
 namespace Camping_Stuff
@@ -14,6 +15,7 @@ namespace Camping_Stuff
 	{
 		public HarmonyPatches(ModContentPack content) : base(content)
 		{
+			Harmony.DEBUG = true;
 			var harmony = new Harmony("Nandonalt_CampingStuff.main");
 
 			harmony.Patch(AccessTools.Method(typeof(ThingDef), "get_CanHaveFaction"), null,
@@ -24,6 +26,9 @@ namespace Camping_Stuff
 			harmony.Patch(AccessTools.Method(typeof(Designator_Uninstall), "CanDesignateThing"), null, new HarmonyMethod(typeof(HarmonyPatches), nameof(CanDesignateThingTent)));
 
 			harmony.Patch(AccessTools.Method(typeof(GenConstruct), "FirstBlockingThing"), null, new HarmonyMethod(typeof(HarmonyPatches), nameof(TentBlueprintRect)));
+
+			harmony.Patch(AccessTools.Method(typeof(CaravanUIUtility), "GetTransferableCategory"), null, null,
+				new HarmonyMethod(typeof(HarmonyPatches), nameof(TentTransferCategory)));
 
 			harmony.PatchAll(Assembly.GetExecutingAssembly());
 		}
@@ -86,6 +91,72 @@ namespace Camping_Stuff
 					}
 				}
 			}
+		}
+
+		public enum TransferableCategory
+		{
+			Pawn,
+			Item,
+			FoodAndMedicine,
+		}
+
+		public static TransferableCategory foo(Transferable t)
+		{
+			if (t.ThingDef.category == ThingCategory.Pawn)
+				return TransferableCategory.Pawn;
+			if (t.AnyThing is NCS_MiniTent miniTent && miniTent.Bag.Ready)
+			{
+				return TransferableCategory.FoodAndMedicine;
+			}
+			return !t.ThingDef.thingCategories.NullOrEmpty<ThingCategoryDef>() && t.ThingDef.thingCategories.Contains(ThingCategoryDefOf.Medicine) || t.ThingDef.IsIngestible && !t.ThingDef.IsDrug && !t.ThingDef.IsCorpse || t.AnyThing.GetInnerIfMinified().def.IsBed && t.AnyThing.GetInnerIfMinified().def.building.bed_caravansCanUse ? TransferableCategory.FoodAndMedicine : TransferableCategory.Item;
+		}
+
+		[HarmonyTranspiler]
+		public static IEnumerable<CodeInstruction> TentTransferCategory(IEnumerable<CodeInstruction> instructions, ILGenerator ilg)
+		{
+			var codes = new List<CodeInstruction>(instructions);
+
+			int insertIndex = -1;
+
+			var tentPatchStart = ilg.DefineLabel();
+			Label nextIf = new Label();
+
+			for (int i = 0; i < codes.Count -2 ; i++)
+			{
+				if (codes[i].opcode == OpCodes.Bne_Un_S && codes[i+2].opcode == OpCodes.Ret)
+				{
+					nextIf = (Label) codes[i].operand;
+					codes[i].operand = tentPatchStart;
+
+					insertIndex = i + 3;
+					break;
+				}
+			}
+
+			if (insertIndex >= 0)
+			{
+				var tent = ilg.DeclareLocal(typeof(NCS_MiniTent));
+
+				CodeInstruction[] foo = new[]
+				{
+					new CodeInstruction(OpCodes.Ldarg_0).WithLabels(tentPatchStart),
+					new CodeInstruction(OpCodes.Callvirt, typeof(Transferable).GetMethod("get_AnyThing")),
+					new CodeInstruction(OpCodes.Isinst, typeof(NCS_MiniTent)),
+					new CodeInstruction(OpCodes.Stloc, tent),
+					new CodeInstruction(OpCodes.Ldloc, tent),
+					new CodeInstruction(OpCodes.Brfalse, nextIf),
+					new CodeInstruction(OpCodes.Ldloc, tent),
+					new CodeInstruction(OpCodes.Callvirt, typeof(NCS_MiniTent).GetMethod("get_Bag")),
+					new CodeInstruction(OpCodes.Callvirt, typeof(NCS_Tent).GetMethod("get_Ready")),
+					new CodeInstruction(OpCodes.Brfalse, nextIf),
+					new CodeInstruction(OpCodes.Ldc_I4_2),
+					new CodeInstruction(OpCodes.Ret)
+				};
+
+				codes.InsertRange(insertIndex, foo);
+			}
+
+			return codes.AsEnumerable();
 		}
 	}
 }

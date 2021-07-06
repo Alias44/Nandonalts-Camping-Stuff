@@ -1,13 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
 
-	<name>NCS_TEST</name>
+    <name>Camping Stuff</name>
 
-	<author>Alias</author>
-	<packageId>Alias.NCSTEST</packageId>
+	<author>Alias, Nandonalt</author>
+	<packageId>Alias.CampingStuff</packageId>
 
 	<supportedVersions>
 		<li>1.1</li>
+		<li>1.2</li>
 	</supportedVersions>
 
 	<loadAfter>
@@ -15,5 +16,17 @@
 	</loadAfter>	
 
 
-<description>Camping Stuff test. Not intended for public release</description>
+    <description>-----Camping Stuff BETA-----
+v1.0.0b Camping Stuff Mod By Alias (originally crated by Nandonalt): Adds Deployable Tents(Normal, Medium, Big, and Long) and Portable Stoves.
+	
+Changelog:
+v1.0.0b- Complete re-write, [elaborate before release!!!]
+v0.6.0- v1.0 support
+v0.5.2- Fixed bills not working on portable stoves
+v0.5.1- Fixed portable stoves not being portable
+v0.5.0- b19 support, removed butchering spots, support for arbitrary tent sizes, new tent size: long
+v0.4.0- b18 support, removed sleeping bags
+v0.3.0- a17 support
+v0.2.0- enables you to make tents from any textile and adds two new sizes to tents: medium and big.
+</description>
 </ModMetaData>

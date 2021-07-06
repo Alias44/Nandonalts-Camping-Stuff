@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
-	<RecipeDef Name="NCS_PartRecipe" Abstract="True">
-	
-	</RecipeDef>
+	<RecipeDef Name="NCS_PartRecipe" Abstract="True"/>
 	
 	<RecipeDef Name="NCS_PartSmithRecipe" ParentName="NCS_PartRecipe" Abstract="True">
 		<workSpeedStat>GeneralLaborSpeed</workSpeedStat> <!--SmithingSpeed-->
@@ -10,16 +8,16 @@
 		<workSkill>Crafting</workSkill>
 		<soundWorking>Recipe_Smith</soundWorking>
 		<allowMixingIngredients>false</allowMixingIngredients>
-		
 		<fixedIngredientFilter>
         <stuffCategoriesToAllow>
           <li>Metallic</li>
+			 <li>Woody</li>
         </stuffCategoriesToAllow>
       </fixedIngredientFilter>
 		<defaultIngredientFilter>
-			<categories>
-				<li>Root</li>
-			</categories>
+			<stuffCategoriesToAllow>
+				<li>Metallic</li>
+			</stuffCategoriesToAllow>
 			<disallowedThingDefs>
 				<li>Silver</li>
 				<li>Gold</li>

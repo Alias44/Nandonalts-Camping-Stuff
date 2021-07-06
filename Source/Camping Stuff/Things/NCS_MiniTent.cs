@@ -17,6 +17,8 @@ namespace Camping_Stuff
 			get => (NCS_Tent)InnerThing;
 		}
 
+		//public override string Label => "~~~" + base.Label;
+
 		public override string GetInspectString()
 		{
 			string readyStr;

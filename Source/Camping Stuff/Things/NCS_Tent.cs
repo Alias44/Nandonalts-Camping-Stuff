@@ -120,7 +120,7 @@ namespace Camping_Stuff
 		{
 			get
 			{
-				string msg = "\nContains: \n";
+				string msg = "";
 
 				if (Cover != null)
 				{
@@ -149,6 +149,20 @@ namespace Camping_Stuff
 		// Overriding label and description (while spawned/ installed/ deployed), since minified things don't really have their own.
 		public override string LabelNoCount => this.Spawned ? "Tent" : base.LabelNoCount;
 
+		public override string DescriptionDetailed
+		{
+			get
+			{
+				if (Ready)
+				{
+					return
+						$"A bag ready to deploy a {cover.Stuff.LabelAsStuff} {cover.DescriptionDetailed.Replace("A ", "")}";
+				}
+
+				return base.DescriptionDetailed;
+			}
+		}
+
 		public override string DescriptionFlavor
 		{
 			get
@@ -156,7 +170,7 @@ namespace Camping_Stuff
 				if (this.Spawned)
 					return "A temporary structure";
 
-				return base.DescriptionFlavor + ContainsMsg;
+				return base.DescriptionFlavor + "\nContains: \n" + ContainsMsg;
 			}
 		}
 

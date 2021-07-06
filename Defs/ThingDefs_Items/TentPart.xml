@@ -29,7 +29,7 @@
 			<MarketValue>1.2</MarketValue>
 			<MaxHitPoints>100</MaxHitPoints>
 			<WorkToMake>500</WorkToMake>
-			<Mass>0.4</Mass> 
+			<Mass>0.2</Mass> 
 			<Flammability>0.4</Flammability>
 			<SharpDamageMultiplier>0.40</SharpDamageMultiplier>
 			<BluntDamageMultiplier>0.9</BluntDamageMultiplier>
@@ -239,6 +239,7 @@
 		<comps>
 			<li Class="Camping_Stuff.CompProperties_TentBagDamageComp"/>
 		</comps>
+		<tradeNeverStack>true</tradeNeverStack>
 	</ThingDef>
 	
 	<ThingDef ParentName="TentPartTailored">
@@ -285,4 +286,5 @@
 			<li>Camping_Stuff.PlaceWorker_Tent</li>
 		</placeWorkers>
 	</ThingDef>
+	<tradeNeverStack>true</tradeNeverStack>
 </Defs>
