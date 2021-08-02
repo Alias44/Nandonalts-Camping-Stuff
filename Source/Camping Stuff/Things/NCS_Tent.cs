@@ -32,15 +32,22 @@ namespace Camping_Stuff
 
 		public List<Thing> Poles => poles;
 
-		public int PoleKindCount(ThingDef stuff)
+		public int PoleKindCount(Thing thing)
 		{
 			try
 			{
-				return poles.Find(p => p.Stuff.Equals(stuff)).stackCount;
+				int poleIndex = FindPoleIndex(thing);
+				return poles[poleIndex].stackCount;
 			}
-			catch (NullReferenceException) {}
+			catch (Exception)
+			{
+				return 0;
+			}
+		}
 
-			return 0;
+		private int FindPoleIndex(Thing thing)
+		{
+			return poles.FindIndex(p => p.CanStackWith(thing));
 		}
 
 		private Thing cover = null;
@@ -102,14 +109,13 @@ namespace Camping_Stuff
 		{
 			get
 			{
-				string baseMsg = "Tent not ready to deploy: ";
 				if (cover == null)
 				{
-					return baseMsg += "no cover packed";
+					return "DeployNotReadyNoCover".Translate();
 				}
 				else if (PoleCount < maxPoles)
 				{
-					return baseMsg + $"not enough polls packed ({PoleCount}/{maxPoles} poles for {cover.LabelCapNoCount})";
+					return "DeployNotReadyNeedPoles".Translate(PoleCount, maxPoles, cover.LabelCapNoCount);
 				}
 
 				return "";
@@ -124,21 +130,21 @@ namespace Camping_Stuff
 
 				if (Cover != null)
 				{
-					msg += $"Cover: {Cover.LabelCapHpFrac()}\n";
+					msg += "ContainsCover".Translate(Cover.LabelCapHpFrac()) + "\n";
 				}
 
 				if(PoleCount > 0)
 				{
-					msg += "Poles:\n";
+					msg += "ContainsPoles".Translate() + "\n";
 					foreach(Thing pole in Poles)
 					{
-						msg += "\t" + pole.LabelCap + "\n";
+						msg += Util.indent + pole.LabelCap + "\n";
 					}
 				}
 
 				if(Floor != null)
 				{
-					msg += $"Floor: {Floor.LabelCapHpFrac()}\n";
+					msg += "ContainsFloor".Translate(Floor.LabelCapHpFrac()) + "\n";
 				}
 
 				return msg;
@@ -147,30 +153,20 @@ namespace Camping_Stuff
 
 
 		// Overriding label and description (while spawned/ installed/ deployed), since minified things don't really have their own.
-		public override string LabelNoCount => this.Spawned ? "Tent" : base.LabelNoCount;
+		public override string LabelNoCount => this.Spawned ? (string) "SpawnedTentLabel".Translate() : base.LabelNoCount;
 
-		public override string DescriptionDetailed
-		{
-			get
-			{
-				if (Ready)
-				{
-					return
-						$"A bag ready to deploy a {cover.Stuff.LabelAsStuff} {cover.DescriptionDetailed.Replace("A ", "")}";
-				}
+		public override string DescriptionDetailed => Ready ? (string) "TentDescriptionDetailed".Translate(cover.Stuff.LabelAsStuff, cover.DescriptionDetailed.Replace(")A ", "")) : base.DescriptionDetailed;
 
-				return base.DescriptionDetailed;
-			}
-		}
+		public string TentSize => this.Ready ? cover.Label.Replace(" tent cover", "") : "unknown";
 
 		public override string DescriptionFlavor
 		{
 			get
 			{
 				if (this.Spawned)
-					return "A temporary structure";
+					return "SpawnedTentDescriptionFlavor".Translate();
 
-				return base.DescriptionFlavor + "\nContains: \n" + ContainsMsg;
+				return $"{base.DescriptionFlavor}\n{"TentContains".Translate()}\n{ContainsMsg}";
 			}
 		}
 
@@ -199,7 +195,7 @@ namespace Camping_Stuff
 			this.sketch.Rotate(this.Rotation);
 
   			if (!respawningAfterLoad)
-			{
+ 			{
  				if (floor != null && this.floor.TryGetComp<CompTentPartWithCellsDamage>().HasDamagedCells())
 				{
 					Messages.Message("DamagedMat".Translate(), MessageTypeDefOf.NegativeEvent);
@@ -226,14 +222,14 @@ namespace Camping_Stuff
 							{
 								twc.TryGetComp<TentSpawnedComp>().tent = this;
 							}
-							catch (NullReferenceException) // Edge case buffer (This is non-ideal, since dynamicly added comps aren't replacde on load)
+							catch (NullReferenceException) // Edge case buffer (This is non-ideal, since dynamically added comps aren't replaced on load)
 							{
 								twc.AllComps.Add(new TentSpawnedComp
 								{
 									tent = this
 								});
 							}
-							finally // top up the HP after the tent refence has been set (this helps account for any pole factors that would spawn the tent at its base health)
+							finally // top up the HP after the tent reference has been set (this helps account for any pole factors that would spawn the tent at its base health)
 							{
 								twc.HitPoints = twc.MaxHitPoints;
 							}
@@ -304,6 +300,11 @@ namespace Camping_Stuff
 					PoleCount += pole.stackCount;
 				}
 
+				if (cover != null)
+				{
+					maxPoles = Cover.TryGetComp<TentCoverComp>().Props.numPoles;
+				}
+
 				UpdateSketch();
 			}
 		}
@@ -335,7 +336,11 @@ namespace Camping_Stuff
 				};
 			}
 
+#if RELEASE_1_2
 			sketch.DrawGhost_NewTmp(at, Sketch.SpawnPosType.Unchanged, placingMode, null, validator);
+#else
+			sketch.DrawGhost(at, Sketch.SpawnPosType.Unchanged, placingMode, null, validator);
+#endif
 		}
 
 		public override IEnumerable<Gizmo> GetGizmos()
@@ -346,7 +351,7 @@ namespace Camping_Stuff
 			}
 		}
 
-		#region PartPacking
+#region PartPacking
 		private bool IsTentPart(Thing t, TentPart partType)
 		{
 			CompUsable_TentPart partComp = t.TryGetComp<CompUsable_TentPart>();
@@ -371,7 +376,7 @@ namespace Camping_Stuff
 			switch (partType)
 			{
 				case TentPart.pole:
- 					int typeIndex = poles.FindIndex(p => p.Stuff.Equals(part.Stuff));
+ 					int typeIndex = this.FindPoleIndex(part);
 
 					if (typeIndex >= 0)
 					{
@@ -459,12 +464,7 @@ namespace Camping_Stuff
 			Floor = null;
 		}
 
-		private void AdjustPoles()
-		{
-			AdjustPoles(-1);
-		}
-
-		private void AdjustPoles(int excludeIndex)
+		private void AdjustPoles(int excludeIndex = -1)
 		{
 			for (int i = 0; i < poles.Count && PoleCount > maxPoles; i++)
 			{
@@ -476,11 +476,11 @@ namespace Camping_Stuff
 
 			if (PoleCount > maxPoles)
 			{
-				AdjustPoles(-1);
+				AdjustPoles();
 			}
 		}
 
-		#endregion
+#endregion
 		public float GetValue(StatDef sd)
 		{
 			if (sd == null)
@@ -551,7 +551,7 @@ namespace Camping_Stuff
 
 		private void UpdateSketch()
 		{
-			if (cover == null)
+ 			if (cover == null)
 			{
 				return;
 			}

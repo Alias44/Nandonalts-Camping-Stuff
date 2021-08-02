@@ -12,12 +12,9 @@ namespace Camping_Stuff
 {
 	public class NCS_MiniTent : MinifiedThing
 	{
-		public NCS_Tent Bag
-		{
-			get => (NCS_Tent)InnerThing;
-		}
+		public NCS_Tent Bag => (NCS_Tent) InnerThing;
 
-		//public override string Label => "~~~" + base.Label;
+		public override string Label => base.Label.Replace("minified", "");
 
 		public override string GetInspectString()
 		{
@@ -34,29 +31,23 @@ namespace Camping_Stuff
 			return readyStr + "\n" + base.GetInspectString();
 		}
 
-		// Overriding graphinc and draw at allows me to draw a graphig instead of the boxed inner thing (if one is specified)
-		public override Graphic Graphic
-		{
-			get
-			{
-				if(this.def.graphicData != null)
-				{
-					return this.def.graphicData.GraphicColoredFor(this.InnerThing);
-				}
-				else
-				{
-					return base.Graphic;
-				}
-			}
-		}
+		// Overriding graphic and draw at allows me to draw a graphic instead of the boxed inner thing (if one is specified)
+		public override Graphic Graphic =>
+			this.def.graphicData != null
+				? this.def.graphicData.GraphicColoredFor(this.InnerThing)
+				: base.Graphic;
 
 		public override void DrawAt(Vector3 drawLoc, bool flip = false)
- 		{
-			if (this.Graphic is Graphic_Single)
-				this.Graphic.Draw(drawLoc, Rot4.North, (Thing)this, 0.0f);
-			else
-				this.Graphic.Draw(drawLoc, Rot4.South, (Thing)this, 0.0f);
+		{
+			this.Graphic.Draw(drawLoc, this.Graphic is Graphic_Single ? Rot4.North : Rot4.South, (Thing) this);
 		}
+
+#if !RELEASE_1_2
+		public override void Print(SectionLayer layer)
+		{
+			this.Graphic.Print(layer, this, 0.0f);
+		}
+#endif
 
 		public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
 		{
@@ -78,7 +69,7 @@ namespace Camping_Stuff
 			{
 				if (Bag.Cover != null)
 				{
-					yield return new FloatMenuOption("Unpack " + Bag.Cover.LabelCapHpFrac(), delegate
+					yield return new FloatMenuOption("UnpackOne".Translate(Bag.Cover.LabelCapHpFrac()), delegate
 					{
 						jd.driverClass = typeof(JobDriver_UnpackBagCover);
 						Job j = JobMaker.MakeJob(jd, target);
@@ -98,16 +89,17 @@ namespace Camping_Stuff
 				{
 					foreach (Thing pole in Bag.Poles)
 					{
-						yield return new FloatMenuOption("Unpack " + pole.LabelCap + (pole.stackCount == 1 ? " x1" : ""), delegate
-						{
-							jd.driverClass = typeof(JobDriver_UnpackBagPole);
-							Job j = JobMaker.MakeJob(jd, target, pole);
+						yield return new FloatMenuOption(
+							"UnpackOne".Translate(pole.LabelCap + (pole.stackCount == 1 ? " x1" : "")), delegate
+							{
+								jd.driverClass = typeof(JobDriver_UnpackBagPole);
+								Job j = JobMaker.MakeJob(jd, target, pole);
 
-							selPawn.jobs.TryTakeOrderedJob(j);
-						});
+								selPawn.jobs.TryTakeOrderedJob(j);
+							});
 					}
 
-					yield return new FloatMenuOption("Unpack all poles (x" + Bag.PoleCount + ")", delegate
+					yield return new FloatMenuOption("UnpackAllPoles".Translate(Bag.PoleCount), delegate
 					{
 						jd.driverClass = typeof(JobDriver_UnpackBagAllPoles);
 						Job j = JobMaker.MakeJob(jd, target);
@@ -118,7 +110,7 @@ namespace Camping_Stuff
 
 				if (Bag.Floor != null)
 				{
-					yield return new FloatMenuOption("Unpack " + Bag.Floor.LabelCapHpFrac(), delegate
+					yield return new FloatMenuOption("UnpackOne".Translate(Bag.Floor.LabelCapHpFrac()), delegate
 					{
 						jd.driverClass = typeof(JobDriver_UnpackBagFloor);
 						Job j = JobMaker.MakeJob(jd, target);
@@ -136,7 +128,7 @@ namespace Camping_Stuff
 
 				if (Bag.Cover != null || (Bag.Poles != null && Bag.Poles.Count > 0) || Bag.Floor != null)
 				{
-					yield return new FloatMenuOption("Unpack all parts", delegate
+					yield return new FloatMenuOption("UnpackAll".Translate(), delegate
 					{
 						jd.driverClass = typeof(JobDriver_UnpackBagAll);
 						Job j = JobMaker.MakeJob(jd, target);
@@ -167,5 +159,13 @@ namespace Camping_Stuff
 		}
 
 		// override DrawExtraSelectionOverlays to pass tent to blueprint?
+
+		/*public override void SpawnSetup(Map map, bool respawningAfterLoad)
+		{
+			if (this.Bag == null)
+			{
+				DeSpawn();
+			}
+		}*/
 	}
 }

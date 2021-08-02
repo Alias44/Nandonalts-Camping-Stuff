@@ -89,7 +89,7 @@ namespace Camping_Stuff
 
 		public override string CompInspectStringExtra()
 		{
-			return $"{damagedCells.Count} missing";
+			return "DamagedPartCount".Translate(damagedCells.Count);
 		}
 	}
 

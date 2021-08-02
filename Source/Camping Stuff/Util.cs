@@ -10,6 +10,8 @@ namespace Camping_Stuff
 {
 	public static class Util
 	{
+		public static string indent = "    "; // matches the stat indents defined in RimWorld.StatWorker
+
 		public static string LabelCapHpFrac(this Thing t)
 		{
 			return $"{t.LabelCap} ({t.HitPoints} / {t.MaxHitPoints})";

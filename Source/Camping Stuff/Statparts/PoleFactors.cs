@@ -33,7 +33,44 @@ namespace Camping_Stuff
 			{
 				NCS_Tent tent = req.Thing.TryGetComp<TentSpawnedComp>().tent;
 
-				string str = $"Poles x{AvgPoleFactor(tent, sd)}\nPoles +{DistributedPoleOffset(tent, sd)}";
+				float avg = AvgPoleFactor(tent, sd);
+				float offset = DistributedPoleOffset(tent, sd);
+				float coverMultiplier = (float) 1.0 / tent.Cover.TryGetComp<TentCoverComp>().Props.layoutParts;
+
+				string factorDesc = "";
+				string offsetDesc = "";
+
+				string str = "";
+
+				foreach (var pole in tent.Poles)
+				{
+					float statFactorFromList = pole.Stuff.stuffProps.statFactors.GetStatFactorFromList(sd);
+					float weight = (float) pole.stackCount / tent.PoleCount;
+
+					factorDesc +=
+						$"{Util.indent}{"StatsReport_Material".Translate()} ({pole.Stuff.LabelCap}): {statFactorFromList.ToStringByStyle(ToStringStyle.PercentZero, ToStringNumberSense.Factor)} ({"HealthFactorPercentImpact".Translate(weight.ToStringPercentEmptyZero())})\n";
+					
+					float statOffsetFromList = pole.Stuff.stuffProps.statOffsets.GetStatOffsetFromList(sd);
+					offsetDesc +=
+						$"{Util.indent}{"StatsReport_Material".Translate()} ({pole.Stuff.LabelCap}): {statOffsetFromList.ToStringByStyle(sd.toStringStyle, ToStringNumberSense.Offset)} ({"HealthOffsetScale".Translate(pole.stackCount + "x")})\n";
+				}
+
+				if ((double)Math.Abs(avg - 1f) > 1.40129846432482E-45) // Avg != 1.0
+				{
+					factorDesc +=
+						$"{Util.indent}{"StatsReport_FinalValue".Translate()}: {avg.ToStringByStyle(ToStringStyle.PercentZero, ToStringNumberSense.Factor)}\n";
+
+					str += $"{"ContainsPoles".Translate()}\n{factorDesc}\n";
+				}
+
+				if ((double) offset != 0.0)
+				{
+					offsetDesc +=
+						$"{Util.indent}{"StatsReport_TentSize".Translate(tent.TentSize)}: {coverMultiplier.ToStringByStyle(ToStringStyle.PercentTwo, ToStringNumberSense.Factor)}\n" +
+						$"{Util.indent}{"StatsReport_FinalValue".Translate()}: {offset.ToStringByStyle(sd.toStringStyle, ToStringNumberSense.Offset)}\n";
+
+					str += $"{"ContainsPoles".Translate()}\n{offsetDesc}\n";
+				}
 
 				return str;
 			}

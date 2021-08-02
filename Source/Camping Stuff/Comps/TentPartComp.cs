@@ -33,19 +33,26 @@ namespace Camping_Stuff
 
 		public override IEnumerable<FloatMenuOption> CompFloatMenuOptions(Pawn selPawn)
 		{
-			if (selPawn.CanReserveAndReach(this.parent, PathEndMode.Touch, Danger.Deadly))
+			if (!selPawn.CanReach(this.parent, PathEndMode.Touch, Danger.Deadly))
 			{
-				yield return new FloatMenuOption("Pack " + parent.LabelNoCount + " into bag", delegate
-				 {
-					Find.Targeter.BeginTargeting(this.GetTargetingParameters(), delegate (LocalTargetInfo t)
-					{
-						selPawn.jobs.TryTakeOrderedJob(JobMaker.MakeJob(TentDefOf.NCS_PackBag, this.parent, t));
-					});
-				 });
+				yield return new FloatMenuOption("CannotGoNoPath".Translate(), null);
+			}
+			else if (!selPawn.CanReserve(this.parent))
+			{
+
+				yield return new FloatMenuOption("Reserved".Translate(), null);
 			}
 			else
 			{
-				yield return new FloatMenuOption("Unable to reach or reserve target", null);
+				yield return new FloatMenuOption("PackIntoBag".Translate(parent.LabelNoCount),
+					delegate
+					{
+						Find.Targeter.BeginTargeting(this.GetTargetingParameters(),
+							delegate(LocalTargetInfo t)
+							{
+								selPawn.jobs.TryTakeOrderedJob(JobMaker.MakeJob(TentDefOf.NCS_PackBag, this.parent, t));
+							});
+					});
 			}
 		}
 	}

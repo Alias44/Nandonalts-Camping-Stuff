@@ -31,16 +31,16 @@ namespace Camping_Stuff
 
 				if (material != null)
 				{
-					return new FloatMenuOption($"Repair {this.parent.def.label} ({RepairCost} {RepairStuff.label} needed)", delegate
+					return new FloatMenuOption("RepairTentPart".Translate(this.parent.def.label, RepairCost, RepairStuff.label), delegate
 					{
 						selPawn.jobs.TryTakeOrderedJob(JobMaker.MakeJob(jobDef, material, destination));
 					});
 				}
 
-				return new FloatMenuOption($"Unable to repair {this.parent.LabelNoCount}, need {RepairCost} {RepairStuff.label}", null);
+				return new FloatMenuOption("CannotRepairTentPart".Translate(this.parent.LabelNoCount, RepairCost, RepairStuff.label), null);
 			}
 
-			return new FloatMenuOption($"{this.parent.LabelNoCount} does not need repairing", null);
+			return new FloatMenuOption("NoRepairNeeded".Translate(this.parent.LabelNoCount), null);
 		}
 
 		public override IEnumerable<FloatMenuOption> CompFloatMenuOptions(Pawn selPawn)

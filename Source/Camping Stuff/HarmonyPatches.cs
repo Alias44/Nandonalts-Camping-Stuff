@@ -15,7 +15,6 @@ namespace Camping_Stuff
 	{
 		public HarmonyPatches(ModContentPack content) : base(content)
 		{
-			Harmony.DEBUG = true;
 			var harmony = new Harmony("Nandonalt_CampingStuff.main");
 
 			harmony.Patch(AccessTools.Method(typeof(ThingDef), "get_CanHaveFaction"), null,

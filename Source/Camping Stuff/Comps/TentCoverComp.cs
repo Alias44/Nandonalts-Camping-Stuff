@@ -21,7 +21,12 @@ namespace Camping_Stuff
 		public CompProperties_TentCover Props => (CompProperties_TentCover)this.props;
 
 		protected override int DamageUnit => Math.Max((int)Math.Floor((1.0 / this.Props.layoutParts) * this.parent.MaxHitPoints), 1);
-		protected override double DamageCost => ((double) this.parent.def.costStuffCount / this.Props.layoutParts);
+		protected override double DamageCost => (double) this.parent.def.costStuffCount / this.Props.layoutParts;
+
+		public override string CompInspectStringExtra()
+		{
+			return base.CompInspectStringExtra() + "TentPoleNeed".Translate(Props.numPoles);
+		}
 	}
 
 	public class CompProperties_TentCover : CompProperties_TentPartDamage //(Def)
@@ -43,11 +48,16 @@ namespace Camping_Stuff
 			this.compClass = compClass;
 		}
 
-		public override void ResolveReferences(ThingDef parentDef)
+		public override void PostLoadSpecial(ThingDef parentDef)
 		{
 			int height = tentLayoutSouth.Count; //num rows
 			int width = 0; // max num cols
 			layoutParts = 0;
+
+			if (layoutS.Count != 0) // Prevent building the list twice if the method has already been called (shouldn't happen, but just in case)
+			{
+				return;
+			}
 
 			for (int r = 0; r < tentLayoutSouth.Count; r++)
 			{

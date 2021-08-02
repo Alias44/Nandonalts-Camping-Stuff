@@ -1,14 +1,41 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
+	<!-- Lables -->
+	<SpawnedTentLabel>Tent</SpawnedTentLabel>
+	<SpawnedTentDescriptionFlavor>A temporary structure</SpawnedTentDescriptionFlavor>
+	<TentDescriptionDetailed>A bag ready to deploy a {0} {1}</TentDescriptionDetailed>
+	
+	<StatsReport_TentSize>Multiplier for tent size {0}</StatsReport_TentSize>
+	
+	<TentContains>Contains:</TentContains>
+	<ContainsCover>Cover: {0}</ContainsCover>
+	<ContainsPoles>Poles:</ContainsPoles>
+	<ContainsFloor>Floor: {0}</ContainsFloor>
+
 	<!-- Parts -->
 	<DeployReady>Ready to deploy</DeployReady>
 	<DeployNotReady>Not ready to deploy</DeployNotReady>
+	<DeployNotReadyNoCover>Tent not ready to deploy: no cover packed</DeployNotReadyNoCover>
+	<DeployNotReadyNeedPoles>Tent not ready to deploy: not enough polls packed ({0}/{1} poles for {2})</DeployNotReadyNeedPoles>
+	
+	<TentPoleNeed>Needs {0} tent poles</TentPoleNeed>
+	
+	<PackIntoBag>Pack {0} into bag</PackIntoBag>
 	
 	<!-- Packing -->
-
+	<UnpackOne>Unpack {0}</UnpackOne>
+	<UnpackAllPoles>Unpack all poles (x{0})</UnpackAllPoles>
+	<UnpackAll>Unpack all parts</UnpackAll>
+	
+	<!-- Repair -->
+	<RepairTentPart>Repair {0} ({1} {2} needed)</RepairTentPart>
+	<CannotRepairTentPart>Unable to repair {0}, need {1} {2}</CannotRepairTentPart>
+	<NoRepairNeeded>{0} does not need repairing</NoRepairNeeded>
+		
 	<!-- Warnings -->
 	<DamagedCover>Tent cover is damaged, some walls/ doors will be missing.</DamagedCover>
 	<DamagedMat>Tent mat is damaged, some floors may be missing.</DamagedMat>
+	<DamagedPartCount>{0} missing</DamagedPartCount>
 
 	<!-- Failure messages -->
 	<CannotPlaceItemOver>Cannot place {0} over: {1}.</CannotPlaceItemOver>

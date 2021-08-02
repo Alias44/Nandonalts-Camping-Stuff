@@ -56,7 +56,7 @@
 	<!-- Cover -->
 	<ThingDef ParentName="TentPartTailored">
 		<defName>NCS_TentPart_Cover_Small</defName>
-		<label>tent cover</label>
+		<label>small tent cover</label>
 		<description>A 4x5 tent.</description>
 		<graphicData>
 			<texPath>CampingStuff/TentSmall</texPath>
@@ -204,7 +204,7 @@
 			<texPath>CampingStuff/Blanket</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
 		</graphicData>
-		<costStuffCount>225</costStuffCount>
+		<costStuffCount>150</costStuffCount>
 		<statBases>
 			<MaxHitPoints>200</MaxHitPoints>
 			<WorkToMake>25000</WorkToMake>
@@ -223,7 +223,7 @@
 	<ThingDef ParentName="MinifiedThingBase">
 		<defName>NCS_MiniTentBag</defName>
 		<thingClass>Camping_Stuff.NCS_MiniTent</thingClass>
-		<label>tent bag</label>
+		<label>tent bag (minified)</label>
 		<graphicData>
 			<graphicClass>Graphic_Single</graphicClass>
 			<texPath>CampingStuff/TentBag</texPath>
@@ -253,7 +253,7 @@
 		<altitudeLayer>Shadows</altitudeLayer>
 		<statBases Inherit="False">
 			<Mass>2</Mass>
-			<WorkToMake>10000</WorkToMake>
+			<WorkToMake>2500</WorkToMake>
 		</statBases>
 		<useSameGraphicForGhost>true</useSameGraphicForGhost>
 		<rotatable>true</rotatable>
@@ -269,7 +269,7 @@
 			<drawRotated>false</drawRotated>
 			<allowFlip>false</allowFlip>
 		</graphicData>
-		<costStuffCount>100</costStuffCount>
+		<costStuffCount>25</costStuffCount>
 		<useHitPoints>false</useHitPoints>
 		<building>
 			<deconstructible>false</deconstructible>
@@ -285,6 +285,11 @@
 		<placeWorkers>
 			<li>Camping_Stuff.PlaceWorker_Tent</li>
 		</placeWorkers>
+		<tradeNeverStack>true</tradeNeverStack>
+		<recipeMaker>
+			<recipeUsers>
+				<li>CraftingSpot</li>
+			</recipeUsers>
+		</recipeMaker>
 	</ThingDef>
-	<tradeNeverStack>true</tradeNeverStack>
 </Defs>

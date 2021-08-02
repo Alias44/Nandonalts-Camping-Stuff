@@ -24,7 +24,7 @@ namespace Camping_Stuff
 
 				if (partType == TentPart.pole)
 				{
-					return MiniBag.Bag.maxPoles - MiniBag.Bag.PoleKindCount(Part.Stuff);
+					return MiniBag.Bag.maxPoles - MiniBag.Bag.PoleKindCount(Part);
 				}
 
 				return 1;
