@@ -23,9 +23,9 @@ namespace Camping_Stuff
 		protected override int DamageUnit => Math.Max((int)Math.Floor((1.0 / this.Props.layoutParts) * this.parent.MaxHitPoints), 1);
 		protected override double DamageCost => (double) this.parent.def.costStuffCount / this.Props.layoutParts;
 
-		public override string CompInspectStringExtra()
+		public override string GetDescriptionPart()
 		{
-			return base.CompInspectStringExtra() + "TentPoleNeed".Translate(Props.numPoles);
+			return base.GetDescriptionPart() + "TentPoleNeed".Translate(Props.numPoles);
 		}
 	}
 

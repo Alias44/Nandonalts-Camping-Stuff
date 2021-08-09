@@ -155,7 +155,7 @@ namespace Camping_Stuff
 		// Overriding label and description (while spawned/ installed/ deployed), since minified things don't really have their own.
 		public override string LabelNoCount => this.Spawned ? (string) "SpawnedTentLabel".Translate() : base.LabelNoCount;
 
-		public override string DescriptionDetailed => Ready ? (string) "TentDescriptionDetailed".Translate(cover.Stuff.LabelAsStuff, cover.DescriptionDetailed.Replace(")A ", "")) : base.DescriptionDetailed;
+		public override string DescriptionDetailed => Ready ? (string) "TentDescriptionDetailed".Translate(cover.Stuff.LabelAsStuff, cover.DescriptionDetailed.Replace("A ", "")) : base.DescriptionDetailed;
 
 		public string TentSize => this.Ready ? cover.Label.Replace(" tent cover", "") : "unknown";
 

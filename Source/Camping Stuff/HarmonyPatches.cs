@@ -92,24 +92,6 @@ namespace Camping_Stuff
 			}
 		}
 
-		public enum TransferableCategory
-		{
-			Pawn,
-			Item,
-			FoodAndMedicine,
-		}
-
-		public static TransferableCategory foo(Transferable t)
-		{
-			if (t.ThingDef.category == ThingCategory.Pawn)
-				return TransferableCategory.Pawn;
-			if (t.AnyThing is NCS_MiniTent miniTent && miniTent.Bag.Ready)
-			{
-				return TransferableCategory.FoodAndMedicine;
-			}
-			return !t.ThingDef.thingCategories.NullOrEmpty<ThingCategoryDef>() && t.ThingDef.thingCategories.Contains(ThingCategoryDefOf.Medicine) || t.ThingDef.IsIngestible && !t.ThingDef.IsDrug && !t.ThingDef.IsCorpse || t.AnyThing.GetInnerIfMinified().def.IsBed && t.AnyThing.GetInnerIfMinified().def.building.bed_caravansCanUse ? TransferableCategory.FoodAndMedicine : TransferableCategory.Item;
-		}
-
 		[HarmonyTranspiler]
 		public static IEnumerable<CodeInstruction> TentTransferCategory(IEnumerable<CodeInstruction> instructions, ILGenerator ilg)
 		{
@@ -136,23 +118,17 @@ namespace Camping_Stuff
 			{
 				var tent = ilg.DeclareLocal(typeof(NCS_MiniTent));
 
-				CodeInstruction[] foo = new[]
+				CodeInstruction[] newInstructions = new[]
 				{
 					new CodeInstruction(OpCodes.Ldarg_0).WithLabels(tentPatchStart),
 					new CodeInstruction(OpCodes.Callvirt, typeof(Transferable).GetMethod("get_AnyThing")),
-					new CodeInstruction(OpCodes.Isinst, typeof(NCS_MiniTent)),
-					new CodeInstruction(OpCodes.Stloc, tent),
-					new CodeInstruction(OpCodes.Ldloc, tent),
-					new CodeInstruction(OpCodes.Brfalse, nextIf),
-					new CodeInstruction(OpCodes.Ldloc, tent),
-					new CodeInstruction(OpCodes.Callvirt, typeof(NCS_MiniTent).GetMethod("get_Bag")),
-					new CodeInstruction(OpCodes.Callvirt, typeof(NCS_Tent).GetMethod("get_Ready")),
+					new CodeInstruction(OpCodes.Call, typeof(Util).GetMethod("IsTentReady")),
 					new CodeInstruction(OpCodes.Brfalse, nextIf),
 					new CodeInstruction(OpCodes.Ldc_I4_2),
 					new CodeInstruction(OpCodes.Ret)
 				};
 
-				codes.InsertRange(insertIndex, foo);
+				codes.InsertRange(insertIndex, newInstructions);
 			}
 
 			return codes.AsEnumerable();

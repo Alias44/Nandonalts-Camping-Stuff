@@ -41,6 +41,7 @@
 				<filter>
 					<stuffCategoriesToAllow>
 						<li>Metallic</li>
+						<li>Woody</li>
 					</stuffCategoriesToAllow>
 				</filter>
 				<count>5</count>
@@ -65,6 +66,7 @@
 				<filter>
 					<stuffCategoriesToAllow>
 						<li>Metallic</li>
+						<li>Woody</li>
 					</stuffCategoriesToAllow>
 				</filter>
 				<count>25</count>

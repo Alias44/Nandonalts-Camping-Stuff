@@ -30,5 +30,10 @@ namespace Camping_Stuff
 
  			return entity;
 		}
+
+		public static bool IsTentReady(Thing t)
+		{
+			return (t is NCS_MiniTent miniTent && miniTent.Bag.Ready) || (t is NCS_Tent tent && tent.Ready);
+		}
 	}
 }
