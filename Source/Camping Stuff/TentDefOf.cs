@@ -8,7 +8,16 @@ namespace Camping_Stuff
 	{
 		public static ThingDef NCS_TentDoor;
 		public static ThingDef NCS_TentWall;
+
+		public static ThingDef NCS_TentPart_Cover_Small;
+		public static ThingDef NCS_TentPart_Cover_Med;
+		public static ThingDef NCS_TentPart_Cover_Large;
+		public static ThingDef NCS_TentPart_Cover_Long;
+
+		public static ThingDef NCS_TentPart_Pole;
+
 		public static ThingDef NCS_TentBag;
+		public static ThingDef NCS_MiniTentBag;
 
 		public static RoofDef NCS_TentRoof;
 

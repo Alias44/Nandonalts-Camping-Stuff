@@ -3,6 +3,6 @@
 	<Operation Class="PatchOperationAttributeAdd">
 		<xpath>Defs/ThingDef[defName="MinifiedThing"]</xpath>
 		<attribute>Name</attribute>
-		<value>MinifiedThingBase</value>
+		<value>MinifiedThing</value>
 	</Operation>
 </Patch>

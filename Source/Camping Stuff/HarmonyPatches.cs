@@ -17,19 +17,21 @@ namespace Camping_Stuff
 		{
 			var harmony = new Harmony("Nandonalt_CampingStuff.main");
 
-			harmony.Patch(AccessTools.Method(typeof(ThingDef), "get_CanHaveFaction"), null,
-				new HarmonyMethod(typeof(HarmonyPatches), nameof(TentCanHaveFaction)));
-
+			harmony.Patch(AccessTools.Method(typeof(ThingDef), "get_CanHaveFaction"), null, new HarmonyMethod(typeof(HarmonyPatches), nameof(TentCanHaveFaction)));
 			harmony.Patch(AccessTools.Method(typeof(ThingDefGenerator_Buildings), "NewBlueprintDef_Thing"), null, new HarmonyMethod(typeof(HarmonyPatches), nameof(NewBlueprintDef_Tent)));
-
 			harmony.Patch(AccessTools.Method(typeof(Designator_Uninstall), "CanDesignateThing"), null, new HarmonyMethod(typeof(HarmonyPatches), nameof(CanDesignateThingTent)));
-
 			harmony.Patch(AccessTools.Method(typeof(GenConstruct), "FirstBlockingThing"), null, new HarmonyMethod(typeof(HarmonyPatches), nameof(TentBlueprintRect)));
-
 			harmony.Patch(AccessTools.Method(typeof(CaravanUIUtility), "GetTransferableCategory"), null, null,
 				new HarmonyMethod(typeof(HarmonyPatches), nameof(TentTransferCategory)));
 
 			harmony.PatchAll(Assembly.GetExecutingAssembly());
+
+			// Add a custom back compatibility to the conversion chain
+			List<BackCompatibilityConverter> compatibilityConverters =
+				AccessTools.StaticFieldRefAccess<List<BackCompatibilityConverter>>(typeof(BackCompatibility),
+					"conversionChain");
+
+			compatibilityConverters.Add(new BackCompatibilityConverter_NCS());
 		}
 
 		/// <summary>Allows tents to be marked with a faction (why isn't there a boolean override for that?!), resolves issues with setting them as frames</summary>

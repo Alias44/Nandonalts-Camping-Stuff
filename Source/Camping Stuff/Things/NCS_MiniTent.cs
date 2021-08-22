@@ -4,15 +4,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HarmonyLib;
 using UnityEngine;
 using Verse;
 using Verse.AI;
 
 namespace Camping_Stuff
 {
-	public class NCS_MiniTent : MinifiedThing
+	public class NCS_MiniTent : MinifiedThing, IThingHolder
 	{
-		public NCS_Tent Bag => (NCS_Tent) InnerThing;
+		public NCS_Tent Bag
+		{
+			get => (NCS_Tent) InnerThing;
+			set
+			{
+				// Harmony hack to prevent trying to add things to a null innerContainer
+				if (this.GetDirectlyHeldThings() == null)
+				{
+					AccessTools.Field(typeof(NCS_MiniTent), "innerContainer").SetValue(this, new ThingOwner<Thing>((IThingHolder)this, true));
+				}
+
+				base.InnerThing = value;
+			}
+		}
 
 		public override string Label => base.Label.Replace("minified", "");
 

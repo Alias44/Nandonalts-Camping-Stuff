@@ -220,7 +220,7 @@
 	</ThingDef>
 		
 	<!-- Bag -->
-	<ThingDef ParentName="MinifiedThingBase">
+	<ThingDef ParentName="MinifiedThing">
 		<defName>NCS_MiniTentBag</defName>
 		<thingClass>Camping_Stuff.NCS_MiniTent</thingClass>
 		<label>tent bag (minified)</label>
