@@ -102,7 +102,7 @@
 		<statBases>
 			<MaxHitPoints>200</MaxHitPoints>
 			<WorkToMake>20000</WorkToMake>
-			<Mass>2</Mass>
+			<Mass>3</Mass>
 		</statBases>
 		<comps>
 			<li Class="Camping_Stuff.CompProperties_TentPart">
@@ -127,7 +127,7 @@
 	<ThingDef ParentName="TentPartTailored">
 		<defName>NCS_TentPart_Cover_Large</defName>
 		<label>large tent cover</label>
-		<description>A 8x7 tent with three internal rooms.</description>
+		<description>A 7x7 tent with three internal rooms.</description>
 		<graphicData>
 			<texPath>CampingStuff/TentLarge</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
@@ -136,7 +136,7 @@
 		<statBases>
 			<MaxHitPoints>200</MaxHitPoints>
 			<WorkToMake>27500</WorkToMake>
-			<Mass>2</Mass>
+			<Mass>7</Mass>
 		</statBases>
 		<comps>
 			<li Class="Camping_Stuff.CompProperties_TentPart">
@@ -147,7 +147,6 @@
 				<numPoles>10</numPoles>
 				<tentLayoutSouth>
 					<li>1,1,1,1,1,1,1</li>
-					<li>1,4,4,1,4,4,1</li>
 					<li>1,4,4,1,4,4,1</li>
 					<li>1,2,1,1,1,2,1</li>
 					<li>1,4,4,3,4,4,1</li>
@@ -171,7 +170,7 @@
 		<statBases>
 			<MaxHitPoints>200</MaxHitPoints>
 			<WorkToMake>25000</WorkToMake>
-			<Mass>2</Mass>
+			<Mass>5</Mass>
 		</statBases>
 		<comps>
 			<li Class="Camping_Stuff.CompProperties_TentPart">
