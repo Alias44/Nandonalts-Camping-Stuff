@@ -35,5 +35,11 @@ namespace Camping_Stuff
 		{
 			return (t is NCS_MiniTent miniTent && miniTent.Bag.Ready) || (t is NCS_Tent tent && tent.Ready);
 		}
+
+		public static bool IsTentPart(Thing t, TentPart partType)
+		{
+			var partComp = t.TryGetComp<CompUsable_TentPart>();
+			return partComp != null && partComp.Props.partType == partType;
+		}
 	}
 }

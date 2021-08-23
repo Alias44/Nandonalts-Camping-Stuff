@@ -12,8 +12,13 @@ namespace Camping_Stuff
 	class BackCompatibilityConverter_NCS : BackCompatibilityConverter
 	{
 		private static Dictionary<string, ThingDef> partReplacements;
-		private Dictionary<int, ThingDef> oldTents = new Dictionary<int, ThingDef>();
+		private Dictionary<int, ThingDef> oldPackedTents = new Dictionary<int, ThingDef>();
 
+		private Dictionary<int, (ThingDef cover, Rot4 orientation, int mapId)> oldDeployedTents =
+			new Dictionary<int, (ThingDef, Rot4, int)>();
+
+		private Dictionary<int, List<NCS_Tent>> newDeployedTents = new Dictionary<int, List<NCS_Tent>>();
+		
 		public override bool AppliesToVersion(int majorVer, int minorVer) =>
 			majorVer == 0 || (majorVer == 1 && minorVer == 0); // applies to <= 1.0
 
@@ -23,10 +28,10 @@ namespace Camping_Stuff
 			{
 				return TentDefOf.NCS_MiniTentBag.defName;
 			}
-			/*else if (defName.Equals("TentDeployed"))
+			else if (defName.Equals("TentDeployed"))
 			{
-				return "WoodLog";
-			}*/
+				return TentDefOf.NCS_TentBag.defName;
+			}
 			else
 			{
 				var def = GenDefDatabase.GetDefSilentFail(defType, "NCS_" + defName, false);
@@ -45,12 +50,37 @@ namespace Camping_Stuff
 			if (baseType == typeof(Thing))
 			{
 				string def = node["def"].InnerText;
-				if (providedClassName.Equals("ThingWithComps") && partReplacements.ContainsKey(def))
+				int id = Thing.IDNumberFromThingID(node["id"].InnerText);
+
+				if (partReplacements.ContainsKey(def) && providedClassName.Equals("ThingWithComps"))
 				{
-					int id = Thing.IDNumberFromThingID(node["id"].InnerText);
-					oldTents[id] = partReplacements[def];
+					oldPackedTents[id] = partReplacements[def];
 
 					return TentDefOf.NCS_MiniTentBag.thingClass;
+				}
+				else if (providedClassName.Equals("Building") && def.Equals("TentDeployed"))
+				{
+					string cover = node["tentName"].InnerText;
+
+					Rot4 direction;
+					try
+					{
+						direction = Rot4.FromString(node["placingRot"].InnerText);
+
+						if (direction == Rot4.East || direction == Rot4.West)
+						{
+							direction.AsInt += 2;
+						}
+					}
+					catch
+					{
+						direction = Rot4.South;
+					}
+
+					int.TryParse(node["map"].InnerText, out var mapId);
+
+					oldDeployedTents[id] = (partReplacements[cover], direction, mapId);
+					return TentDefOf.NCS_TentBag.thingClass;
 				}
 			}
 
@@ -61,28 +91,64 @@ namespace Camping_Stuff
 		{
 			if (Scribe.mode != LoadSaveMode.PostLoadInit)
 				return;
-			if (obj is NCS_MiniTent miniTent && oldTents.ContainsKey(miniTent.thingIDNumber))
+			switch (obj)
 			{
-				// Create an inner tent to set in the bag (the minified thing won't have any by default)
-				var tent = (NCS_Tent) ThingMaker.MakeThing(TentDefOf.NCS_TentBag, miniTent.Stuff);
+				case NCS_MiniTent miniTent when oldPackedTents.ContainsKey(miniTent.thingIDNumber):
+				{
+					// Create an inner tent to set in the bag (the minified thing won't have any by default)
+					var tent = (NCS_Tent) ThingMaker.MakeThing(TentDefOf.NCS_TentBag, miniTent.Stuff);
 
-				// make the user whole: fill the bag with parts equivalent to the replaced tent
-				var cover = ThingMaker.MakeThing(oldTents[miniTent.thingIDNumber], miniTent.Stuff);
-				tent.Cover = cover;
-				var poleStack = ThingMaker.MakeThing(TentDefOf.NCS_TentPart_Pole, ThingDefOf.WoodLog);
-				poleStack.stackCount = tent.maxPoles;
-				tent.PackPart(poleStack);
+					// make the user whole: fill the bag with parts equivalent to the replaced tent
+					var cover = ThingMaker.MakeThing(oldPackedTents[miniTent.thingIDNumber], miniTent.Stuff);
+					tent.Cover = cover;
+					var poleStack = ThingMaker.MakeThing(TentDefOf.NCS_TentPart_Pole, ThingDefOf.WoodLog);
+					poleStack.stackCount = tent.maxPoles;
+					tent.PackPart(poleStack);
 
-				miniTent.Bag = tent;
-				miniTent.HitPoints = miniTent.MaxHitPoints;
+					miniTent.Bag = tent;
+					miniTent.HitPoints = miniTent.MaxHitPoints;
+					break;
+				}
+				case NCS_Tent tent when oldDeployedTents.ContainsKey(tent.thingIDNumber):
+				{
+					var (thingDef, orientation, mapId) = oldDeployedTents[tent.thingIDNumber];
+
+					var cover = (ThingWithComps) ThingMaker.MakeThing(thingDef, tent.Stuff);
+					tent.Cover = cover;
+					var poleStack = ThingMaker.MakeThing(TentDefOf.NCS_TentPart_Pole, ThingDefOf.WoodLog);
+					poleStack.stackCount = tent.maxPoles;
+					tent.PackPart(poleStack);
+					tent.Rotation = orientation;
+
+					try
+					{
+						newDeployedTents[mapId].Add(tent);
+					}
+					catch
+					{
+						newDeployedTents[mapId] = new List<NCS_Tent> {tent};
+					}
+					break;
+				}
+				case Map map when newDeployedTents.ContainsKey(map.uniqueID):
+
+					// Convert Constructed roofs above each tent into tent roofs
+					newDeployedTents[map.uniqueID]
+						.ForEach(tent => tent.sketch.Entities
+							.Where(e => e is SketchRoof &&
+							            map.roofGrid.RoofAt(tent.Position + e.pos) == RoofDefOf.RoofConstructed)
+							.ToList()
+							.ForEach(e => e.Spawn(tent.Position + e.pos, map, tent.Faction, wipeIfCollides: true)));
+
+					break;
 			}
-
-			return;
 		}
 
 		public override void PreLoadSavegame(string loadingVersion)
 		{
-			oldTents.Clear();
+			oldPackedTents.Clear();
+			oldDeployedTents.Clear();
+			newDeployedTents.Clear();
 			partReplacements = new Dictionary<string, ThingDef>
 			{
 				{"DeployableTent", TentDefOf.NCS_TentPart_Cover_Small},
@@ -94,7 +160,9 @@ namespace Camping_Stuff
 
 		public override void PostLoadSavegame(string loadingVersion)
 		{
-			oldTents.Clear();
+			oldPackedTents.Clear();
+			oldDeployedTents.Clear();
+			newDeployedTents.Clear();
 			partReplacements.Clear();
 		}
 	}

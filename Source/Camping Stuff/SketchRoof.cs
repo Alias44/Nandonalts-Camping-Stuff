@@ -13,49 +13,17 @@ namespace Camping_Stuff
 	{
 		public RoofDef roof;
 
-		public override string Label
-		{
-			get
-			{
-				return roof.label;
-			}
-		}
+		public override string Label => roof.label;
 
-		public override string LabelCap
-		{
-			get
-			{
-				return roof.LabelCap;
-			}
-		}
+		public override string LabelCap => roof.LabelCap;
 
-		public override CellRect OccupiedRect
-		{
-			get
-			{
-				return new CellRect(this.pos.x, this.pos.z, 1, 1);
-			}
-		}
+		public override CellRect OccupiedRect => new CellRect(this.pos.x, this.pos.z, 1, 1);
 
-		public override float SpawnOrder
-		{
-			get
-			{
-				return float.MaxValue;
-			}
-		}
+		public override float SpawnOrder => float.MaxValue;
 
 		public override bool CanBuildOnTerrain(IntVec3 at, Map map)
 		{
 			return true; // Assume true since other sketch entities aren't known at this time
-			/*try
-			{
-				return at.GetFirstBuilding(map).def.holdsRoof;
-			}
-			catch
-			{
-				return false;
-			}*/
 		}
 
 		public override void DrawGhost(IntVec3 at, Color color)
@@ -75,12 +43,12 @@ namespace Camping_Stuff
 
 		public override bool IsSpawningBlocked(IntVec3 at, Map map, Thing thingToIgnore = null, bool wipeIfCollides = false)
 		{
-			return this.IsSpawningBlockedPermanently(at, map, thingToIgnore, wipeIfCollides) || at.GetRoof(map) != null;
+			return !wipeIfCollides && (this.IsSpawningBlockedPermanently(at, map, thingToIgnore, wipeIfCollides) || at.GetRoof(map) != null);
 		}
 
 		public override bool IsSpawningBlockedPermanently(IntVec3 at, Map map, Thing thingToIgnore = null, bool wipeIfCollides = false)
 		{
-			return !at.InBounds(map) || !this.CanBuildOnTerrain(at, map);
+			return !wipeIfCollides && (!at.InBounds(map) || !this.CanBuildOnTerrain(at, map));
 		}
 
 		public override bool SameForSubtracting(SketchEntity other)
@@ -89,11 +57,7 @@ namespace Camping_Stuff
 				return false;
 			if (sketchRoof == this)
 				return true;
-			if(this.roof == sketchRoof.roof)
-			{
-				return true;
-			}
-			return false;
+			return this.roof == sketchRoof.roof;
 		}
 
 		public override bool Spawn(IntVec3 at, Map map, Faction faction, Sketch.SpawnMode spawnMode = Sketch.SpawnMode.Normal, bool wipeIfCollides = false, List<Thing> spawnedThings = null, bool dormant = false)

@@ -171,15 +171,5 @@ namespace Camping_Stuff
 				yield return gizmo;
 			}
 		}
-
-		// override DrawExtraSelectionOverlays to pass tent to blueprint?
-
-		/*public override void SpawnSetup(Map map, bool respawningAfterLoad)
-		{
-			if (this.Bag == null)
-			{
-				DeSpawn();
-			}
-		}*/
 	}
 }

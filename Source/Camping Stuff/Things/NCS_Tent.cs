@@ -24,13 +24,14 @@ namespace Camping_Stuff
 	{
 		public Sketch sketch = new Sketch();
 		private Rot4 deployedRot = Rot4.North;
+
 		public int PoleCount { get; private set; } = 0;
 		public int maxPoles = DefDatabase<ThingDef>.AllDefs.Where(d => d.HasComp(typeof(TentCoverComp))).Min(cover => cover.GetCompProperties<CompProperties_TentCover>().numPoles);
 
 		//public Dictionary<ThingDef, Thing> poles = new Dictionary<ThingDef, Thing>();
 		private List<Thing> poles = new List<Thing>();
 
-		public List<Thing> Poles => poles;
+		public List<Thing> Poles => poles ?? (poles = new List<Thing>());
 
 		public int PoleKindCount(Thing thing)
 		{
@@ -56,7 +57,7 @@ namespace Camping_Stuff
 			get => cover;
 			set
 			{
-				if (!IsTentPart(value, TentPart.cover) && value != null)
+				if (!Util.IsTentPart(value, TentPart.cover) && value != null)
 				{
 					return;
 				}
@@ -88,7 +89,7 @@ namespace Camping_Stuff
 			get => floor;
 			set
 			{
-				if (!IsTentPart(value, TentPart.floor) && value != null)
+				if (!Util.IsTentPart(value, TentPart.floor) && value != null)
 				{
 					return;
 				}
@@ -289,16 +290,8 @@ namespace Camping_Stuff
 
 			if (Scribe.mode == LoadSaveMode.PostLoadInit)
 			{
-				if (poles == null)
-				{
-					poles = new List<Thing>();
-				}
-
-				//PoleCount = 0;
-				foreach (Thing pole in poles)
-				{
-					PoleCount += pole.stackCount;
-				}
+				
+				PoleCount += Poles.Sum(pole => pole.stackCount);
 
 				if (cover != null)
 				{
@@ -322,7 +315,7 @@ namespace Camping_Stuff
 
 			sketch.Rotate(rotation);
 
-			Func<SketchEntity, IntVec3, List<Thing>, Map, bool> validator = (Func<SketchEntity, IntVec3, List<Thing>, Map, bool>)null;
+			var validator = (Func<SketchEntity, IntVec3, List<Thing>, Map, bool>)null;
 			if (placingMode)
 			{
 				validator = delegate (SketchEntity se, IntVec3 targetLoc, List<Thing> list, Map map)
@@ -352,18 +345,6 @@ namespace Camping_Stuff
 		}
 
 #region PartPacking
-		private bool IsTentPart(Thing t, TentPart partType)
-		{
-			CompUsable_TentPart partComp = t.TryGetComp<CompUsable_TentPart>();
-
-			if (partComp == null)
-			{
-				return false;
-			}
-
-			return partComp.Props.partType == partType;
-		}
-
 		public void PackPart(Thing part)
 		{
 			TentPart partType = TentPart.other;
@@ -451,7 +432,7 @@ namespace Camping_Stuff
 
 		public void EjectAllPoles()
 		{
-			for (int i = 0; i < poles.Count;) // no modifier op as count should zero out
+			for (int i = 0; i < Poles.Count;) // no modifier op as count should zero out
 			{
 				EjectPole(i);
 			}
@@ -466,7 +447,7 @@ namespace Camping_Stuff
 
 		private void AdjustPoles(int excludeIndex = -1)
 		{
-			for (int i = 0; i < poles.Count && PoleCount > maxPoles; i++)
+			for (int i = 0; i < Poles.Count && PoleCount > maxPoles; i++)
 			{
 				if (i != excludeIndex)
 				{
@@ -495,7 +476,7 @@ namespace Camping_Stuff
 				val += cover.GetStatValue(sd);
 			}
 
-			if (poles != null && poles.Count != 0)
+			if (Poles.Count != 0)
 			{
 				//defDesc += "Poles:\n";
 				foreach (Thing pole in poles)
@@ -520,10 +501,7 @@ namespace Camping_Stuff
 
 			if (format == null)
 			{
-				format = delegate (float f)
-				{
-					return f.ToString();
-				};
+				format = f => f.ToString();
 			}
 
 			string massDesc = "";
@@ -533,12 +511,9 @@ namespace Camping_Stuff
 				massDesc += cover.LabelCap + ": " + format(cover.GetStatValue(sd)) + "\n";
 			}
 
-			if (poles != null && poles.Count != 0)
+			if (Poles.Count != 0)
 			{
-				foreach (Thing pole in poles)
-				{
-					massDesc += pole.LabelCap + ": " + format(pole.GetStatValue(sd) * pole.stackCount) + "\n";
-				}
+				massDesc = poles.Aggregate(massDesc, (current, pole) => current + (pole.LabelCap + ": " + format(pole.GetStatValue(sd) * pole.stackCount) + "\n"));
 			}
 
 			if (floor != null)
