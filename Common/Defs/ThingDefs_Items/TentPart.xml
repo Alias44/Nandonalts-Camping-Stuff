@@ -18,7 +18,7 @@
 	<ThingDef ParentName="TentPartSmith">
 		<defName>NCS_TentPart_Pole</defName>
 		<label>tent pole</label>
-		<description>A set of short interlocking rods intended to hold up tents or other temporary structures.</description>
+		<description>A set of short interlocking rods intended to hold up tents or other temporary structures.\nAllows a tent to be installed when a sufficient number is packed in a tent bag with a tent cover.</description>
 		<graphicData>
 			<texPath>CampingStuff/TentPole</texPath>
 			<graphicClass>Graphic_StackCount</graphicClass>
@@ -54,10 +54,10 @@
 	</ThingDef>
 
 	<!-- Cover -->
-	<ThingDef ParentName="TentPartTailored">
+	<ThingDef ParentName="TentCover">
 		<defName>NCS_TentPart_Cover_Small</defName>
 		<label>small tent cover</label>
-		<description>A 4x5 tent.</description>
+		<description>A 4x5 tent.\nAllows a tent to be installed when packed in a tent bag with 5 tent poles.</description>
 		<graphicData>
 			<texPath>CampingStuff/TentSmall</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
@@ -74,10 +74,6 @@
 			</recipeUsers>
 		</recipeMaker>
 		<comps>
-			<li Class="Camping_Stuff.CompProperties_TentPart">
-				<compClass>Camping_Stuff.CompUsable_TentPart</compClass>
-				<partType>2</partType>
-			</li>
 			<li Class="Camping_Stuff.CompProperties_TentCover">
 				<numPoles>5</numPoles>
 				<tentLayoutSouth>
@@ -90,10 +86,10 @@
 		</comps>
 	</ThingDef>
 	
-	<ThingDef ParentName="TentPartTailored">
+	<ThingDef ParentName="TentCover">
 		<defName>NCS_TentPart_Cover_Med</defName>
 		<label>medium tent cover</label>
-		<description>A 7x7 rounded tent.</description>
+		<description>A 7x7 rounded tent.\nAllows a tent to be installed when packed in a tent bag with 7 tent poles.</description>
 		<graphicData>
 			<texPath>CampingStuff/TentMed</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
@@ -105,10 +101,6 @@
 			<Mass>3</Mass>
 		</statBases>
 		<comps>
-			<li Class="Camping_Stuff.CompProperties_TentPart">
-				<compClass>Camping_Stuff.CompUsable_TentPart</compClass>
-				<partType>2</partType>
-			</li>
 			<li Class="Camping_Stuff.CompProperties_TentCover">
 				<numPoles>7</numPoles>
 				<tentLayoutSouth>
@@ -124,10 +116,10 @@
 		</comps>
 	</ThingDef>
 	
-	<ThingDef ParentName="TentPartTailored">
+	<ThingDef ParentName="TentCover">
 		<defName>NCS_TentPart_Cover_Large</defName>
 		<label>large tent cover</label>
-		<description>A 7x7 tent with three internal rooms.</description>
+		<description>A 7x7 tent with three internal rooms.\nAllows a tent to be installed when packed in a tent bag with 10 tent poles.</description>
 		<graphicData>
 			<texPath>CampingStuff/TentLarge</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
@@ -139,10 +131,6 @@
 			<Mass>7</Mass>
 		</statBases>
 		<comps>
-			<li Class="Camping_Stuff.CompProperties_TentPart">
-				<compClass>Camping_Stuff.CompUsable_TentPart</compClass>
-				<partType>2</partType>
-			</li>
 			<li Class="Camping_Stuff.CompProperties_TentCover">
 				<numPoles>10</numPoles>
 				<tentLayoutSouth>
@@ -158,10 +146,10 @@
 		</comps>
 	</ThingDef>
 	
-	<ThingDef ParentName="TentPartTailored">
+	<ThingDef ParentName="TentCover">
 		<defName>NCS_TentPart_Cover_Long</defName>
 		<label>long tent cover</label>
-		<description>A 9x7 tent.</description>
+		<description>A 9x7 tent.\nAllows a tent to be installed when packed in a tent bag with 15 tent poles.</description>
 		<graphicData>
 			<texPath>CampingStuff/TentLong</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
@@ -173,10 +161,6 @@
 			<Mass>5</Mass>
 		</statBases>
 		<comps>
-			<li Class="Camping_Stuff.CompProperties_TentPart">
-				<compClass>Camping_Stuff.CompUsable_TentPart</compClass>
-				<partType>2</partType>
-			</li>
 			<li Class="Camping_Stuff.CompProperties_TentCover">
 				<numPoles>15</numPoles>
 				<tentLayoutSouth>
@@ -198,7 +182,10 @@
 	<ThingDef ParentName="TentPartTailored">
 		<defName>NCS_TentPart_Floor</defName>
 		<label>tent mat</label>
-		<description>A soft mat to keep the dirt outside of your tent.</description>
+		<descriptionHyperlinks>
+			<ThingDef>NCS_TentBag</ThingDef>
+		</descriptionHyperlinks>
+		<description>A soft mat to keep the dirt outside of your tent.\nAllows a tent to be installed with a floor when packed in a tent bag.</description>
 		<graphicData>
 			<texPath>CampingStuff/Blanket</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
@@ -242,12 +229,20 @@
 	</ThingDef>
 	
 	<ThingDef ParentName="TentPartTailored">
-	 <category>Ethereal</category> <!--Ethereal so that other buildings can exist in the same space -->
-    <drawerType>None</drawerType>
-	<stackLimit>1</stackLimit>
+		<category>Ethereal</category> <!--Ethereal so that other buildings can exist in the same space -->
+		<drawerType>None</drawerType>
+		<stackLimit>1</stackLimit>
 		<defName>NCS_TentBag</defName>
 		<label>tent bag</label> <!--label and description are modified when the inner thing exists-->
-		<description>A bag to hold tent parts</description>
+		<description>A bag to hold tent parts.\nAllows a tent to be installed when packed with a tent cover and a sufficient number of tent poles.</description>
+		<descriptionHyperlinks>
+			<ThingDef>NCS_TentPart_Cover_Small</ThingDef>
+			<ThingDef>NCS_TentPart_Cover_Med</ThingDef>
+			<ThingDef>NCS_TentPart_Cover_Large</ThingDef>
+			<ThingDef>NCS_TentPart_Cover_Long</ThingDef>
+			<ThingDef>NCS_TentPart_Pole</ThingDef>
+			<ThingDef>NCS_TentPart_Floor</ThingDef>
+		</descriptionHyperlinks>
 		<thingClass>Camping_Stuff.NCS_Tent</thingClass>
 		<altitudeLayer>Shadows</altitudeLayer>
 		<statBases Inherit="False">

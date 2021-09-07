@@ -3,7 +3,8 @@
 	<ThingDef ParentName="DoorBase" Name="NCS_TentDoor">
 		<defName>NCS_TentDoor</defName>
 		<label>tent door</label>
-		<description>Divides rooms. Must be manually opened and closed, which slows people down.</description>
+		<description>A fragile yet practical door.</description>
+		<scatterableOnMapGen>false</scatterableOnMapGen>
 		<designationCategory Inherit="False"></designationCategory><!--removes recipe from menu-->
 		<graphicData>
 			<texPath>CampingStuff/Building/DoorTent_Mover</texPath>
@@ -42,6 +43,7 @@
 		<defName>NCS_TentWall</defName>
 		<label>tent wall</label>
 		<description>A fragile yet practical wall.</description>
+		<scatterableOnMapGen>false</scatterableOnMapGen>
 		<designationCategory Inherit="False"></designationCategory><!--removes recipe from menu-->
 		<graphicData>
 			<texPath>CampingStuff/Building/Linked/TentWall_Atlas</texPath>
