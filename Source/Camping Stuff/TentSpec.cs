@@ -20,18 +20,19 @@ namespace Camping_Stuff
 	{
 		public int tiles = 0;
 		public int layoutParts = 0;
-		public Rot4 rotation = Rot4.South;
+		public Rot4 rotation = Rot4.South; // Towards bottom of screen
 		public IntVec3 center;
 		public List<List<TentLayout>> layout = new List<List<TentLayout>>();
 
-		public TentSpec(List<String> tentLayoutSouth)
+		public TentSpec(List<String> tentLayout, Rot4 orientation)
 		{
 			if (layout.Count != 0) // Prevent building the list twice if the method has already been called (shouldn't happen, but just in case)
 			{
 				return;
 			}
 
-			layout = tentLayoutSouth.Select(row => row.Split(',').Select(val => (TentLayout)Enum.Parse(typeof(TentLayout), val)).ToList()).ToList();
+			layout = tentLayout.Select(row => row.Split(',').Select(val => (TentLayout)Enum.Parse(typeof(TentLayout), val)).ToList()).ToList();
+			rotation = orientation;
 
 			CalculateSpecs();
 		}

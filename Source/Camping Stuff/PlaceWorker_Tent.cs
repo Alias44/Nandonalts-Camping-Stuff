@@ -17,7 +17,7 @@ namespace Camping_Stuff
 		{
 			if (!(thing is NCS_Tent tent))
 				return;
-			tent.DrawGhost_NewTmp(center, true, rot);
+			tent.DrawGhost(center, true, rot);
 		}
 
 		public override AcceptanceReport AllowsPlacing(BuildableDef checkingDef, IntVec3 loc, Rot4 rot, Map map, Thing thingToIgnore = null, Thing thing = null)

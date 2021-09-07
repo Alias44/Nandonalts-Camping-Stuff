@@ -23,7 +23,7 @@ namespace Camping_Stuff
 	public class NCS_Tent : Building
 	{
 		public Sketch sketch = new Sketch();
-		private Rot4 deployedRot = Rot4.North;
+		private Sketch deployedSketch;
 
 		public int PoleCount { get; private set; } = 0;
 		public int maxPoles = DefDatabase<ThingDef>.AllDefs.Where(d => d.HasComp(typeof(TentCoverComp))).Min(cover => cover.GetCompProperties<CompProperties_TentCover>().numPoles);
@@ -35,20 +35,13 @@ namespace Camping_Stuff
 
 		public int PoleKindCount(Thing thing)
 		{
-			try
-			{
-				int poleIndex = FindPoleIndex(thing);
-				return poles[poleIndex].stackCount;
-			}
-			catch (Exception)
-			{
-				return 0;
-			}
+			int poleIndex = FindPoleIndex(thing);
+			return (poleIndex > -1) ? poles[poleIndex].stackCount : 0;
 		}
 
 		private int FindPoleIndex(Thing thing)
 		{
-			return poles.FindIndex(p => p.CanStackWith(thing));
+			return Poles.FindIndex(p => p.CanStackWith(thing));
 		}
 
 		private Thing cover = null;
@@ -152,7 +145,6 @@ namespace Camping_Stuff
 			}
 		}
 
-
 		// Overriding label and description (while spawned/ installed/ deployed), since minified things don't really have their own.
 		public override string LabelNoCount => this.Spawned ? (string) "SpawnedTentLabel".Translate() : base.LabelNoCount;
 
@@ -177,8 +169,7 @@ namespace Camping_Stuff
 		{
 			get
 			{
-				this.sketch.Rotate(this.Rotation);
-				return !this.Spawned ? new CellRect?() : new CellRect?(this.sketch.OccupiedRect.MovedBy(this.Position));
+				return !this.Spawned ? new CellRect?() : new CellRect?(this.deployedSketch.OccupiedRect.MovedBy(this.Position));
 			}
 		}
 
@@ -193,9 +184,9 @@ namespace Camping_Stuff
 		{
 			base.SpawnSetup(map, respawningAfterLoad);
 
-			this.sketch.Rotate(this.Rotation);
+			//this.sketch.Rotate(this.Rotation);
 
-  			if (!respawningAfterLoad)
+			if (!respawningAfterLoad)
  			{
  				if (floor != null && this.floor.TryGetComp<CompTentPartWithCellsDamage>().HasDamagedCells())
 				{
@@ -239,14 +230,17 @@ namespace Camping_Stuff
 				}
 			}
 
-			deployedRot = this.Rotation;
+			// Prevents respawningAfterLoad from overwriting the deployed sketch if it has already been set (ie by ExposeData or back compatibiity),
+			if (deployedSketch == null)
+			{
+				deployedSketch = sketch.DeepCopy();
+			}
 		}
 
+		// Trouble with doors that are forced open???
 		public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
 		{
-			this.sketch.Rotate(deployedRot);
-
-			foreach (SketchEntity se in this.sketch.Entities.OrderByDescending<SketchEntity, float>((Func<SketchEntity, float>)(x => x.SpawnOrder)))
+			foreach (SketchEntity se in this.deployedSketch.Entities.OrderByDescending<SketchEntity, float>((Func<SketchEntity, float>)(x => x.SpawnOrder)))
 			{
 				IntVec3 cell = se.pos + this.Position;
 
@@ -262,7 +256,7 @@ namespace Camping_Stuff
 					}
 					else
 					{
-						this.cover.TryGetComp<TentCoverComp>().AddCell(se, deployedRot);
+						this.cover.TryGetComp<TentCoverComp>().AddCell(se, this.Rotation);
 					}
 				}
 				else if (se is SketchTerrain terrain)
@@ -273,11 +267,12 @@ namespace Camping_Stuff
 					}
 					else
 					{
-						this.floor.TryGetComp<CompTentPartWithCellsDamage>().AddCell(terrain, deployedRot);
+						this.floor.TryGetComp<CompTentPartWithCellsDamage>().AddCell(terrain, this.Rotation);
 					}
 				}
 			}
 
+			deployedSketch = null;
 			base.DeSpawn(mode);
 		}
 
@@ -287,6 +282,8 @@ namespace Camping_Stuff
 			Scribe_Deep.Look(ref cover, "tentCover");
 			Scribe_Deep.Look(ref floor, "tentFloor");
 			Scribe_Collections.Look<Thing>(ref poles, "poleList", LookMode.Deep);
+			// Allows the tent to be packed, even if the layout has changed (at the expense of save file space)
+			Scribe_Deep.Look<Sketch>(ref deployedSketch, "deployedTentSketch", null);
 
 			if (Scribe.mode == LoadSaveMode.PostLoadInit)
 			{
@@ -302,7 +299,7 @@ namespace Camping_Stuff
 			}
 		}
 
-		public void DrawGhost_NewTmp(IntVec3 at, bool placingMode, Rot4 rotation)
+		public void DrawGhost(IntVec3 at, bool placingMode, Rot4 rotation)
 		{
 			if (!Ready)
 			{
@@ -478,7 +475,6 @@ namespace Camping_Stuff
 
 			if (Poles.Count != 0)
 			{
-				//defDesc += "Poles:\n";
 				foreach (Thing pole in poles)
 				{
 					val += (pole.GetStatValue(sd) * pole.stackCount);
@@ -533,6 +529,24 @@ namespace Camping_Stuff
 
 			sketch = this.cover.TryGetComp<TentCoverComp>().Props.tentSpec.ToSketch(cover.Stuff, floor?.Stuff);
 			sketch.Rotate(this.Rotation);
+		}
+
+		public void SetDeployedSketch(TentSpec spec)
+		{
+			deployedSketch = spec.ToSketch(cover.Stuff, floor?.Stuff);
+			var sketchRot = this.Rotation;
+			sketchRot.AsInt += 2;
+
+			deployedSketch.Rotate(this.Rotation);
+		}
+
+		public void SpawnParts(ThingDef cover)
+		{
+			Cover = ThingMaker.MakeThing(cover, Stuff);
+
+			var poleStack = ThingMaker.MakeThing(TentDefOf.NCS_TentPart_Pole, ThingDefOf.WoodLog);
+			poleStack.stackCount = maxPoles;
+			PackPart(poleStack);
 		}
 	}
 }

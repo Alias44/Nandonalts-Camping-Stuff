@@ -33,7 +33,7 @@ namespace Camping_Stuff
 
 		public override void PostLoadSpecial(ThingDef parentDef)
 		{
-			tentSpec = new TentSpec(tentLayoutSouth);
+			tentSpec = new TentSpec(tentLayoutSouth, Rot4.South);
 		}
 	}
 }

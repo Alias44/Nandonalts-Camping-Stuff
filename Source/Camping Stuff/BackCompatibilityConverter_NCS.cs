@@ -18,7 +18,17 @@ namespace Camping_Stuff
 			new Dictionary<int, (ThingDef, Rot4, int)>();
 
 		private Dictionary<int, List<NCS_Tent>> newDeployedTents = new Dictionary<int, List<NCS_Tent>>();
-		
+
+		private static TentSpec legacyLargeLayout = new TentSpec(new List<string> {
+								"1,1,1,1,1,1,1",
+								"1,4,4,1,4,4,1",
+								"1,2,1,1,1,2,1",
+								"1,4,4,3,4,4,1",
+								"1,4,4,4,4,4,1",
+								"1,4,4,4,4,4,1",
+								"1,1,1,2,1,1,1"
+							}, Rot4.South);
+
 		public override bool AppliesToVersion(int majorVer, int minorVer) =>
 			majorVer == 0 || (majorVer == 1 && minorVer == 0); // applies to <= 1.0
 
@@ -60,7 +70,12 @@ namespace Camping_Stuff
 				}
 				else if (providedClassName.Equals("Building") && def.Equals("TentDeployed"))
 				{
-					string cover = node["tentName"].InnerText;
+					string cover = "DeployableTent";
+					var nameNode = node["tentName"];
+					if (nameNode != null)
+					{
+						cover = nameNode.InnerText;
+					}
 
 					Rot4 direction;
 					try
@@ -91,56 +106,47 @@ namespace Camping_Stuff
 		{
 			if (Scribe.mode != LoadSaveMode.PostLoadInit)
 				return;
-			switch (obj)
+
+			if(obj is Map map && newDeployedTents.ContainsKey(map.uniqueID))
 			{
-				case NCS_MiniTent miniTent when oldPackedTents.ContainsKey(miniTent.thingIDNumber):
+				// Convert Constructed roofs above each tent into tent roofs
+				newDeployedTents[map.uniqueID]
+					.ForEach(tent => tent.sketch.Entities
+						.Where(e => e is SketchRoof &&
+									map.roofGrid.RoofAt(tent.Position + e.pos) == RoofDefOf.RoofConstructed)
+						.ToList()
+						.ForEach(e => e.Spawn(tent.Position + e.pos, map, tent.Faction, wipeIfCollides: true)));
+			}
+			else if (obj is NCS_MiniTent miniTent && oldPackedTents.ContainsKey(miniTent.thingIDNumber))
+			{
+				// Create an inner tent to set in the bag (the minified thing won't have any by default)
+				var tent = (NCS_Tent)ThingMaker.MakeThing(TentDefOf.NCS_TentBag, miniTent.Stuff);
+				// make the user whole: fill the bag with parts equivalent to the replaced tent
+				tent.SpawnParts(oldPackedTents[miniTent.thingIDNumber]);
+
+				miniTent.Bag = tent;
+				miniTent.HitPoints = miniTent.MaxHitPoints;
+			}
+			else if(obj is NCS_Tent tent && oldDeployedTents.ContainsKey(tent.thingIDNumber))
+			{
+				var (thingDef, orientation, mapId) = oldDeployedTents[tent.thingIDNumber];
+				tent.SpawnParts(thingDef);
+
+				tent.Rotation = orientation;
+
+				if (tent.Cover.def.Equals(TentDefOf.NCS_TentPart_Cover_Large))
 				{
-					// Create an inner tent to set in the bag (the minified thing won't have any by default)
-					var tent = (NCS_Tent) ThingMaker.MakeThing(TentDefOf.NCS_TentBag, miniTent.Stuff);
-
-					// make the user whole: fill the bag with parts equivalent to the replaced tent
-					var cover = ThingMaker.MakeThing(oldPackedTents[miniTent.thingIDNumber], miniTent.Stuff);
-					tent.Cover = cover;
-					var poleStack = ThingMaker.MakeThing(TentDefOf.NCS_TentPart_Pole, ThingDefOf.WoodLog);
-					poleStack.stackCount = tent.maxPoles;
-					tent.PackPart(poleStack);
-
-					miniTent.Bag = tent;
-					miniTent.HitPoints = miniTent.MaxHitPoints;
-					break;
+					tent.SetDeployedSketch(legacyLargeLayout);
 				}
-				case NCS_Tent tent when oldDeployedTents.ContainsKey(tent.thingIDNumber):
+
+				try
 				{
-					var (thingDef, orientation, mapId) = oldDeployedTents[tent.thingIDNumber];
-
-					var cover = (ThingWithComps) ThingMaker.MakeThing(thingDef, tent.Stuff);
-					tent.Cover = cover;
-					var poleStack = ThingMaker.MakeThing(TentDefOf.NCS_TentPart_Pole, ThingDefOf.WoodLog);
-					poleStack.stackCount = tent.maxPoles;
-					tent.PackPart(poleStack);
-					tent.Rotation = orientation;
-
-					try
-					{
-						newDeployedTents[mapId].Add(tent);
-					}
-					catch
-					{
-						newDeployedTents[mapId] = new List<NCS_Tent> {tent};
-					}
-					break;
+					newDeployedTents[mapId].Add(tent);
 				}
-				case Map map when newDeployedTents.ContainsKey(map.uniqueID):
-
-					// Convert Constructed roofs above each tent into tent roofs
-					newDeployedTents[map.uniqueID]
-						.ForEach(tent => tent.sketch.Entities
-							.Where(e => e is SketchRoof &&
-							            map.roofGrid.RoofAt(tent.Position + e.pos) == RoofDefOf.RoofConstructed)
-							.ToList()
-							.ForEach(e => e.Spawn(tent.Position + e.pos, map, tent.Faction, wipeIfCollides: true)));
-
-					break;
+				catch
+				{
+					newDeployedTents[mapId] = new List<NCS_Tent> { tent };
+				}
 			}
 		}
 

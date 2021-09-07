@@ -119,7 +119,7 @@
 	<ThingDef ParentName="TentCover">
 		<defName>NCS_TentPart_Cover_Large</defName>
 		<label>large tent cover</label>
-		<description>A 7x7 tent with three internal rooms.\nAllows a tent to be installed when packed in a tent bag with 10 tent poles.</description>
+		<description>A 9x9 tent with three internal rooms.\nAllows a tent to be installed when packed in a tent bag with 15 tent poles.</description>
 		<graphicData>
 			<texPath>CampingStuff/TentLarge</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
@@ -132,15 +132,17 @@
 		</statBases>
 		<comps>
 			<li Class="Camping_Stuff.CompProperties_TentCover">
-				<numPoles>10</numPoles>
+				<numPoles>15</numPoles>
 				<tentLayoutSouth>
-					<li>1,1,1,1,1,1,1</li>
-					<li>1,4,4,1,4,4,1</li>
-					<li>1,2,1,1,1,2,1</li>
-					<li>1,4,4,3,4,4,1</li>
-					<li>1,4,4,4,4,4,1</li>
-					<li>1,4,4,4,4,4,1</li>
-					<li>1,1,1,2,1,1,1</li>
+					<li>1,1,1,1,1,1,1,1,1</li>
+					<li>1,4,4,4,1,4,4,4,1</li>
+					<li>1,4,4,4,1,4,4,4,1</li>
+					<li>1,1,1,2,1,2,1,1,1</li>
+					<li>1,4,4,4,3,4,4,4,1</li>
+					<li>1,4,4,4,4,4,4,4,1</li>
+					<li>1,4,4,4,4,4,4,4,1</li>
+					<li>1,4,4,4,4,4,4,4,1</li>
+					<li>1,1,1,1,2,1,1,1,1</li>
 				</tentLayoutSouth>
 			</li>
 		</comps>
@@ -149,7 +151,7 @@
 	<ThingDef ParentName="TentCover">
 		<defName>NCS_TentPart_Cover_Long</defName>
 		<label>long tent cover</label>
-		<description>A 9x7 tent.\nAllows a tent to be installed when packed in a tent bag with 15 tent poles.</description>
+		<description>A 9x7 tent.\nAllows a tent to be installed when packed in a tent bag with 10 tent poles.</description>
 		<graphicData>
 			<texPath>CampingStuff/TentLong</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
@@ -162,7 +164,7 @@
 		</statBases>
 		<comps>
 			<li Class="Camping_Stuff.CompProperties_TentCover">
-				<numPoles>15</numPoles>
+				<numPoles>10</numPoles>
 				<tentLayoutSouth>
 					<li>1,1,1,1,1,1,1</li>
 					<li>1,4,4,4,4,4,1</li>
