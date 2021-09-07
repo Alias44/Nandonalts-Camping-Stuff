@@ -18,7 +18,7 @@ namespace Camping_Stuff
 
 		protected float DistributedPoleOffset(NCS_Tent tent, StatDef sd)
 		{
-			int parts = tent.Cover.TryGetComp<TentCoverComp>().Props.layoutParts;
+			int parts = tent.Cover.TryGetComp<TentCoverComp>().Props.tentSpec.layoutParts;
 			float totalOffset = tent.Poles.Sum(p =>
 				p.Stuff.stuffProps.statOffsets.GetStatOffsetFromList(sd) * p.stackCount);
 
@@ -35,7 +35,7 @@ namespace Camping_Stuff
 
 				float avg = AvgPoleFactor(tent, sd);
 				float offset = DistributedPoleOffset(tent, sd);
-				float coverMultiplier = (float) 1.0 / tent.Cover.TryGetComp<TentCoverComp>().Props.layoutParts;
+				float coverMultiplier = (float) 1.0 / tent.Cover.TryGetComp<TentCoverComp>().Props.tentSpec.layoutParts;
 
 				string factorDesc = "";
 				string offsetDesc = "";

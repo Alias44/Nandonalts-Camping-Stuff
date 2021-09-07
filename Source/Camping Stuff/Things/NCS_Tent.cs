@@ -531,48 +531,8 @@ namespace Camping_Stuff
 				return;
 			}
 
-			sketch = new Sketch();
-			sketch.Rotate(Rot4.South);
-
-			CompProperties_TentCover coverProps = this.cover.TryGetComp<TentCoverComp>().Props;
-
-			for (int r = 0; r < coverProps.layoutS.Count; r++)
-			{
-				for (int c = 0; c < coverProps.layoutS[r].Count; c++)
-				{
-					IntVec3 loc = new IntVec3(c, 0, r) - coverProps.center;
-
-					TentLayout cellLayout = coverProps.layoutS[r][c];
-
-					if(cellLayout != TentLayout.empty && cellLayout != TentLayout.other)
-					{
-						// Add roof
-						SketchRoof sr = new SketchRoof
-						{
-							pos = loc,
-							roof = TentDefOf.NCS_TentRoof
-						};
-
-						sketch.Add(sr, false);
-
-						// Add floor if applicable
-						if (floor != null)
-						{
-							sketch.AddTerrain(TentDefOf.NCS_TentFloor, loc);
-						}
-					}
-
-					if(cellLayout == TentLayout.wall)
-					{
-						sketch.AddThing(TentDefOf.NCS_TentWall, loc, Rot4.South, cover.Stuff);
-					}
-
-					else if (cellLayout == TentLayout.door)
-					{
-						sketch.AddThing(TentDefOf.NCS_TentDoor, loc, Rot4.South, cover.Stuff);
-					}
-				}
-			}
+			sketch = this.cover.TryGetComp<TentCoverComp>().Props.tentSpec.ToSketch(cover.Stuff, floor?.Stuff);
+			sketch.Rotate(this.Rotation);
 		}
 	}
 }

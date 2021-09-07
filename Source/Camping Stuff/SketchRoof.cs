@@ -77,5 +77,18 @@ namespace Camping_Stuff
 
 			return true;
 		}
+
+		public override void ExposeData()
+		{
+			base.ExposeData();
+			Scribe_Defs.Look<RoofDef>(ref roof, "def");
+		}
+
+		public override SketchEntity DeepCopy()
+		{
+			SketchRoof sketchRoof = (SketchRoof) base.DeepCopy();
+			sketchRoof.roof = this.roof;
+			return sketchRoof;
+		}
 	}
 }

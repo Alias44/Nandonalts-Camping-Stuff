@@ -8,6 +8,9 @@ using Verse;
 
 namespace Camping_Stuff
 {
+	/// <summary>
+	/// Comparison class for SketchEntities since is uses the default .equals function which cannot do logical equality
+	/// </summary>
 	internal class SketchEntityComparer : IEqualityComparer<SketchEntity>
 	{
 		public bool Equals(SketchEntity x, SketchEntity y)
@@ -38,7 +41,7 @@ namespace Camping_Stuff
 
 		protected HashSet<SketchEntity> damagedCells = new HashSet<SketchEntity>(new SketchEntityComparer());
 
-		public static int maxTiles = DefDatabase<ThingDef>.AllDefs.Where(d => d.HasComp(typeof(TentCoverComp))).Max(cover => cover.GetCompProperties<CompProperties_TentCover>().tiles); // maximum cells 
+		public static int maxTiles = DefDatabase<ThingDef>.AllDefs.Where(d => d.HasComp(typeof(TentCoverComp))).Max(cover => cover.GetCompProperties<CompProperties_TentCover>().tentSpec.tiles); // maximum cells 
 
 		protected virtual int DamageUnit => (int)Math.Ceiling((double) this.parent.MaxHitPoints / maxTiles); // Hitpoints to subtract per cell in damagedCells
 
