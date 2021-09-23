@@ -10,6 +10,9 @@ using Verse.AI;
 
 namespace Camping_Stuff
 {
+	/// <summary>
+	/// Comp class to handle damage traking repair for tent parts
+	/// </summary>
 	public class CompTentPartDamage : ThingComp // put damage int here and override protected in child cover?
 	{
 		public CompProperties_TentPartDamage Props => (CompProperties_TentPartDamage)this.props;

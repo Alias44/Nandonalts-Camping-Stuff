@@ -44,6 +44,7 @@ namespace Camping_Stuff
 			return Poles.FindIndex(p => p.CanStackWith(thing));
 		}
 
+		private int layoutHash;
 		private Thing cover = null;
 		public Thing Cover
 		{
@@ -184,26 +185,27 @@ namespace Camping_Stuff
 		{
 			base.SpawnSetup(map, respawningAfterLoad);
 
-			//this.sketch.Rotate(this.Rotation);
+			var floorComp = this.cover.TryGetComp<CompTentPartWithCellsDamage>();
+			var coverComp = this.cover.TryGetComp<TentCoverComp>();
 
 			if (!respawningAfterLoad)
  			{
- 				if (floor != null && this.floor.TryGetComp<CompTentPartWithCellsDamage>().HasDamagedCells())
+ 				if (floor != null && floorComp.HasDamagedCells())
 				{
 					Messages.Message("DamagedMat".Translate(), MessageTypeDefOf.NegativeEvent);
 				}
 
-				if (this.cover.TryGetComp<TentCoverComp>().HasDamagedCells())
+				if (coverComp.HasDamagedCells())
 				{
 					Messages.Message("DamagedCover".Translate(), MessageTypeDefOf.NegativeEvent);
 				}
 
-				foreach (SketchEntity se in this.sketch.Entities.OrderBy<SketchEntity, float>((Func<SketchEntity, float>)(x => x.SpawnOrder)))
+				foreach (SketchEntity se in this.sketch.Entities.OrderBy(x => x.SpawnOrder))
 				{
 					IntVec3 cell = se.pos + this.Position;
 
-					if (!(se is SketchTerrain && this.floor.TryGetComp<CompTentPartWithCellsDamage>().CheckCell(se, this.Rotation)) && // 
-					    !(se is SketchThing && this.cover.TryGetComp<TentCoverComp>().CheckCell(se, this.Rotation)))
+					if (!(se is SketchTerrain && floorComp.CheckCell(se, this.Rotation)) && // 
+					    !(se is SketchThing && coverComp.CheckCell(se, this.Rotation)))
 					{
 						var spawnedThings = new List<Thing>();
  						se.Spawn(cell, this.Map, Faction.OfPlayer, spawnedThings: spawnedThings);
@@ -230,9 +232,18 @@ namespace Camping_Stuff
 				}
 			}
 
-			// Prevents respawningAfterLoad from overwriting the deployed sketch if it has already been set (ie by ExposeData or back compatibiity),
-			if (deployedSketch == null)
+			// Technically respawningAfterLoad is gurateed true from the previous if (but I like it for clarity)
+			// on respawn get the old layout from the cache
+			else if (respawningAfterLoad && layoutHash != 0)
 			{
+				SetDeployedSketch(Current.Game.GetComponent<LayoutCache>().GetSpec(layoutHash));
+			}
+
+			if (layoutHash == 0)
+			{
+				layoutHash = coverComp.Props.layoutHash;
+				Current.Game.GetComponent<LayoutCache>().Add(coverComp.Props.tentSpec, this);
+
 				deployedSketch = sketch.DeepCopy();
 			}
 		}
@@ -272,6 +283,8 @@ namespace Camping_Stuff
 				}
 			}
 
+			Current.Game.GetComponent<LayoutCache>().Remove(layoutHash, this);
+			layoutHash = 0;
 			deployedSketch = null;
 			base.DeSpawn(mode);
 		}
@@ -279,11 +292,11 @@ namespace Camping_Stuff
 		public override void ExposeData()
 		{
 			base.ExposeData();
+
+			Scribe_Values.Look(ref layoutHash, "layout");
 			Scribe_Deep.Look(ref cover, "tentCover");
 			Scribe_Deep.Look(ref floor, "tentFloor");
 			Scribe_Collections.Look<Thing>(ref poles, "poleList", LookMode.Deep);
-			// Allows the tent to be packed, even if the layout has changed (at the expense of save file space)
-			Scribe_Deep.Look<Sketch>(ref deployedSketch, "deployedTentSketch", null);
 
 			if (Scribe.mode == LoadSaveMode.PostLoadInit)
 			{
@@ -294,7 +307,6 @@ namespace Camping_Stuff
 				{
 					maxPoles = Cover.TryGetComp<TentCoverComp>().Props.numPoles;
 				}
-
 				UpdateSketch();
 			}
 		}
@@ -534,8 +546,8 @@ namespace Camping_Stuff
 		public void SetDeployedSketch(TentSpec spec)
 		{
 			deployedSketch = spec.ToSketch(cover.Stuff, floor?.Stuff);
-			var sketchRot = this.Rotation;
-			sketchRot.AsInt += 2;
+			//var sketchRot = this.Rotation;
+			//sketchRot.AsInt += 2;
 
 			deployedSketch.Rotate(this.Rotation);
 		}

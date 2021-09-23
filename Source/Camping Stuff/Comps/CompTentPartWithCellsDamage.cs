@@ -35,6 +35,9 @@ namespace Camping_Stuff
 		}
 	}
 
+	/// <summary>
+	/// Handles damage tracking/ repair where specific cells are involved
+	/// </summary>
 	public class CompTentPartWithCellsDamage : CompTentPartDamage
 	{
 		public CompProperties_CompTentPartWithCellsDamage Props => (CompProperties_CompTentPartWithCellsDamage)this.props;
@@ -61,7 +64,7 @@ namespace Camping_Stuff
 
 			if (added)
 			{
-				this.parent.HitPoints = this.parent.HitPoints - DamageUnit;
+				this.parent.HitPoints -= DamageUnit;
 			}
 
 			return added;

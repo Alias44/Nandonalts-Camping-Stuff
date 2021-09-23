@@ -10,7 +10,6 @@ using Verse;
 
 namespace Camping_Stuff
 {
-	//[StaticConstructorOnStartup]
 	public class HarmonyPatches : Mod
 	{
 		public HarmonyPatches(ModContentPack content) : base(content)
@@ -94,6 +93,7 @@ namespace Camping_Stuff
 			}
 		}
 
+		/// <summary>Adds tents in the ready state to the "Travel and Supplies" tab of the Form Caravan page</summary>
 		[HarmonyTranspiler]
 		public static IEnumerable<CodeInstruction> TentTransferCategory(IEnumerable<CodeInstruction> instructions, ILGenerator ilg)
 		{
@@ -118,8 +118,6 @@ namespace Camping_Stuff
 
 			if (insertIndex >= 0)
 			{
-				var tent = ilg.DeclareLocal(typeof(NCS_MiniTent));
-
 				CodeInstruction[] newInstructions = new[]
 				{
 					new CodeInstruction(OpCodes.Ldarg_0).WithLabels(tentPatchStart),

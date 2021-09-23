@@ -101,6 +101,7 @@
     <Compile Include="Jobs\JobDriver_Fetch.cs" />
     <Compile Include="Jobs\JobDriver_RepairPartInBag.cs" />
     <Compile Include="Jobs\JobDriver_RepairPart.cs" />
+    <Compile Include="LayoutCache.cs" />
     <Compile Include="Statparts\PoleFactors.cs" />
     <Compile Include="TentSpec.cs" />
     <Compile Include="Things\NCS_MiniTent.cs" />

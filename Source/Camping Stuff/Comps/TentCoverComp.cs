@@ -6,6 +6,12 @@ using RimWorld;
 
 namespace Camping_Stuff
 {
+	/// <summary>
+	/// Refines damage repair to work with tent covers
+	/// </summary>
+	/// <remarks>
+	/// This child is needed since the cell repair costs are relative to the number of cells in the layout
+	/// </remarks>
 	public class TentCoverComp : CompTentPartWithCellsDamage //(Thing)
 	{
 		public CompProperties_TentCover Props => (CompProperties_TentCover)this.props;
@@ -19,7 +25,7 @@ namespace Camping_Stuff
 		public int numPoles;
 		private List<string> tentLayoutSouth = new List<string>();
 		public TentSpec tentSpec;
-
+		public int layoutHash;
 
 		public CompProperties_TentCover()
 		{
@@ -34,6 +40,7 @@ namespace Camping_Stuff
 		public override void PostLoadSpecial(ThingDef parentDef)
 		{
 			tentSpec = new TentSpec(tentLayoutSouth, Rot4.South);
+			layoutHash = tentSpec.GetHashCode();
 		}
 	}
 }
