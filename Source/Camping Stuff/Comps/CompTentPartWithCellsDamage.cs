@@ -44,7 +44,11 @@ namespace Camping_Stuff
 
 		protected HashSet<SketchEntity> damagedCells = new HashSet<SketchEntity>(new SketchEntityComparer());
 
-		public static int maxTiles = DefDatabase<ThingDef>.AllDefs.Where(d => d.HasComp(typeof(TentCoverComp))).Max(cover => cover.GetCompProperties<CompProperties_TentCover>().tentSpec.tiles); // maximum cells 
+		private static TentSpec largestTent = DefDatabase<ThingDef>.AllDefs
+			.Where(d => d.HasComp(typeof(TentCoverComp)))
+			.Select(cover => cover.GetCompProperties<CompProperties_TentCover>().tentSpec)
+			.Aggregate((spec1, spec2) => spec1.tiles > spec2.tiles ? spec1 : spec2);
+		public static int maxTiles = largestTent.tiles; // maximum cells 
 
 		protected virtual int DamageUnit => (int)Math.Ceiling((double) this.parent.MaxHitPoints / maxTiles); // Hitpoints to subtract per cell in damagedCells
 
@@ -73,6 +77,63 @@ namespace Camping_Stuff
 		public bool HasDamagedCells()
 		{
 			return damagedCells.Count > 0;
+		}
+
+		/// <summary>
+		/// Reallocates the SketchEntities in damagedCells based on the sketch provided
+		/// </summary>
+		/// <remarks>Allows the comp's damage tracking to function if the shape of tent has been changed</remarks>
+		public void Reallocate(Sketch sketch, Rot4 sketchRot)
+		{
+			var d = sketch.Entities
+				.Select(entity => entity.Normalize(sketchRot))
+				.GroupBy(entity => entity.GetType()).ToDictionary(group => group.Key, group => group.ToHashSet(new SketchEntityComparer()));
+
+			HashSet<SketchEntity> reallocatedCells = new HashSet<SketchEntity>(new SketchEntityComparer());
+
+			var sketchRect = sketch.OccupiedRect;
+
+			foreach (var cell in damagedCells)
+			{
+				if (!d[cell.GetType()].Contains(cell))
+				{
+					int maxRadius = Math.Max(sketchRect.Width, sketchRect.Height);
+					for(int radius = 1; radius <= maxRadius; radius++)
+					{
+						CellRect searchSpace = CellRect.CenteredOn(cell.pos, radius).ClipInsideRect(sketchRect);
+
+						var c = d[cell.GetType()]
+							.Where(entity => searchSpace.Contains(entity.pos) &&
+									entity.Label.Equals(cell.Label) &&
+									!reallocatedCells.Contains(entity) &&
+									entity.OccupiedRect.Height == cell.OccupiedRect.Height && // .equals() won't work since Cellrect's are relatice to the posistion so the bounds won't line up
+									entity.OccupiedRect.Width == cell.OccupiedRect.Width &&
+									entity.SpawnOrder.Equals(entity.SpawnOrder))
+							.OrderBy(entity => entity.pos.DistanceTo(cell.pos))
+							.FirstOrFallback(null);
+
+						if (c != null)
+						{
+							reallocatedCells.Add(c);
+							break;
+						}
+						if (searchSpace.Equals(sketchRect))
+						{
+							return;
+						}
+					}
+				}
+				else
+				{
+					reallocatedCells.Add(cell);
+				}
+			}
+
+			if(reallocatedCells.Count != 0)
+			{
+				damagedCells.Clear();
+				damagedCells = reallocatedCells;
+			}
 		}
 
 		public override void Repair()

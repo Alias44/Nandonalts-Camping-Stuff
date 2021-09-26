@@ -242,15 +242,18 @@ namespace Camping_Stuff
 			if (layoutHash == 0)
 			{
 				layoutHash = coverComp.Props.layoutHash;
-				Current.Game.GetComponent<LayoutCache>().Add(coverComp.Props.tentSpec, this);
-
 				deployedSketch = sketch.DeepCopy();
+
+				Current.Game.GetComponent<LayoutCache>().Add(coverComp.Props.tentSpec, this);
 			}
 		}
 
 		// Trouble with doors that are forced open???
 		public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
 		{
+			var floorComp = this.cover.TryGetComp<CompTentPartWithCellsDamage>();
+			var coverComp = this.cover.TryGetComp<TentCoverComp>();
+
 			foreach (SketchEntity se in this.deployedSketch.Entities.OrderByDescending<SketchEntity, float>((Func<SketchEntity, float>)(x => x.SpawnOrder)))
 			{
 				IntVec3 cell = se.pos + this.Position;
@@ -267,7 +270,7 @@ namespace Camping_Stuff
 					}
 					else
 					{
-						this.cover.TryGetComp<TentCoverComp>().AddCell(se, this.Rotation);
+						coverComp.AddCell(se, this.Rotation);
 					}
 				}
 				else if (se is SketchTerrain terrain)
@@ -278,9 +281,14 @@ namespace Camping_Stuff
 					}
 					else
 					{
-						this.floor.TryGetComp<CompTentPartWithCellsDamage>().AddCell(terrain, this.Rotation);
+						floorComp.AddCell(terrain, this.Rotation);
 					}
 				}
+			}
+
+			if(layoutHash != coverComp.Props.layoutHash)
+			{
+				coverComp.Reallocate(sketch, this.Rotation);
 			}
 
 			Current.Game.GetComponent<LayoutCache>().Remove(layoutHash, this);
@@ -545,11 +553,16 @@ namespace Camping_Stuff
 
 		public void SetDeployedSketch(TentSpec spec)
 		{
-			deployedSketch = spec.ToSketch(cover.Stuff, floor?.Stuff);
-			//var sketchRot = this.Rotation;
-			//sketchRot.AsInt += 2;
+			SetDeployedSketch(spec, spec.GetHashCode());
+		}
 
+		public void SetDeployedSketch(TentSpec spec, int specHash)
+		{
+			layoutHash = specHash;
+			deployedSketch = spec.ToSketch(cover.Stuff, floor?.Stuff);
 			deployedSketch.Rotate(this.Rotation);
+
+			Current.Game.GetComponent<LayoutCache>().Add(spec, this);
 		}
 
 		public void SpawnParts(ThingDef cover)
