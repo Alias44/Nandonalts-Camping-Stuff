@@ -33,7 +33,14 @@ namespace Camping_Stuff
 
 		public override bool IsSameSpawned(IntVec3 at, Map map)
 		{
-			return at.GetRoof(map).Equals(roof);
+			try
+			{
+				return at.GetRoof(map).Equals(roof);
+			}
+			catch
+			{
+				return false;
+			}
 		}
 
 		public override bool IsSameSpawnedOrBlueprintOrFrame(IntVec3 at, Map map)

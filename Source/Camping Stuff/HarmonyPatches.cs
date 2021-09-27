@@ -50,6 +50,7 @@ namespace Camping_Stuff
 			if (def.Equals(TentDefOf.NCS_TentBag) && __result.defName.Equals(ThingDefGenerator_Buildings.BlueprintDefNamePrefix + ThingDefGenerator_Buildings.InstallBlueprintDefNamePrefix + def.defName)) // Tent bag match should only happen once, but just to be sure string match the install blueprint
 			{
 				__result.thingClass = typeof(TentBlueprint_Install);
+				__result.drawerType = DrawerType.RealtimeOnly;
 			}
 		}
 

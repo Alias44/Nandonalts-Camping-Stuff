@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -248,7 +249,7 @@ namespace Camping_Stuff
 			}
 		}
 
-		// Trouble with doors that are forced open???
+		private static FieldInfo doorOpen = typeof(Building_Door).GetField("openInt", BindingFlags.NonPublic | BindingFlags.Instance);
 		public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
 		{
 			var floorComp = this.cover.TryGetComp<CompTentPartWithCellsDamage>();
@@ -262,11 +263,18 @@ namespace Camping_Stuff
 				{
 					Map.roofGrid.SetRoof(cell, null);
 				}
-				else if (se is SketchThing thing)
+				else if (se is SketchThing sketchThing)
 				{
-					if (thing.IsSameSpawned(cell, this.Map))
+					if (sketchThing.IsSameSpawned(cell, this.Map))
 					{
-						thing.GetSameSpawned(cell, this.Map).DeSpawn(DestroyMode.Vanish);
+						Thing thing = sketchThing.GetSameSpawned(cell, this.Map);
+
+						if(thing is Building_Door door && door.Open)
+						{
+							doorOpen.SetValue(door, false);
+						}
+
+						thing.DeSpawn(DestroyMode.Vanish);
 					}
 					else
 					{
