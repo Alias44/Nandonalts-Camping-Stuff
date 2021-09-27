@@ -152,7 +152,7 @@ namespace Camping_Stuff
 
 		public override string DescriptionDetailed => Ready ? (string) "TentDescriptionDetailed".Translate(cover.Stuff.LabelAsStuff, cover.DescriptionDetailed.Replace("A ", "")) : base.DescriptionDetailed;
 
-		public string TentSize => this.Ready ? cover.Label.Replace(" tent cover", "") : "unknown";
+		public string TentSize => this.Ready ? cover.def.label.Replace(" tent cover", "") : "unknown";
 
 		public override string DescriptionFlavor
 		{

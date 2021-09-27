@@ -20,8 +20,9 @@ namespace Camping_Stuff
 			harmony.Patch(AccessTools.Method(typeof(ThingDefGenerator_Buildings), "NewBlueprintDef_Thing"), null, new HarmonyMethod(typeof(HarmonyPatches), nameof(NewBlueprintDef_Tent)));
 			harmony.Patch(AccessTools.Method(typeof(Designator_Uninstall), "CanDesignateThing"), null, new HarmonyMethod(typeof(HarmonyPatches), nameof(CanDesignateThingTent)));
 			harmony.Patch(AccessTools.Method(typeof(GenConstruct), "FirstBlockingThing"), null, new HarmonyMethod(typeof(HarmonyPatches), nameof(TentBlueprintRect)));
-			harmony.Patch(AccessTools.Method(typeof(CaravanUIUtility), "GetTransferableCategory"), null, null,
-				new HarmonyMethod(typeof(HarmonyPatches), nameof(TentTransferCategory)));
+
+			harmony.Patch(AccessTools.Method(typeof(CaravanUIUtility), "GetTransferableCategory"), null, null, new HarmonyMethod(typeof(HarmonyPatches), nameof(TentTransferCategory)));
+			harmony.Patch(AccessTools.Method(typeof(DebugThingPlaceHelper), "IsDebugSpawnable"), null, null, new HarmonyMethod(typeof(HarmonyPatches), nameof(DebugSpawn)));
 
 			harmony.PatchAll(Assembly.GetExecutingAssembly());
 
@@ -130,6 +131,34 @@ namespace Camping_Stuff
 				};
 
 				codes.InsertRange(insertIndex, newInstructions);
+			}
+
+			return codes.AsEnumerable();
+		}
+
+		/// <summary>Removes minified tents from the Debug spawn menu</summary>
+		/// <remarks>This would be so much easier if the original function just had "!(def.thingClass == is MinifiedThing)"</remarks>
+		[HarmonyTranspiler]
+		public static IEnumerable<CodeInstruction> DebugSpawn(IEnumerable<CodeInstruction> instructions, ILGenerator ilg)
+		{
+			var codes = new List<CodeInstruction>(instructions);
+
+			int linesBefore = 2;
+			int linesToCopy = 6;
+
+			// copy !(def.thingClass == typeof (MinifiedThing) ilcode and check type of NCS_MiniTent instead
+			for (int i = linesBefore; i < codes.Count - linesToCopy; i++)
+			{
+				if(codes[i].opcode == OpCodes.Ldtoken && codes[i].operand.Equals(typeof(MinifiedThing)))
+				{
+					List<CodeInstruction> newInstructions = codes.GetRange(i - linesBefore, linesToCopy);
+					newInstructions[linesBefore] = new CodeInstruction(OpCodes.Ldtoken, typeof(NCS_MiniTent));
+
+					int insertIndex = i + (linesToCopy - linesBefore);
+					codes.InsertRange(insertIndex, newInstructions);
+
+					break;
+				}
 			}
 
 			return codes.AsEnumerable();

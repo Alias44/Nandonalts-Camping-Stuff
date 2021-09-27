@@ -5,7 +5,7 @@
 	<SpawnedTentDescriptionFlavor>A temporary structure</SpawnedTentDescriptionFlavor>
 	<TentDescriptionDetailed>A bag ready to deploy a {0} {1}</TentDescriptionDetailed>
 	
-	<StatsReport_TentSize>Multiplier for tent size {0}</StatsReport_TentSize>
+	<StatsReport_TentSize>Multiplier for tent size ({0})</StatsReport_TentSize>
 	
 	<TentContains>Contains:</TentContains>
 	<ContainsCover>Cover: {0}</ContainsCover>

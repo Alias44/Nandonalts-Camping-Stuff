@@ -28,8 +28,6 @@ namespace Camping_Stuff
 			}
 		}
 
-		public override string Label => base.Label.Replace("minified", "");
-
 		public override string GetInspectString()
 		{
 			string readyStr;
