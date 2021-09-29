@@ -28,6 +28,7 @@ namespace Camping_Stuff
 
 		protected override IEnumerable<Toil> MakeNewToils()
 		{
+			this.FailOn<JobDriver>(() => AvailQty == 0);
 			this.FailOnIncapable<JobDriver>(PawnCapacityDefOf.Manipulation);
 
 			this.FailOnDestroyedNullOrForbidden(fetch);

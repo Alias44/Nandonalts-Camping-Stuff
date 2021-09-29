@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
+	<!-- Sizes -->
+	<NCS_Small>Small</NCS_Small>
+	<NCS_Med>Medium</NCS_Med>
+	<NCS_Large>Large</NCS_Large>
+	<NCS_Long>Long</NCS_Long>
+
 	<!-- Lables -->
-	<SpawnedTentLabel>Tent</SpawnedTentLabel>
+	<SpawnedTentLabel>{0} {1} tent</SpawnedTentLabel>
 	<SpawnedTentDescriptionFlavor>A temporary structure</SpawnedTentDescriptionFlavor>
-	<TentDescriptionDetailed>A bag ready to deploy a {0} {1}</TentDescriptionDetailed>
+	<TentDescriptionDetailed>A bag ready to deploy {0}</TentDescriptionDetailed>
 	
 	<StatsReport_TentSize>Multiplier for tent size ({0})</StatsReport_TentSize>
 	
@@ -33,6 +39,8 @@
 	<NoRepairNeeded>{0} does not need repairing</NoRepairNeeded>
 		
 	<!-- Warnings -->
+	<TentFull>Cannot pack: bag is already packed with {0}, which is the maximum number needed for any tent</TentFull>
+	<TentCoverFull>Cannot pack: bag is already packed with {0}, which is the number needed for {1}</TentCoverFull>
 	<DamagedCover>Tent cover is damaged, some walls/ doors will be missing.</DamagedCover>
 	<DamagedMat>Tent mat is damaged, some floors may be missing.</DamagedMat>
 	<DamagedPartCount>{0} missing</DamagedPartCount>

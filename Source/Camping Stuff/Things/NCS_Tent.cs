@@ -26,8 +26,9 @@ namespace Camping_Stuff
 		public Sketch sketch = new Sketch();
 		private Sketch deployedSketch;
 
-		public int PoleCount { get; private set; } = 0;
-		public int maxPoles = DefDatabase<ThingDef>.AllDefs.Where(d => d.HasComp(typeof(TentCoverComp))).Min(cover => cover.GetCompProperties<CompProperties_TentCover>().numPoles);
+		public int PoleCount => Poles.Sum(pole => pole.stackCount);
+		public int maxPoles = DefDatabase<ThingDef>.AllDefs.Where(d => d.HasComp(typeof(TentCoverComp))).Max(cover => cover.GetCompProperties<CompProperties_TentCover>().numPoles);
+		private static int maxPossibePoles = DefDatabase<ThingDef>.AllDefs.Where(d => d.HasComp(typeof(TentCoverComp))).Min(cover => cover.GetCompProperties<CompProperties_TentCover>().numPoles);
 
 		//public Dictionary<ThingDef, Thing> poles = new Dictionary<ThingDef, Thing>();
 		private List<Thing> poles = new List<Thing>();
@@ -46,6 +47,8 @@ namespace Camping_Stuff
 		}
 
 		private int layoutHash;
+		private string tentSize = "";
+		public string coverShortDescription = "";
 		private Thing cover = null;
 		public Thing Cover
 		{
@@ -57,6 +60,7 @@ namespace Camping_Stuff
 					return;
 				}
 
+				// Eject previous cover if applicable
 				if (this.cover != null)
 				{
 					Eject(this.cover);
@@ -64,17 +68,9 @@ namespace Camping_Stuff
 
 				this.cover = value;
 
-				if (this.cover == null)
-				{
-					maxPoles = DefDatabase<ThingDef>.AllDefs.Where(d => d.HasComp(typeof(TentCoverComp))).Min(cover => cover.GetCompProperties<CompProperties_TentCover>().numPoles);
-				}
-				else
-				{
-					maxPoles = Cover.TryGetComp<TentCoverComp>().Props.numPoles;
-				}
-
-				AdjustPoles();
+				UpdateCoverInfo();
 				UpdateSketch();
+				AdjustPoles();
 			}
 		}
 
@@ -147,12 +143,25 @@ namespace Camping_Stuff
 			}
 		}
 
+		public string PoleFullMsg
+		{
+			get
+			{
+				if(Cover != null && poles.Count == 1)
+				{
+					return "TentCoverFull".Translate(poles[0].Label, cover.Label);
+				}
+				else
+				{
+					return "TentFull".Translate();
+				}
+			}
+		}
+
 		// Overriding label and description (while spawned/ installed/ deployed), since minified things don't really have their own.
-		public override string LabelNoCount => this.Spawned ? (string) "SpawnedTentLabel".Translate() : base.LabelNoCount;
+		public override string LabelNoCount => this.Spawned ? (string) "SpawnedTentLabel".Translate(cover.Stuff.LabelAsStuff, tentSize.ToLower()) : base.LabelNoCount;
 
-		public override string DescriptionDetailed => Ready ? (string) "TentDescriptionDetailed".Translate(cover.Stuff.LabelAsStuff, cover.DescriptionDetailed.Replace("A ", "")) : base.DescriptionDetailed;
-
-		public string TentSize => this.Ready ? cover.def.label.Replace(" tent cover", "") : "unknown";
+		public override string DescriptionDetailed => Ready ? (string) "TentDescriptionDetailed".Translate(coverShortDescription.ToLower()) : base.DescriptionDetailed;
 
 		public override string DescriptionFlavor
 		{
@@ -161,7 +170,7 @@ namespace Camping_Stuff
 				if (this.Spawned)
 					return "SpawnedTentDescriptionFlavor".Translate();
 
-				return $"{base.DescriptionFlavor}\n{"TentContains".Translate()}\n{ContainsMsg}";
+				return $"{base.DescriptionFlavor}\n\n{"TentContains".Translate()}\n{ContainsMsg}";
 			}
 		}
 
@@ -316,13 +325,7 @@ namespace Camping_Stuff
 
 			if (Scribe.mode == LoadSaveMode.PostLoadInit)
 			{
-				
-				PoleCount += Poles.Sum(pole => pole.stackCount);
-
-				if (cover != null)
-				{
-					maxPoles = Cover.TryGetComp<TentCoverComp>().Props.numPoles;
-				}
+				UpdateCoverInfo();
 				UpdateSketch();
 			}
 		}
@@ -392,7 +395,6 @@ namespace Camping_Stuff
 					{
 						poles.Add(part);
 					}
-					PoleCount += part.stackCount;
 					AdjustPoles(typeIndex);
 					break;
 
@@ -451,8 +453,6 @@ namespace Camping_Stuff
 			}
 
 			Eject(polesOut);
-
-			PoleCount -= qtyOut;
 		}
 
 		public void EjectAllPoles()
@@ -483,6 +483,22 @@ namespace Camping_Stuff
 			if (PoleCount > maxPoles)
 			{
 				AdjustPoles();
+			}
+		}
+
+		private void UpdateCoverInfo()
+		{
+			if (this.cover == null)
+			{
+				maxPoles = maxPossibePoles;
+				tentSize = "";
+				coverShortDescription = "";
+			}
+			else
+			{
+				maxPoles = Cover.TryGetComp<TentCoverComp>().Props.numPoles;
+				tentSize = cover.TryGetComp<TentCoverComp>().Props.layoutName.Translate();
+				coverShortDescription = cover.DescriptionDetailed.Split('\n')[0];
 			}
 		}
 

@@ -76,6 +76,7 @@
 		<comps>
 			<li Class="Camping_Stuff.CompProperties_TentCover">
 				<numPoles>5</numPoles>
+				<layoutName>NCS_Small</layoutName>
 				<tentLayoutSouth>
 					<li>1,1,1,1,1</li>
 					<li>1,4,3,4,1</li>
@@ -103,6 +104,7 @@
 		<comps>
 			<li Class="Camping_Stuff.CompProperties_TentCover">
 				<numPoles>7</numPoles>
+				<layoutName>NCS_Med</layoutName>
 				<tentLayoutSouth>
 					<li>0,1,1,1,1,1,0</li>
 					<li>1,1,4,4,4,1,1</li>
@@ -133,6 +135,7 @@
 		<comps>
 			<li Class="Camping_Stuff.CompProperties_TentCover">
 				<numPoles>15</numPoles>
+				<layoutName>NCS_Large</layoutName>
 				<tentLayoutSouth>
 					<li>1,1,1,1,1,1,1,1,1</li>
 					<li>1,4,4,4,1,4,4,4,1</li>
@@ -165,6 +168,7 @@
 		<comps>
 			<li Class="Camping_Stuff.CompProperties_TentCover">
 				<numPoles>10</numPoles>
+				<layoutName>NCS_Long</layoutName>
 				<tentLayoutSouth>
 					<li>1,1,1,1,1,1,1</li>
 					<li>1,4,4,4,4,4,1</li>

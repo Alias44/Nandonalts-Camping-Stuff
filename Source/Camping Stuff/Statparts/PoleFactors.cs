@@ -66,7 +66,7 @@ namespace Camping_Stuff
 				if ((double) offset != 0.0)
 				{
 					offsetDesc +=
-						$"{Util.indent}{"StatsReport_TentSize".Translate(tent.TentSize)}: {coverMultiplier.ToStringByStyle(ToStringStyle.PercentTwo, ToStringNumberSense.Factor)}\n" +
+						$"{Util.indent}{"StatsReport_TentSize".Translate(tent.Cover.def.LabelCap)}: {coverMultiplier.ToStringByStyle(ToStringStyle.PercentTwo, ToStringNumberSense.Factor)}\n" +
 						$"{Util.indent}{"StatsReport_FinalValue".Translate()}: {offset.ToStringByStyle(sd.toStringStyle, ToStringNumberSense.Offset)}\n";
 
 					str += $"{"ContainsPoles".Translate()}\n{offsetDesc}\n";

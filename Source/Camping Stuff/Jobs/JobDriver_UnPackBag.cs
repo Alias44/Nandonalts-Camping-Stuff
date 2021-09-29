@@ -18,7 +18,7 @@ namespace Camping_Stuff
 		protected int UseDuration
 		{
 			get
-			{
+ 			{
 				return 200;
 			}
 		}

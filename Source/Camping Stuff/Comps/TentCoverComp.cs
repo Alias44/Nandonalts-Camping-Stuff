@@ -23,6 +23,7 @@ namespace Camping_Stuff
 	public class CompProperties_TentCover : CompProperties_TentPartDamage //(Def)
 	{
 		public int numPoles;
+		public string layoutName;
 		private List<string> tentLayoutSouth = new List<string>();
 		public TentSpec tentSpec;
 		public int layoutHash;

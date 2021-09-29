@@ -33,6 +33,11 @@ namespace Camping_Stuff
 
 		protected override IEnumerable<Toil> MakeNewToils()
 		{
+			if (AvailQty == 0)
+			{
+				Messages.Message(MiniBag.Bag.PoleFullMsg, MessageTypeDefOf.NeutralEvent);
+			}
+
 			foreach (Toil t in base.MakeNewToils())
 			{
 				yield return t;
