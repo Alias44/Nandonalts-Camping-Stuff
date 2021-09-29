@@ -23,6 +23,7 @@
 			<texPath>CampingStuff/TentPole</texPath>
 			<graphicClass>Graphic_StackCount</graphicClass>
 		</graphicData>
+		<equippedAngleOffset>-20</equippedAngleOffset>
 		<soundInteract>Metal_Drop</soundInteract>
 		<soundDrop>Metal_Drop</soundDrop>
 		<statBases>
@@ -31,9 +32,13 @@
 			<WorkToMake>500</WorkToMake>
 			<Mass>0.2</Mass> 
 			<Flammability>0.4</Flammability>
-			<SharpDamageMultiplier>0.40</SharpDamageMultiplier>
-			<BluntDamageMultiplier>0.9</BluntDamageMultiplier>
 		</statBases>
+		<weaponClasses>
+			<li>Melee</li>
+			<li>MeleeBlunt</li>
+			<li>Neolithic</li>
+		</weaponClasses>
+		<equipmentType>Primary</equipmentType>
 		<tools>
 			<li>
 				<label>pole</label>
@@ -45,6 +50,9 @@
 			</li>
 		</tools>
 		<comps>
+			<li>
+				<compClass>CompEquippable</compClass>
+			</li>
 			<li Class="Camping_Stuff.CompProperties_TentPart">
 				<compClass>Camping_Stuff.CompUsable_TentPart</compClass>
 				<partType>1</partType>
