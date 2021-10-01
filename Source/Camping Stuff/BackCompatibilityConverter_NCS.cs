@@ -11,7 +11,8 @@ namespace Camping_Stuff
 {
 	class BackCompatibilityConverter_NCS : BackCompatibilityConverter
 	{
-		private static Dictionary<string, ThingDef> partReplacements;
+		private static Dictionary<string, ThingDef> partReplacements = new Dictionary<string, ThingDef>();
+
 		private Dictionary<int, ThingDef> oldPackedTents = new Dictionary<int, ThingDef>();
 
 		private Dictionary<int, (ThingDef cover, Rot4 orientation, int mapId)> oldDeployedTents =
