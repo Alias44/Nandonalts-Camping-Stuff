@@ -15,7 +15,9 @@ namespace Camping_Stuff
 
 		public override string Label => roof.label;
 
+#if !RELEASE_1_1
 		public override string LabelCap => roof.LabelCap;
+#endif
 
 		public override CellRect OccupiedRect => new CellRect(this.pos.x, this.pos.z, 1, 1);
 

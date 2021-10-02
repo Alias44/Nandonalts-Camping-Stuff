@@ -356,8 +356,9 @@ namespace Camping_Stuff
 					//GenConstruct.BlocksConstructions()
 				};
 			}
-
-#if RELEASE_1_2
+#if RELEASE_1_1
+			sketch.DrawGhost(at, Sketch.SpawnPosType.Unchanged, placingMode);
+#elif RELEASE_1_2
 			sketch.DrawGhost_NewTmp(at, Sketch.SpawnPosType.Unchanged, placingMode, null, validator);
 #else
 			sketch.DrawGhost(at, Sketch.SpawnPosType.Unchanged, placingMode, null, validator);

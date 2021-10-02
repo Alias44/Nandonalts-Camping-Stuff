@@ -21,7 +21,9 @@ namespace Camping_Stuff
 			harmony.Patch(AccessTools.Method(typeof(Designator_Uninstall), "CanDesignateThing"), null, new HarmonyMethod(typeof(HarmonyPatches), nameof(CanDesignateThingTent)));
 			harmony.Patch(AccessTools.Method(typeof(GenConstruct), "FirstBlockingThing"), null, new HarmonyMethod(typeof(HarmonyPatches), nameof(TentBlueprintRect)));
 
+#if !RELEASE_1_1
 			harmony.Patch(AccessTools.Method(typeof(CaravanUIUtility), "GetTransferableCategory"), null, null, new HarmonyMethod(typeof(HarmonyPatches), nameof(TentTransferCategory)));
+#endif
 			harmony.Patch(AccessTools.Method(typeof(DebugThingPlaceHelper), "IsDebugSpawnable"), null, null, new HarmonyMethod(typeof(HarmonyPatches), nameof(DebugSpawn)));
 
 			harmony.PatchAll(Assembly.GetExecutingAssembly());

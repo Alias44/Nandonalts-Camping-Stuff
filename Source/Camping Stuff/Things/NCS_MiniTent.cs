@@ -54,7 +54,7 @@ namespace Camping_Stuff
 			this.Graphic.Draw(drawLoc, this.Graphic is Graphic_Single ? Rot4.North : Rot4.South, (Thing) this);
 		}
 
-#if !RELEASE_1_2
+#if !(RELEASE_1_2 || RELEASE_1_1)
 		public override void Print(SectionLayer layer)
 		{
 			this.Graphic.Print(layer, this, 0.0f);
