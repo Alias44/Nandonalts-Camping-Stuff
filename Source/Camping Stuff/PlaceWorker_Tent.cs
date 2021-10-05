@@ -29,6 +29,15 @@ namespace Camping_Stuff
 						return (AcceptanceReport)false;
 					if (cellRect.InNoBuildEdgeArea(map))
 						return (AcceptanceReport)"TooCloseToMapEdge".Translate();
+
+					if(!entity.CanBuildOnTerrain(entity.pos + loc, map))
+					{
+						if(entity is SketchBuildable sb)
+						{
+							return (AcceptanceReport)"TerrainCannotSupport_TerrainAffordance".Translate(sb.Buildable, sb.Buildable.GetTerrainAffordanceNeed(sb.Stuff));
+						}
+						return (AcceptanceReport)"TerrainCannotSupport".Translate(tent);
+					}
 				}
 			}
 

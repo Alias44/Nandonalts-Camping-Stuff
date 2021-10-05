@@ -6,6 +6,7 @@
 		<description>A fragile yet practical door.</description>
 		<scatterableOnMapGen>false</scatterableOnMapGen>
 		<designationCategory Inherit="False"></designationCategory><!--removes recipe from menu-->
+		<terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
 		<graphicData>
 			<texPath>CampingStuff/Building/DoorTent_Mover</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
@@ -45,6 +46,7 @@
 		<description>A fragile yet practical wall.</description>
 		<scatterableOnMapGen>false</scatterableOnMapGen>
 		<designationCategory Inherit="False"></designationCategory><!--removes recipe from menu-->
+		<terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
 		<graphicData>
 			<texPath>CampingStuff/Building/Linked/TentWall_Atlas</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
