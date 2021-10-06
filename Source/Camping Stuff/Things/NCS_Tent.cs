@@ -74,6 +74,7 @@ namespace Camping_Stuff
 			}
 		}
 
+		private bool floorOverride = false;
 		private Thing floor = null;
 		public Thing Floor
 		{
@@ -191,6 +192,11 @@ namespace Camping_Stuff
 
 		public IntVec2 Size => this.sketch.OccupiedSize;
 
+		public bool CanSafelySpawnFloor(IntVec3 loc, Map map)
+		{
+			return sketch.OccupiedRect.MovedBy(loc).Any(cell => cell.GetTerrain(map).Removable);
+		}
+
 		public override void SpawnSetup(Map map, bool respawningAfterLoad)
 		{
 			base.SpawnSetup(map, respawningAfterLoad);
@@ -199,8 +205,14 @@ namespace Camping_Stuff
 			var coverComp = this.cover.TryGetComp<TentCoverComp>();
 
 			if (!respawningAfterLoad)
- 			{
- 				if (floor != null && floorComp.HasDamagedCells())
+			{
+				floorOverride = CanSafelySpawnFloor(this.Position, this.Map);
+
+				if (floor != null && floorOverride)
+				{
+					Messages.Message("TentMatWouldReplaceTerrain".Translate(), MessageTypeDefOf.NeutralEvent);
+				}
+				else if (floor != null && floorComp.HasDamagedCells())
 				{
 					Messages.Message("DamagedMat".Translate(), MessageTypeDefOf.NegativeEvent);
 				}
@@ -214,8 +226,8 @@ namespace Camping_Stuff
 				{
 					IntVec3 cell = se.pos + this.Position;
 
-					if (!(se is SketchTerrain && floorComp.CheckCell(se, this.Rotation)) && // 
-					    !(se is SketchThing && coverComp.CheckCell(se, this.Rotation)))
+					if ((!floorOverride && se is SketchTerrain && !floorComp.CheckCell(se, this.Rotation)) || 
+						(se is SketchThing && !coverComp.CheckCell(se, this.Rotation)))
 					{
 						var spawnedThings = new List<Thing>();
  						se.Spawn(cell, this.Map, Faction.OfPlayer, spawnedThings: spawnedThings);
@@ -290,7 +302,7 @@ namespace Camping_Stuff
 						coverComp.AddCell(se, this.Rotation);
 					}
 				}
-				else if (se is SketchTerrain terrain)
+				else if (!floorOverride && se is SketchTerrain terrain) // only check terrain when it was actually placed
 				{
 					if (terrain.IsSameSpawned(cell, this.Map))
 					{
@@ -320,6 +332,7 @@ namespace Camping_Stuff
 
 			Scribe_Values.Look(ref layoutHash, "layout");
 			Scribe_Deep.Look(ref cover, "tentCover");
+			Scribe_Values.Look(ref floorOverride, "tentFloorPlacedOverride", false);
 			Scribe_Deep.Look(ref floor, "tentFloor");
 			Scribe_Collections.Look<Thing>(ref poles, "poleList", LookMode.Deep);
 

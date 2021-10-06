@@ -4,6 +4,7 @@
     <defName>NCS_TentFloor</defName>
     <label>tent floor</label>
     <renderPrecedence>200</renderPrecedence>
+	 <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
     <description>A mat to cover the inside of a tent.</description>
 	 <color>(162,157,152)</color>
 	 <resourcesFractionWhenDeconstructed>0</resourcesFractionWhenDeconstructed>

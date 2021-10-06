@@ -22,6 +22,7 @@ namespace Camping_Stuff
 		{
 			if(thing is NCS_Tent tent)
 			{
+				bool existingFloor = tent.CanSafelySpawnFloor(loc, map);
 				foreach (SketchEntity entity in tent.sketch.Entities)
 				{
 					CellRect cellRect = entity.OccupiedRect.MovedBy(loc);
@@ -30,7 +31,7 @@ namespace Camping_Stuff
 					if (cellRect.InNoBuildEdgeArea(map))
 						return (AcceptanceReport)"TooCloseToMapEdge".Translate();
 
-					if(!entity.CanBuildOnTerrain(entity.pos + loc, map))
+					if(!entity.CanBuildOnTerrain(entity.pos + loc, map) && !(entity is SketchTerrain && existingFloor)) // ignore floors if they're going to get skipped on spawn
 					{
 						if(entity is SketchBuildable sb)
 						{
