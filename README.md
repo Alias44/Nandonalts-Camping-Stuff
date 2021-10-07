@@ -1,23 +1,41 @@
-# UNSABLE TEST BRANCH of Nandonalts-Camping-Stuff
-Nandonalt's Camping Stuff updated to v1.0
-Sourced from steam with the following changes:
+# Nandonalts-Camping-Stuff
+Nandonalt's Camping Stuff rewritten for RimWorld v1.1 and beyond.
+
+Do your colonists really just need a home away from home: like that time the trade caravan got ambushed by a surprisingly useful pirate/ tribute/ organ holder/ future arm chair, or that time that the offsite miners decided that the best way to deal with the absolute horror of sleeping under the stars for a few nights was to stab the nearest muffalo, or the time when your best sniper just lost it and sad wandered into a turret nest? Camping stuff can help! Using groundbreaking open-source technology, this mod adds a portable tent item that creates walls and doors when installed and removes them on uninstall, allowing your colonits to trurly experience all that your world has to offer. Talk to your subscribe button about Camping Stuff. Camping stuff: for when the outside isn't inside-y enough. Warning: this mod contains tents, common side effects of tents include: making caravanning more enjoyable, making incident maps less annoying, fewer mental breaks, happier colonists, and capturing that one guy. If you encounter errors, bugs, defects, or conflicts, please seek the nearest bug reporting mechanism at your earliest possible convivence and provide as much detail as possible.
 
 ## Installation Instructions
 
 ### To install a non-workshop RimWorld mod from zip download:
-Not intended for installation
+Click on the Clone or download button.
+Click Download ZIP
+Extract the zip to your RimWorld install folder (by Windows Steam default it's C:\Program Files (x86)\Steam\steamapps\common\RimWorld) and open the "Mods" folder.
 
-### TODO
-* Change bag properties such as weight and value based on the items packed into bag
-* Write/ migrate code to deploy, undeploy, and repair bags
+After that run Rimworld and "Camping Stuff" will show up in your mod list with a little folder icon next to it.
+From there it should be just like any other workshop item
+
+### To install using git:
+Click on the Clone or download button.
+Copy the url (https://github.com/Alias44/Nandonalts-Camping-Stuff)
+Open your preferred console (cmd, bash, etc).
+cd into the mods directory. Default is C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods
+Enter the command git clone https://github.com/Alias44/Nandonalts-Camping-Stuff
+Note: You can get future changes by using the command get pull origin master
 
 ### Changes
 v1.0
-* Split tents into bag, cover, pole, and floor parts
-* Parts can be packed into and removed from bags
-
+* RimWorld 1.1 - 1.3 support
+* Total rewrite
+  * Tents are now a bag item that must be packed with a cover and a number of tent poles (and optionally a tent mat).
+    * Each cover decides the shape of the spawned tent
+    * The number of tent poles is based on the tent cover (smaller covers require fewer poles to support them)
+    * Tent poles can be created from both woody and metallic materials (or just plain wood logs in a pinch) and influence properties of the deployed tent walls (such as beauty and HP)
+    * Packing a tent mat causes the tent to be installed with a +1 beauty floor (assuming that the install location doesn't already have an existing floor)
+    * Items packed in a bag can be removed/ replaced/ upgraded at any time and will be returned to the ground if the bag is destroyed
+  * Damaged walls/ doors are now remembered and travel with the tent cover
+* New mod image (courtesy of Orange Peel Assassin)
+  
 v0.6.0
-* v1.0 support
+* RimWorld 1.0 support
 
 v0.5.2
 * Fixed bills not working on portable stoves
@@ -26,7 +44,7 @@ v0.5.1
 * Fixed portable stoves not being portable
 
 v0.5.0
-* b19 support
+* RimWorld b19 support
 * Major XML rework to remove duplicated and unnecessary definitions
 * Portable stoves now inherit from campfires- this means that portable stoves should get any recipe that campfires get
 * Major rework to the tent generation code, it is now capable of generating tents of arbitrary rectangular (M x N) size and only requires definition of the South facing orientation in XML
@@ -34,7 +52,7 @@ v0.5.0
 * Removed butchering spot as it is now a core feature
 
 v0.4.0
-* b18 support
+* RimWorld b18 support
 * Exact changes can be seen on GitHub, it mostly involved reworking the job coding
 * Converted xml defs to lower case
 * Removed sleeping bag as it is now a core feature
@@ -59,4 +77,6 @@ Unsure of licensing info, as Nandonalt didn't originally publish anything in tha
 ### Thanks
 * to Nandonalt for making the mod
 * to jfredric for fixing my awful readme
+* to Orange Peel Assassin for making 1.3 preview images and art
 * to all the wonderful people on the Rimworld Discord
+* to all of the patient people that left kind and supportive comments in my [dev blog](https://steamcommunity.com/workshop/filedetails/discussion/1523058989/3865717501013670877/)
