@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+	<ThingDef ParentName="DoorBase" Name="NCS_TentDoor">
+		<defName>NCS_TentDoor</defName>
+		<label>tent door</label>
+		<description>A fragile yet practical door.</description>
+		<scatterableOnMapGen>false</scatterableOnMapGen>
+		<designationCategory Inherit="False"></designationCategory><!--removes recipe from menu-->
+		<terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+		<graphicData>
+			<texPath>CampingStuff/Building/DoorTent_Mover</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+			<damageData>
+				<enabled>false</enabled>
+			</damageData>
+		</graphicData>
+		<uiIconPath>Things/Building/Door/DoorSimple_MenuIcon</uiIconPath>
+		<statBases>
+			<MaxHitPoints>15</MaxHitPoints>
+			<WorkToBuild>85</WorkToBuild>
+			<SellPriceFactor>0</SellPriceFactor>
+			<Beauty>1</Beauty>
+		</statBases>		
+		<stuffCategories Inherit="False">
+			<li>Fabric</li>
+			<li>Leathery</li>
+		</stuffCategories>
+		<building>
+			<deconstructible>false</deconstructible>
+		</building>
+		<damageMultipliers Inherit="False">
+			<li>
+				<damageDef>Bomb</damageDef>	
+				<multiplier>4</multiplier>
+			</li>
+		</damageMultipliers>
+		<comps>
+			<li Class="Camping_Stuff.CompProperties_TentSpawnedComp"/>
+		</comps>
+		<resourcesFractionWhenDeconstructed>0</resourcesFractionWhenDeconstructed>
+	</ThingDef>
+	
+	<ThingDef ParentName="Wall" Name="NCS_TentWallBase">
+		<defName>NCS_TentWall</defName>
+		<label>tent wall</label>
+		<description>A fragile yet practical wall.</description>
+		<scatterableOnMapGen>false</scatterableOnMapGen>
+		<designationCategory Inherit="False"></designationCategory><!--removes recipe from menu-->
+		<terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+		<graphicData>
+			<texPath>CampingStuff/Building/Linked/TentWall_Atlas</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+			<linkFlags Inherit="False">
+				<!--li>Wall</li-->
+				<li>Custom1</li>
+			</linkFlags>
+		</graphicData>
+		<statBases>
+			<MaxHitPoints>10</MaxHitPoints>
+			<WorkToBuild>75</WorkToBuild>
+			<SellPriceFactor>0</SellPriceFactor>
+			<Beauty>1</Beauty>
+		</statBases>
+		<stuffCategories Inherit="False">
+			<li>Fabric</li>
+			<li>Leathery</li>
+		</stuffCategories>
+		<building>
+			<deconstructible>false</deconstructible>
+			<allowAutoroof>false</allowAutoroof>
+		</building>
+		<damageMultipliers Inherit="False">
+			<li>
+				<damageDef>Bomb</damageDef>
+				<multiplier>4</multiplier>
+			</li>
+		</damageMultipliers>
+		<comps>
+			<li Class="Camping_Stuff.CompProperties_TentSpawnedComp"/>
+		</comps>
+		<resourcesFractionWhenDeconstructed>0</resourcesFractionWhenDeconstructed>
+	</ThingDef>
+</Defs>

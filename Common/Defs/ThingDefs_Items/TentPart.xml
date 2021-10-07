@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+	<!-- Unfinished -->
+	<ThingDef ParentName="UnfinishedBase">
+		<defName>NCS_UnfinishedTent</defName>
+		<label>unfinished tent</label>
+		<graphicData>
+			<texPath>CampingStuff/UnfinishedTent</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<stuffCategories Inherit="False">
+			<li>Fabric</li>
+			<li>Leathery</li>
+		</stuffCategories>
+	</ThingDef>
+
+	<!-- Pole -->
+	<ThingDef ParentName="TentPartSmith">
+		<defName>NCS_TentPart_Pole</defName>
+		<label>tent pole</label>
+		<description>A set of short interlocking rods intended to hold up tents or other temporary structures.\nAllows a tent to be installed when a sufficient number is packed in a tent bag with a tent cover.</description>
+		<graphicData>
+			<texPath>CampingStuff/TentPole</texPath>
+			<graphicClass>Graphic_StackCount</graphicClass>
+		</graphicData>
+		<equippedAngleOffset>-20</equippedAngleOffset>
+		<soundInteract>Metal_Drop</soundInteract>
+		<soundDrop>Metal_Drop</soundDrop>
+		<statBases>
+			<MarketValue>1.2</MarketValue>
+			<MaxHitPoints>100</MaxHitPoints>
+			<WorkToMake>500</WorkToMake>
+			<Mass>0.2</Mass> 
+			<Flammability>0.4</Flammability>
+		</statBases>
+		<weaponClasses>
+			<li>Melee</li>
+			<li>MeleeBlunt</li>
+			<li>Neolithic</li>
+		</weaponClasses>
+		<equipmentType>Primary</equipmentType>
+		<tools>
+			<li>
+				<label>pole</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>7</power>
+				<cooldownTime>2</cooldownTime>
+			</li>
+		</tools>
+		<comps>
+			<li>
+				<compClass>CompEquippable</compClass>
+			</li>
+			<li Class="Camping_Stuff.CompProperties_TentPart">
+				<compClass>Camping_Stuff.CompUsable_TentPart</compClass>
+				<partType>1</partType>
+			</li>
+			<li Class="Camping_Stuff.CompProperties_TentPartDamage"/>
+		</comps>
+	</ThingDef>
+
+	<!-- Cover -->
+	<ThingDef ParentName="TentCover">
+		<defName>NCS_TentPart_Cover_Small</defName>
+		<label>small tent cover</label>
+		<description>A 4x5 tent.\nAllows a tent to be installed when packed in a tent bag with 5 tent poles.</description>
+		<graphicData>
+			<texPath>CampingStuff/TentSmall</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<costStuffCount>100</costStuffCount>
+		<statBases>
+			<MaxHitPoints>200</MaxHitPoints>
+			<WorkToMake>10000</WorkToMake>
+			<Mass>2</Mass>
+		</statBases>
+		<recipeMaker>
+			<recipeUsers>
+				<li>CraftingSpot</li>
+			</recipeUsers>
+		</recipeMaker>
+		<comps>
+			<li Class="Camping_Stuff.CompProperties_TentCover">
+				<numPoles>5</numPoles>
+				<layoutName>NCS_Small</layoutName>
+				<tentLayoutSouth>
+					<li>1,1,1,1,1</li>
+					<li>1,4,3,4,1</li>
+					<li>1,4,4,4,1</li>
+					<li>1,1,2,1,1</li>
+				</tentLayoutSouth>
+			</li>
+		</comps>
+	</ThingDef>
+	
+	<ThingDef ParentName="TentCover">
+		<defName>NCS_TentPart_Cover_Med</defName>
+		<label>medium tent cover</label>
+		<description>A 7x7 rounded tent.\nAllows a tent to be installed when packed in a tent bag with 7 tent poles.</description>
+		<graphicData>
+			<texPath>CampingStuff/TentMed</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<costStuffCount>200</costStuffCount>
+		<statBases>
+			<MaxHitPoints>200</MaxHitPoints>
+			<WorkToMake>20000</WorkToMake>
+			<Mass>3</Mass>
+		</statBases>
+		<comps>
+			<li Class="Camping_Stuff.CompProperties_TentCover">
+				<numPoles>7</numPoles>
+				<layoutName>NCS_Med</layoutName>
+				<tentLayoutSouth>
+					<li>0,1,1,1,1,1,0</li>
+					<li>1,1,4,4,4,1,1</li>
+					<li>1,4,4,4,4,4,1</li>
+					<li>1,4,4,3,4,4,1</li>
+					<li>1,4,4,4,4,4,1</li>
+					<li>1,1,4,4,4,1,1</li>
+					<li>0,1,1,2,1,1,0</li>
+				</tentLayoutSouth>
+			</li>
+		</comps>
+	</ThingDef>
+	
+	<ThingDef ParentName="TentCover">
+		<defName>NCS_TentPart_Cover_Large</defName>
+		<label>large tent cover</label>
+		<description>A 9x9 tent with three internal rooms.\nAllows a tent to be installed when packed in a tent bag with 15 tent poles.</description>
+		<graphicData>
+			<texPath>CampingStuff/TentLarge</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<costStuffCount>275</costStuffCount>
+		<statBases>
+			<MaxHitPoints>200</MaxHitPoints>
+			<WorkToMake>27500</WorkToMake>
+			<Mass>7</Mass>
+		</statBases>
+		<comps>
+			<li Class="Camping_Stuff.CompProperties_TentCover">
+				<numPoles>15</numPoles>
+				<layoutName>NCS_Large</layoutName>
+				<tentLayoutSouth>
+					<li>1,1,1,1,1,1,1,1,1</li>
+					<li>1,4,4,4,1,4,4,4,1</li>
+					<li>1,4,4,4,1,4,4,4,1</li>
+					<li>1,1,1,2,1,2,1,1,1</li>
+					<li>1,4,4,4,3,4,4,4,1</li>
+					<li>1,4,4,4,4,4,4,4,1</li>
+					<li>1,4,4,4,4,4,4,4,1</li>
+					<li>1,4,4,4,4,4,4,4,1</li>
+					<li>1,1,1,1,2,1,1,1,1</li>
+				</tentLayoutSouth>
+			</li>
+		</comps>
+	</ThingDef>
+	
+	<ThingDef ParentName="TentCover">
+		<defName>NCS_TentPart_Cover_Long</defName>
+		<label>long tent cover</label>
+		<description>A 9x7 tent.\nAllows a tent to be installed when packed in a tent bag with 10 tent poles.</description>
+		<graphicData>
+			<texPath>CampingStuff/TentLong</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<costStuffCount>250</costStuffCount>
+		<statBases>
+			<MaxHitPoints>200</MaxHitPoints>
+			<WorkToMake>25000</WorkToMake>
+			<Mass>5</Mass>
+		</statBases>
+		<comps>
+			<li Class="Camping_Stuff.CompProperties_TentCover">
+				<numPoles>10</numPoles>
+				<layoutName>NCS_Long</layoutName>
+				<tentLayoutSouth>
+					<li>1,1,1,1,1,1,1</li>
+					<li>1,4,4,4,4,4,1</li>
+					<li>1,4,4,4,4,4,1</li>
+					<li>1,4,4,4,4,4,1</li>
+					<li>1,4,4,3,4,4,1</li>
+					<li>1,4,4,4,4,4,1</li>
+					<li>1,4,4,4,4,4,1</li>
+					<li>1,4,4,4,4,4,1</li>
+					<li>1,1,1,2,1,1,1</li>
+				</tentLayoutSouth>
+			</li>
+		</comps>
+	</ThingDef>
+	
+	<!-- Floor -->
+	<ThingDef ParentName="TentPartTailored">
+		<defName>NCS_TentPart_Floor</defName>
+		<label>tent mat</label>
+		<descriptionHyperlinks>
+			<ThingDef>NCS_TentBag</ThingDef>
+		</descriptionHyperlinks>
+		<description>A soft mat to keep the dirt outside of your tent.\nAllows a tent to be installed with a floor when packed in a tent bag.</description>
+		<graphicData>
+			<texPath>CampingStuff/Blanket</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<costStuffCount>150</costStuffCount>
+		<statBases>
+			<MaxHitPoints>200</MaxHitPoints>
+			<WorkToMake>25000</WorkToMake>
+			<Mass>3</Mass>
+		</statBases>
+		<comps>
+			<li Class="Camping_Stuff.CompProperties_TentPart">
+				<compClass>Camping_Stuff.CompUsable_TentPart</compClass>
+				<partType>3</partType>
+			</li>
+			<li Class="Camping_Stuff.CompProperties_CompTentPartWithCellsDamage"/>
+		</comps>
+	</ThingDef>
+		
+	<!-- Bag -->
+	<ThingDef ParentName="MinifiedThing">
+		<defName>NCS_MiniTentBag</defName>
+		<thingClass>Camping_Stuff.NCS_MiniTent</thingClass>
+		<label>tent bag</label>
+		<graphicData>
+			<graphicClass>Graphic_Single</graphicClass>
+			<texPath>CampingStuff/TentBag</texPath>
+			<shaderType>CutoutComplex</shaderType>
+			<drawRotated>false</drawRotated>
+			<allowFlip>false</allowFlip>
+		</graphicData>
+		<statBases>
+			<MaxHitPoints>150</MaxHitPoints>
+			<Mass>0</Mass> <!-- mass is derived from tent bag itself-->
+			<Flammability>1</Flammability>
+		</statBases>
+		<comps>
+			<li Class="Camping_Stuff.CompProperties_TentBagDamageComp"/>
+		</comps>
+		<tradeNeverStack>true</tradeNeverStack>
+	</ThingDef>
+	
+	<ThingDef ParentName="TentPartTailored">
+		<category>Ethereal</category> <!--Ethereal so that other buildings can exist in the same space -->
+		<drawerType>None</drawerType>
+		<stackLimit>1</stackLimit>
+		<defName>NCS_TentBag</defName>
+		<label>tent bag</label> <!--label and description are modified when the inner thing exists-->
+		<description>A bag to hold tent parts.\nAllows a tent to be installed when packed with a tent cover and a sufficient number of tent poles.</description>
+		<descriptionHyperlinks>
+			<ThingDef>NCS_TentPart_Cover_Small</ThingDef>
+			<ThingDef>NCS_TentPart_Cover_Med</ThingDef>
+			<ThingDef>NCS_TentPart_Cover_Large</ThingDef>
+			<ThingDef>NCS_TentPart_Cover_Long</ThingDef>
+			<ThingDef>NCS_TentPart_Pole</ThingDef>
+			<ThingDef>NCS_TentPart_Floor</ThingDef>
+		</descriptionHyperlinks>
+		<thingClass>Camping_Stuff.NCS_Tent</thingClass>
+		<altitudeLayer>Shadows</altitudeLayer>
+		<statBases Inherit="False">
+			<Mass>2</Mass>
+			<WorkToMake>2500</WorkToMake>
+		</statBases>
+		<useSameGraphicForGhost>true</useSameGraphicForGhost>
+		<rotatable>true</rotatable>
+		<hasCustomRectForSelector>true</hasCustomRectForSelector>
+		<drawOffscreen>true</drawOffscreen>
+		<minifiedDef>NCS_MiniTentBag</minifiedDef>
+		<drawPlaceWorkersWhileInstallBlueprintSelected>true</drawPlaceWorkersWhileInstallBlueprintSelected>
+		<canLoadIntoCaravan>true</canLoadIntoCaravan>
+		<graphicData>
+			<graphicClass>Graphic_Single</graphicClass>
+			<texPath>CampingStuff/TentBag</texPath>
+			<shaderType>CutoutComplex</shaderType>
+			<drawRotated>false</drawRotated>
+			<allowFlip>false</allowFlip>
+		</graphicData>
+		<costStuffCount>25</costStuffCount>
+		<useHitPoints>false</useHitPoints>
+		<building>
+			<deconstructible>false</deconstructible>
+			<blueprintGraphicData>
+				<graphicClass>Graphic_Single</graphicClass>
+				<texPath>CampingStuff/TentSupport</texPath>
+				<shaderType>Transparent</shaderType>
+				<drawRotated>false</drawRotated>
+				<allowFlip>false</allowFlip>
+			</blueprintGraphicData>
+			<blueprintClass>Camping_Stuff.TentBlueprint_Install</blueprintClass>
+		</building>
+		<placeWorkers>
+			<li>Camping_Stuff.PlaceWorker_Tent</li>
+		</placeWorkers>
+		<tradeNeverStack>true</tradeNeverStack>
+		<recipeMaker>
+			<recipeUsers>
+				<li>CraftingSpot</li>
+			</recipeUsers>
+		</recipeMaker>
+	</ThingDef>
+</Defs>

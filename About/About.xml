@@ -3,22 +3,44 @@
 
     <name>Camping Stuff</name>
 
-    <author>Nandonalt</author>
+	<author>Alias</author>
+	<authors>
+		<li>Nandonalt</li>
+	</authors>
+	<packageId>Alias.CampingStuff</packageId>
 
-    <url>https://ludeon.com/forums/index.php?action=profile;u=58544</url>
+	<supportedVersions>
+		<li>1.1</li>
+		<li>1.2</li>
+		<li>1.3</li>
+	</supportedVersions>
 
-    <targetVersion>1.0.2059</targetVersion>
+	<loadAfter>
+		<li>brrainz.harmony</li>
+		<li>Ludeon.RimWorld</li>
+	</loadAfter>
+	
+	<modDependencies>
+		<li>
+			<packageId>brrainz.harmony</packageId>
+			<displayName>Harmony</displayName>
+			<steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+			<downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+		</li>
+	</modDependencies>
 
-    <description>v0.6.0 Camping Stuff Mod By Nandonalt (made compatible with v1.0 by Alias): Adds Deployable Tents(Normal, Medium, Big, and Long) and Portable Stoves.
+
+    <description>-----Camping Stuff BETA-----
+v1.0.0b Camping Stuff Mod By Alias (originally crated by Nandonalt): Adds Deployable Tents(Normal, Medium, Big, and Long) and Portable Stoves.
 	
 Changelog:
-v6.0- v1.0 support
-v5.2- Fixed bills not working on portable stoves
-v5.1- Fixed portable stoves not being portable
-v5.0- b19 support, removed butchering spots, support for arbitrary tent sizes, new tent size: long
-v4.0- b18 support, removed sleeping bags
-v3.0- a17 support
-v2.0- enables you to make tents from any textile and adds two new sizes to tents: medium and big.
+v1.0.0b- Complete re-write, [elaborate before release!!!]
+v0.6.0- v1.0 support
+v0.5.2- Fixed bills not working on portable stoves
+v0.5.1- Fixed portable stoves not being portable
+v0.5.0- b19 support, removed butchering spots, support for arbitrary tent sizes, new tent size: long
+v0.4.0- b18 support, removed sleeping bags
+v0.3.0- a17 support
+v0.2.0- enables you to make tents from any textile and adds two new sizes to tents: medium and big.
 </description>
-
 </ModMetaData>

@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+	<!-- Tent Parts -->
+	<JobDef>
+		<defName>NCS_PackBag</defName>
+		<driverClass>Camping_Stuff.JobDriver_PackBag</driverClass>
+		<reportString>packing a tent bag</reportString>
+		<allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+	</JobDef>
+	
+	<JobDef>
+		<defName>NCS_UnpackBag</defName>
+		<driverClass>Camping_Stuff.JobDriver_UnpackBag</driverClass> <!-- needs to be overridden with specific subclass before job assignment-->
+		<reportString>unpacking a tent bag</reportString>
+		<allowOpportunisticPrefix>false</allowOpportunisticPrefix>
+	</JobDef>
+	
+	<!-- Repair Jobs -->
+	<JobDef Name="NCS_RepairPart">
+		<defName>NCS_RepairPart</defName>
+		<driverClass>Camping_Stuff.JobDriver_RepairPart</driverClass>
+		<reportString>repairing a tent part</reportString>
+		<allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+	</JobDef>
+	
+	<JobDef ParentName="NCS_RepairPart">
+		<defName>NCS_RepairCoverInBag</defName>
+		<driverClass>Camping_Stuff.JobDriver_RepairCoverInBag</driverClass>
+	</JobDef>
+	
+	<JobDef ParentName="NCS_RepairPart">
+		<defName>NCS_RepairFloorInBag</defName>
+		<driverClass>Camping_Stuff.JobDriver_RepairFloorInBag</driverClass>
+	</JobDef>
+	
+	<!--JobDef>
+		<defName>NCS_UnpackBag</defName>
+		<driverClass>Camping_Stuff.</driverClass>
+		<reportString>unpacking a tent bag</reportString>
+	</JobDef-->
+
+	<!-- Tents -->
+	<!--JobDef>
+		<defName>NCS_DeployTent</defName>
+		<driverClass>Nandonalt_CampingStuff.JobDriver_DeployTent</driverClass>
+		<reportString>deploying a tent.</reportString>
+	</JobDef>
+
+	<JobDef>
+		<defName>NCS_PackTent</defName>
+		<driverClass>Nandonalt_CampingStuff.JobDriver_PackTent</driverClass>
+		<reportString>packing a tent.</reportString>
+	</JobDef>
+
+	<JobDef>
+		<defName>NCS_RepairTent</defName>
+		<driverClass>Nandonalt_CampingStuff.JobDriver_RepairTent</driverClass>
+		<reportString>repairing a tent.</reportString>
+	</JobDef-->
+</Defs>

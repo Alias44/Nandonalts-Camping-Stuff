@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+	<ThingDef ParentName="ResourceBase" Name="TentPartBase" Abstract="True">
+		<techLevel>Neolithic</techLevel>
+		<thingCategories>
+			<li>BuildingsSpecial</li>
+		</thingCategories>
+		<tickerType>Never</tickerType>
+		<tradeTags>
+			<li>Furniture</li>
+		</tradeTags>
+		<statBases>
+			<Beauty>1</Beauty>
+			<Flammability>1</Flammability>
+		</statBases>
+		<comps>
+			<li>
+				<compClass>CompColorable</compClass>
+			</li>
+		</comps>
+	</ThingDef>
+	
+	<ThingDef ParentName="TentPartBase" Name="TentPartSmith" Abstract="True">
+		<descriptionHyperlinks>
+			<ThingDef>NCS_TentBag</ThingDef>
+			<ThingDef>NCS_TentPart_Cover_Small</ThingDef>
+			<ThingDef>NCS_TentPart_Cover_Med</ThingDef>
+			<ThingDef>NCS_TentPart_Cover_Large</ThingDef>
+			<ThingDef>NCS_TentPart_Cover_Long</ThingDef>
+		</descriptionHyperlinks>
+		<stuffCategories>
+			<li>Metallic</li>
+			<li>Woody</li>
+		</stuffCategories>
+		<!--recipe moved to RecipeDef to accommodate bulk pole crafting-->
+	</ThingDef>
+	
+	<ThingDef ParentName="TentPartBase" Name="TentPartTailored" Abstract="True">
+		<stuffCategories>
+			<li>Fabric</li>
+			<li>Leathery</li>
+		</stuffCategories>
+		<recipeMaker>
+			<unfinishedThingDef>NCS_UnfinishedTent</unfinishedThingDef>
+			<workSpeedStat>GeneralLaborSpeed</workSpeedStat> <!--TailoringSpeed-->
+			<workSkill>Crafting</workSkill>
+			<effectWorking>Tailor</effectWorking>
+			<soundWorking>Recipe_Tailor</soundWorking>
+			<recipeUsers>
+				<li>ElectricTailoringBench</li>
+				<li>HandTailoringBench</li>
+			</recipeUsers>
+		</recipeMaker>		
+	</ThingDef>
+	
+	<ThingDef ParentName="TentPartTailored" Name="TentCover" Abstract="True">
+		<descriptionHyperlinks>
+			<ThingDef>NCS_TentBag</ThingDef>
+			<ThingDef>NCS_TentPart_Pole</ThingDef>
+		</descriptionHyperlinks>
+		
+		<comps>
+			<li Class="Camping_Stuff.CompProperties_TentPart">
+				<compClass>Camping_Stuff.CompUsable_TentPart</compClass>
+				<partType>2</partType>
+			</li>
+		</comps>
+	</ThingDef>
+</Defs>
