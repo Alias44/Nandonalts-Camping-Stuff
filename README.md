@@ -22,7 +22,10 @@ Enter the command git clone https://github.com/Alias44/Nandonalts-Camping-Stuff
 Note: You can get future changes by using the command get pull origin master
 
 ### Changes
-v1.0
+v1.0.1
+* Added hard incompatibility with Combat Extended
+
+v1.0.0
 * RimWorld 1.1 - 1.3 support
 * Total rewrite
   * Tents are now a bag item that must be packed with a cover and a number of tent poles (and optionally a tent mat).

@@ -29,6 +29,10 @@
 		</li>
 	</modDependencies>
 	
+	<incompatibleWith>
+		<li>CETeam.CombatExtended</li>
+	</incompatibleWith>
+	
 	<description>Camping Stuff: Come for the deployable tents, stay for the portable stove.
 	
 See Steam change notes or readme file for changelog</description>
