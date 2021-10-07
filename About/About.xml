@@ -28,19 +28,8 @@
 			<downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
 		</li>
 	</modDependencies>
-
-
-    <description>-----Camping Stuff BETA-----
-v1.0.0b Camping Stuff Mod By Alias (originally crated by Nandonalt): Adds Deployable Tents(Normal, Medium, Big, and Long) and Portable Stoves.
 	
-Changelog:
-v1.0.0b- Complete re-write, [elaborate before release!!!]
-v0.6.0- v1.0 support
-v0.5.2- Fixed bills not working on portable stoves
-v0.5.1- Fixed portable stoves not being portable
-v0.5.0- b19 support, removed butchering spots, support for arbitrary tent sizes, new tent size: long
-v0.4.0- b18 support, removed sleeping bags
-v0.3.0- a17 support
-v0.2.0- enables you to make tents from any textile and adds two new sizes to tents: medium and big.
-</description>
+	<description>Camping Stuff: Come for the deployable tents, stay for the portable stove.
+	
+See Steam change notes or readme file for changelog</description>
 </ModMetaData>
