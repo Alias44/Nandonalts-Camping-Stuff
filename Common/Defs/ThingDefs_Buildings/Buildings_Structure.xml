@@ -68,6 +68,7 @@
 		<building>
 			<deconstructible>false</deconstructible>
 			<allowAutoroof>false</allowAutoroof>
+			<relatedBuildCommands Inherit="False" />
 		</building>
 		<damageMultipliers Inherit="False">
 			<li>

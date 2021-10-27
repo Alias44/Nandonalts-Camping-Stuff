@@ -23,7 +23,8 @@ Note: You can get future changes by using the command get pull origin master
 
 ### Changes
 v1.0.1
-* Added hard incompatibility with Combat Extended
+* Temporary incompatibility with Combat Extended (resolved now)
+* Removed option to build doors from tent walls
 
 v1.0.0
 * RimWorld 1.1 - 1.3 support
