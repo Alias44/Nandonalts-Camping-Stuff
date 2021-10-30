@@ -25,6 +25,10 @@
 			<ComponentIndustrial>2</ComponentIndustrial>
 			<Chemfuel>10</Chemfuel>
 		</costList>
+		<placeWorkers Inherit="False">
+			<li>PlaceWorker_PreventInteractionSpotOverlap</li>
+			<li>PlaceWorker_Heater</li>
+		</placeWorkers>
 		<comps Inherit="False">
 			<li Class="CompProperties_Refuelable">
 				<fuelConsumptionRate>2</fuelConsumptionRate>
