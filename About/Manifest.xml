@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Manifest>
+	<version>1.0.2</version> 
+	<incompatibleWith>
+		<li>CombatExtended &lt;= 1.3.4.2</li>
+	</incompatibleWith>
+	<showCrossPromotions>false</showCrossPromotions>
+	<manifestUri>https://raw.githubusercontent.com/Alias44/Nandonalts-Camping-Stuff/master/About/Manifest.xml</manifestUri>
+	<downloadUri>https://github.com/Alias44/Nandonalts-Camping-Stuff/releases</downloadUri>
+</Manifest>

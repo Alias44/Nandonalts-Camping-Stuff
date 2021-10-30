@@ -24,6 +24,7 @@ Note: You can get future changes by using the command get pull origin master
 ### Changes
 v1.0.2
 * Fixed portable stove- re-added workgivers since they got lost with the v1 update and removed the inherited flame meditation type
+* Added manifest for compatibility with Fluffy's [Mod Manager](https://github.com/fluffy-mods/ModManager)
 
 v1.0.1
 * Temporary incompatibility with Combat Extended (resolved now)
