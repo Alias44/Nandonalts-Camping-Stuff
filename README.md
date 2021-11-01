@@ -22,6 +22,9 @@ Enter the command git clone https://github.com/Alias44/Nandonalts-Camping-Stuff
 Note: You can get future changes by using the command get pull origin master
 
 ### Changes
+v1.0.3
+* Fixed bug with tent roof not spawning
+
 v1.0.2
 * Fixed portable stove- re-added workgivers since they got lost with the v1 update and removed the inherited flame meditation type
 * Added manifest for compatibility with Fluffy's [Mod Manager](https://github.com/fluffy-mods/ModManager)

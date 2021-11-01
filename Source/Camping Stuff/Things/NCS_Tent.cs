@@ -225,9 +225,11 @@ namespace Camping_Stuff
 				foreach (SketchEntity se in this.sketch.Entities.OrderBy(x => x.SpawnOrder))
 				{
 					IntVec3 cell = se.pos + this.Position;
+					bool isTerrain = se is SketchTerrain;
+					bool isThing = se is SketchThing;
 
-					if ((!floorOverride && se is SketchTerrain && !floorComp.CheckCell(se, this.Rotation)) || 
-						(se is SketchThing && !coverComp.CheckCell(se, this.Rotation)))
+					if ((!floorOverride && isTerrain && !floorComp.CheckCell(se, this.Rotation)) || 
+						(isThing && !coverComp.CheckCell(se, this.Rotation)))
 					{
 						var spawnedThings = new List<Thing>();
  						se.Spawn(cell, this.Map, Faction.OfPlayer, spawnedThings: spawnedThings);
@@ -250,6 +252,10 @@ namespace Camping_Stuff
 								twc.HitPoints = twc.MaxHitPoints;
 							}
 						}
+					}
+					else if(!isTerrain && !isThing)
+					{
+						se.Spawn(cell, this.Map, Faction.OfPlayer);
 					}
 				}
 			}
