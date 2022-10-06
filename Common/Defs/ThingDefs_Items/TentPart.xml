@@ -244,6 +244,7 @@
 	
 	<ThingDef ParentName="TentPartTailored">
 		<category>Ethereal</category> <!--Ethereal so that other buildings can exist in the same space -->
+		<alwaysHaulable>false</alwaysHaulable>
 		<drawerType>None</drawerType>
 		<stackLimit>1</stackLimit>
 		<defName>NCS_TentBag</defName>

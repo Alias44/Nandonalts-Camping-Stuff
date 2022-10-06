@@ -22,6 +22,12 @@ Enter the command git clone https://github.com/Alias44/Nandonalts-Camping-Stuff
 Note: You can get future changes by using the command get pull origin master
 
 ### Changes
+v1.0.4
+* RimWorld 1.4 support
+* Added tag to hopefully prevented deployed tents from being hauled in rare cases
+* Enforced load before cucumpear's embrasures
+
+
 v1.0.3
 * Fixed bug with tent roof not spawning
 
