@@ -93,7 +93,7 @@
     <Compile Include="Comps\CompTentPartWithCellsDamage.cs" />
     <Compile Include="Comps\CompTentBagDamageComp.cs" />
     <Compile Include="Comps\TentSpawnedComp.cs" />
-    <Compile Include="HarmonyPatches.cs" />
+    <Compile Include="Patches\HarmonyPatches.cs" />
     <Compile Include="Jobs\JobDriver_Fetch.cs" />
     <Compile Include="Jobs\JobDriver_RepairPartInBag.cs" />
     <Compile Include="Jobs\JobDriver_RepairPart.cs" />
@@ -117,6 +117,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="BackCompatibility\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
