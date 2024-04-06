@@ -88,9 +88,6 @@ Initial changes (a17) From Nandonalt's last version
   nodoor = false;
   thingList2[i].Destroy(DestroyMode.Vanish);
 
-### Licensing
-Unsure of licensing info, as Nandonalt didn't originally publish anything in that respect.
-
 ### Thanks
 * to Nandonalt for making the mod
 * to jfredric for fixing my awful readme
