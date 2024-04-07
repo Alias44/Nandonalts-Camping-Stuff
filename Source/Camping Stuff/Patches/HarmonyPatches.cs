@@ -138,7 +138,7 @@ namespace Camping_Stuff
 			return codes.AsEnumerable();
 		}
 
-		/// <summary>Removes minified tents from the Debug spawn menu</summary>
+		/// <summary>Removes errant tent states from the Debug spawn menu</summary>
 		/// <remarks>This would be so much easier if the original function just had "!(def.thingClass == is MinifiedThing)"</remarks>
 		[HarmonyTranspiler]
 		public static IEnumerable<CodeInstruction> DebugSpawn(IEnumerable<CodeInstruction> instructions, ILGenerator ilg)
@@ -148,7 +148,7 @@ namespace Camping_Stuff
 			int linesBefore = 2;
 			int linesToCopy = 6;
 
-			// copy !(def.thingClass == typeof (MinifiedThing) ilcode and check type of NCS_MiniTent instead
+			// copy !(def.thingClass == typeof (MinifiedThing) ilcode and check type of NCS_MiniTent / NCS_Tent instead
 			for (int i = linesBefore; i < codes.Count - linesToCopy; i++)
 			{
 				if(codes[i].opcode == OpCodes.Ldtoken && codes[i].operand.Equals(typeof(MinifiedThing)))
@@ -157,6 +157,11 @@ namespace Camping_Stuff
 					newInstructions[linesBefore] = new CodeInstruction(OpCodes.Ldtoken, typeof(NCS_MiniTent));
 
 					int insertIndex = i + (linesToCopy - linesBefore);
+					codes.InsertRange(insertIndex, newInstructions);
+
+					newInstructions[linesBefore] = new CodeInstruction(OpCodes.Ldtoken, typeof(NCS_Tent));
+					insertIndex += newInstructions.Count;
+
 					codes.InsertRange(insertIndex, newInstructions);
 
 					break;

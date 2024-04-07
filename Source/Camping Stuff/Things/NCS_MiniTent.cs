@@ -71,6 +71,18 @@ namespace Camping_Stuff
 			base.DeSpawn(mode);
 		}
 
+#if DEBUG
+		/// <summary>
+		/// Auto-geneare tent parts when mod is compiled for debug mode
+		/// </summary>
+		public override void Notify_DebugSpawned()
+		{
+			base.Notify_DebugSpawned();
+
+			Bag.SpawnParts();
+		}
+#endif
+
 		public override IEnumerable<FloatMenuOption> GetFloatMenuOptions(Pawn selPawn)
 		{
 			//JobDef jd = DefDatabase<JobDef>.GetNamed("NCS_UnpackBag");

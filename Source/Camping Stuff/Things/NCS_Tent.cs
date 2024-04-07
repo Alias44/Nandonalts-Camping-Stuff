@@ -175,6 +175,13 @@ namespace Camping_Stuff
 			}
 		}
 
+		public void SpawnParts()
+		{
+			PackPart(Util.DebugSpawn(TentDefOf.NCS_TentPart_Cover_Small));
+			PackPart(Util.DebugSpawn(TentDefOf.NCS_TentPart_Pole, maxPoles));
+			PackPart(Util.DebugSpawn(TentDefOf.NCS_TentPart_Floor));
+		}
+
 		public override Graphic Graphic => Ready ? this.cover.Graphic : base.Graphic;
 
 		public override CellRect? CustomRectForSelector
@@ -199,10 +206,13 @@ namespace Camping_Stuff
 
 		public override void SpawnSetup(Map map, bool respawningAfterLoad)
 		{
+			// Early failout to prevent debug spawn errors
+			if(!Ready) { return; }
+
 			base.SpawnSetup(map, respawningAfterLoad);
 
-			var floorComp = this.cover.TryGetComp<CompTentPartWithCellsDamage>();
-			var coverComp = this.cover.TryGetComp<TentCoverComp>();
+			var floorComp = this.cover?.TryGetComp<CompTentPartWithCellsDamage>();
+			var coverComp = this.cover?.TryGetComp<TentCoverComp>();
 
 			if (!respawningAfterLoad)
 			{
