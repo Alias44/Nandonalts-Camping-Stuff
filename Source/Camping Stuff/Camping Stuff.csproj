@@ -92,13 +92,16 @@
     <Compile Include="Comps\CompTentPartDamage.cs" />
     <Compile Include="Comps\CompTentPartWithCellsDamage.cs" />
     <Compile Include="Comps\CompTentBagDamageComp.cs" />
+    <Compile Include="Comps\TentMatComp.cs" />
     <Compile Include="Comps\TentSpawnedComp.cs" />
+    <Compile Include="Patches\DefGenerator_Patch.cs" />
     <Compile Include="Patches\HarmonyPatches.cs" />
     <Compile Include="Jobs\JobDriver_Fetch.cs" />
     <Compile Include="Jobs\JobDriver_RepairPartInBag.cs" />
     <Compile Include="Jobs\JobDriver_RepairPart.cs" />
     <Compile Include="LayoutCache.cs" />
     <Compile Include="Statparts\PoleFactors.cs" />
+    <Compile Include="TentSpawn.cs" />
     <Compile Include="TentSpec.cs" />
     <Compile Include="Things\NCS_MiniTent.cs" />
     <Compile Include="SketchRoof.cs" />

@@ -10,12 +10,14 @@ using Verse;
 
 namespace Camping_Stuff
 {
-	public class HarmonyPatches : Mod
+	public partial class HarmonyPatches : Mod
 	{
 		public HarmonyPatches(ModContentPack content) : base(content)
 		{
 			var harmony = new Harmony("Nandonalt_CampingStuff.main");
-
+#if !(RELEASE_1_3 || RELEASE_1_2 || RELEASE_1_1)
+			harmony.Patch(AccessTools.Method(typeof(DefGenerator), "GenerateImpliedDefs_PreResolve"), new HarmonyMethod(typeof(HarmonyPatches), nameof(TentDefGenerator)));
+#endif
 			harmony.Patch(AccessTools.Method(typeof(ThingDef), "get_CanHaveFaction"), null, new HarmonyMethod(typeof(HarmonyPatches), nameof(TentCanHaveFaction)));
 			harmony.Patch(AccessTools.Method(typeof(ThingDefGenerator_Buildings), "NewBlueprintDef_Thing"), null, new HarmonyMethod(typeof(HarmonyPatches), nameof(NewBlueprintDef_Tent)));
 			harmony.Patch(AccessTools.Method(typeof(Designator_Uninstall), "CanDesignateThing"), null, new HarmonyMethod(typeof(HarmonyPatches), nameof(CanDesignateThingTent)));
@@ -25,6 +27,7 @@ namespace Camping_Stuff
 #if !RELEASE_1_1
 			harmony.Patch(AccessTools.Method(typeof(CaravanUIUtility), "GetTransferableCategory"), null, null, new HarmonyMethod(typeof(HarmonyPatches), nameof(TentTransferCategory)));
 #endif
+
 			harmony.Patch(AccessTools.Method(typeof(DebugThingPlaceHelper), "IsDebugSpawnable"), null, null, new HarmonyMethod(typeof(HarmonyPatches), nameof(DebugSpawn)));
 
 			harmony.PatchAll(Assembly.GetExecutingAssembly());

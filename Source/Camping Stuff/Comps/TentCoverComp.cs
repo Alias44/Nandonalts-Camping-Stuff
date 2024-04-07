@@ -27,6 +27,7 @@ namespace Camping_Stuff
 		private List<string> tentLayoutSouth = new List<string>();
 		public TentSpec tentSpec;
 		public int layoutHash;
+		public List<LayoutSpawn> layoutSpawns = new List<LayoutSpawn>();
 
 		public CompProperties_TentCover()
 		{
@@ -41,6 +42,11 @@ namespace Camping_Stuff
 		public override void PostLoadSpecial(ThingDef parentDef)
 		{
 			tentSpec = new TentSpec(tentLayoutSouth, Rot4.South);
+		}
+
+		public override void ResolveReferences(ThingDef parentDef)
+		{
+			tentSpec.AssignSpawns(layoutSpawns.ToDictionary(spawn => spawn.part, spawn => spawn.def));
 			layoutHash = tentSpec.GetHashCode();
 		}
 	}

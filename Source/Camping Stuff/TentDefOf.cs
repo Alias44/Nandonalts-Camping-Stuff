@@ -15,13 +15,14 @@ namespace Camping_Stuff
 		public static ThingDef NCS_TentPart_Cover_Long;
 
 		public static ThingDef NCS_TentPart_Pole;
+		public static ThingDef NCS_TentPart_Floor;
 
 		public static ThingDef NCS_TentBag;
 		public static ThingDef NCS_MiniTentBag;
 
 		public static RoofDef NCS_TentRoof;
 
-		public static TerrainDef NCS_TentFloor;
+		//public static TerrainDef NCS_TentFloor;
 
 		public static JobDef NCS_PackBag;
 		public static JobDef NCS_UnpackBag;

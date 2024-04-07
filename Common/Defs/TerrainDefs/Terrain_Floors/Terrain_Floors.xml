@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
-  <TerrainDef ParentName="CarpetBase">
-    <defName>NCS_TentFloor</defName>
-    <label>tent floor</label>
-    <renderPrecedence>200</renderPrecedence>
-	 <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
-    <description>A mat to cover the inside of a tent.</description>
-	 <color>(162,157,152)</color>
-	 <resourcesFractionWhenDeconstructed>0</resourcesFractionWhenDeconstructed>
-  </TerrainDef>
+	<TerrainTemplateDef ParentName="CarpetBase">
+		<defName>NCS_TentFloor</defName>
+		<label>tent floor ({0})</label>
+		<description>A mat to cover the inside of a tent.</description>
+		<costList Inherit="False"/>
+		<canGenerateDefaultDesignator>false</canGenerateDefaultDesignator>
+	</TerrainTemplateDef>
 </Defs>

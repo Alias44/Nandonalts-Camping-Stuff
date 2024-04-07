@@ -5,4 +5,10 @@
 		<attribute>Name</attribute>
 		<value>Campfire</value>
 	</Operation>
+	
+	<Operation Class="PatchOperationAttributeAdd">
+		<xpath>Defs/TerrainTemplateDef[defName="Carpet"]</xpath>
+		<attribute>Name</attribute>
+		<value>CarpetBase</value>
+	</Operation>
 </Patch>

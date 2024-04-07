@@ -601,7 +601,7 @@ namespace Camping_Stuff
 				return;
 			}
 
-			sketch = this.cover.TryGetComp<TentCoverComp>().Props.tentSpec.ToSketch(cover.Stuff, floor?.Stuff);
+			sketch = this.cover.TryGetComp<TentCoverComp>().Props.tentSpec.ToSketch(cover.Stuff, floor?.TryGetComp<TentMatComp>().Spawns);
 			sketch.Rotate(this.Rotation);
 		}
 
@@ -613,7 +613,7 @@ namespace Camping_Stuff
 		public void SetDeployedSketch(TentSpec spec, int specHash)
 		{
 			layoutHash = specHash;
-			deployedSketch = spec.ToSketch(cover.Stuff, floor?.Stuff);
+			deployedSketch = spec.ToSketch(cover.Stuff, floor?.TryGetComp<TentMatComp>().Spawns);
 			deployedSketch.Rotate(this.Rotation);
 
 			Current.Game.GetComponent<LayoutCache>().Add(spec, this);

@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using RimWorld;
 using Verse;
 
 namespace Camping_Stuff
 {
-	public enum TentLayout
+	public enum TentLayout : int
 	{
 		other = -1,
 		empty,
@@ -25,6 +26,8 @@ namespace Camping_Stuff
 		public List<List<TentLayout>> layout = new List<List<TentLayout>>();
 		private int height;
 		private int width;
+
+		private Dictionary<TentLayout, ThingDef> spawns = new Dictionary<TentLayout, ThingDef>();
 
 		public TentSpec() { }
 
@@ -49,6 +52,21 @@ namespace Camping_Stuff
 			NoramlizeList(rotation.AsInt);
 			center = FindCenter();
 			CountParts();
+		}
+
+		public void AssignSpawns(Dictionary<TentLayout, ThingDef> tentSpawns)
+		{
+			spawns = tentSpawns;
+
+			// Default tent configs
+			if (!spawns.ContainsKey(TentLayout.wall))
+			{
+				spawns[TentLayout.wall] = TentDefOf.NCS_TentWall;
+			}
+			if (!spawns.ContainsKey(TentLayout.door))
+			{
+				spawns[TentLayout.door] = TentDefOf.NCS_TentDoor;
+			}
 		}
 
 		private void CalculateDimensions()
@@ -124,7 +142,7 @@ namespace Camping_Stuff
 			}
 		}
 
-		public Sketch ToSketch(ThingDef coverStuff, ThingDef floorStuff = null)
+		public Sketch ToSketch(ThingDef coverStuff, TerrainDef floor = null)
 		{
 			Sketch sketch = new Sketch();
 			sketch.Rotate(rotation);
@@ -149,20 +167,15 @@ namespace Camping_Stuff
 						sketch.Add(sr, false);
 
 						// Add floor if applicable
-						if (floorStuff != null)
+						if (floor != null)
 						{
-							sketch.AddTerrain(TentDefOf.NCS_TentFloor, loc);
+							sketch.AddTerrain(floor, loc);
 						}
 					}
 
-					if (cellLayout == TentLayout.wall)
+					if (cellLayout == TentLayout.wall || cellLayout == TentLayout.door)
 					{
-						sketch.AddThing(TentDefOf.NCS_TentWall, loc, rotation, coverStuff);
-					}
-
-					else if (cellLayout == TentLayout.door)
-					{
-						sketch.AddThing(TentDefOf.NCS_TentDoor, loc, rotation, coverStuff);
+						sketch.AddThing(spawns[cellLayout], loc, rotation, coverStuff);
 					}
 				}
 			}
@@ -177,7 +190,9 @@ namespace Camping_Stuff
 
 		public override string ToString()
 		{
-			return string.Join("\n", JoinRows());
+			return string.Join(Environment.NewLine, JoinRows()) +
+				Environment.NewLine + 
+				spawns.ToStringFullContents();
 		}
 
 		public override int GetHashCode()
@@ -193,8 +208,16 @@ namespace Camping_Stuff
 			{
 				saveable = JoinRows();
 			}
+			else
+			{
+				if (spawns == null)
+				{
+					spawns = new Dictionary<TentLayout, ThingDef>();
+				}
+			}
 
 			Scribe_Collections.Look(ref saveable, "tentSpec", LookMode.Value);
+			Scribe_Collections.Look(ref spawns, "tentSpawns", LookMode.Value, LookMode.Def);
 
 			if (Scribe.mode == LoadSaveMode.LoadingVars)
 			{
