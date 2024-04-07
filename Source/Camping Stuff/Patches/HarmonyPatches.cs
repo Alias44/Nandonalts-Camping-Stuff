@@ -20,6 +20,7 @@ namespace Camping_Stuff
 			harmony.Patch(AccessTools.Method(typeof(ThingDefGenerator_Buildings), "NewBlueprintDef_Thing"), null, new HarmonyMethod(typeof(HarmonyPatches), nameof(NewBlueprintDef_Tent)));
 			harmony.Patch(AccessTools.Method(typeof(Designator_Uninstall), "CanDesignateThing"), null, new HarmonyMethod(typeof(HarmonyPatches), nameof(CanDesignateThingTent)));
 			harmony.Patch(AccessTools.Method(typeof(GenConstruct), "FirstBlockingThing"), null, new HarmonyMethod(typeof(HarmonyPatches), nameof(TentBlueprintRect)));
+			harmony.Patch(AccessTools.Method(typeof(ScenPart_ThingCount), "PossibleThingDefs"), null, new HarmonyMethod(typeof(HarmonyPatches), nameof(TentScenario)));
 
 #if !RELEASE_1_1
 			harmony.Patch(AccessTools.Method(typeof(CaravanUIUtility), "GetTransferableCategory"), null, null, new HarmonyMethod(typeof(HarmonyPatches), nameof(TentTransferCategory)));
@@ -96,6 +97,15 @@ namespace Camping_Stuff
 				}
 			}
 		}
+
+		/// <summary>Add tent bag to scenario menu</summary>
+		/// <remarks>quick and dirty hack to be repaced by custom ScenPart in future</remarks>
+		[HarmonyPostfix]
+		public static void TentScenario(ref IEnumerable<ThingDef> __result)
+		{
+			__result = __result.AddItem(TentDefOf.NCS_TentBag);
+		}
+
 
 		/// <summary>Adds tents in the ready state to the "Travel and Supplies" tab of the Form Caravan page</summary>
 		[HarmonyTranspiler]
