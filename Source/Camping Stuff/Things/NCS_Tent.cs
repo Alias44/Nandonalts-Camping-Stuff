@@ -598,6 +598,7 @@ namespace Camping_Stuff
 		{
  			if (cover == null)
 			{
+				sketch = null;
 				return;
 			}
 

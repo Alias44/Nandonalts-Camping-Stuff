@@ -17,7 +17,7 @@ namespace Camping_Stuff
 			if (!xmlRoot.HasChildNodes)
 				return;
 
-			DirectXmlCrossRefLoader.RegisterObjectWantsCrossRef((object)this, "spawns", xmlRoot.FirstChild.Value);
+			DirectXmlCrossRefLoader.RegisterObjectWantsCrossRef((object)this, "def", xmlRoot.FirstChild.Value);
 		}
 	}
 }

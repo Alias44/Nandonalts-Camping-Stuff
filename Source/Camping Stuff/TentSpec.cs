@@ -188,11 +188,11 @@ namespace Camping_Stuff
 			return layout.Select(row => string.Join(",", row.Cast<int>())).ToList();
 		}
 
+		// nullcheck prevents errors when loading tentlayouts without embeded spawns (<1.5)
 		public override string ToString()
 		{
 			return string.Join(Environment.NewLine, JoinRows()) +
-				Environment.NewLine + 
-				spawns.ToStringFullContents();
+				(spawns == null ? string.Empty : Environment.NewLine + spawns.ToStringFullContents());
 		}
 
 		public override int GetHashCode()
@@ -222,6 +222,13 @@ namespace Camping_Stuff
 			if (Scribe.mode == LoadSaveMode.LoadingVars)
 			{
 				Initalize(saveable, Rot4.South);
+			}
+			else if (Scribe.mode == LoadSaveMode.PostLoadInit)
+			{
+				if (spawns == null)
+				{
+					AssignSpawns(new Dictionary<TentLayout, ThingDef>());
+				}
 			}
 		}
 	}
