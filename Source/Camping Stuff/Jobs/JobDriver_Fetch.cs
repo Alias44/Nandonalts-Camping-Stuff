@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+
 using RimWorld;
-using RimWorld.QuestGen;
-using Verse;
 using Verse.AI;
 
 namespace Camping_Stuff
@@ -39,7 +34,8 @@ namespace Camping_Stuff
 			pawn.CurJob.count = 1;
 
 			yield return Toils_Haul.StartCarryThing(fetch).FailOnDespawnedNullOrForbidden<Toil>(fetch);
-			yield return Toils_Haul.CheckForGetOpportunityDuplicate(reservePart, fetch, TargetIndex.None, true, t => {
+			yield return Toils_Haul.CheckForGetOpportunityDuplicate(reservePart, fetch, TargetIndex.None, true, t =>
+			{
 				return pawn.carryTracker.CarriedThing.stackCount < DesiredQty;
 			});
 			yield return Toils_Goto.GotoThing(target, PathEndMode.ClosestTouch);

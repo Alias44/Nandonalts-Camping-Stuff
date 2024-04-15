@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+
 using RimWorld;
-using RimWorld.QuestGen;
 using Verse;
 using Verse.AI;
 
@@ -14,7 +9,7 @@ namespace Camping_Stuff
 	public class JobDriver_PackBag : JobDriver_Fetch // JobDriver
 	{
 		protected Thing Part => this.job.GetTarget(fetch).Thing;
-		protected NCS_MiniTent MiniBag => (NCS_MiniTent) this.job.GetTarget(target).Thing;
+		protected NCS_MiniTent MiniBag => (NCS_MiniTent)this.job.GetTarget(target).Thing;
 
 		protected override int DesiredQty
 		{

@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Verse;
-using Verse.AI;
-using RimWorld;
-using System.Diagnostics.Eventing.Reader;
-using System.Reflection;
-using UnityEngine;
+﻿using Verse;
 
 namespace Camping_Stuff
 {
@@ -28,7 +18,7 @@ namespace Camping_Stuff
 		{
 			base.PostExposeData();
 
- 			Scribe_References.Look(ref this.tent, "tentSpawnedBy");
+			Scribe_References.Look(ref this.tent, "tentSpawnedBy");
 		}
 	}
 

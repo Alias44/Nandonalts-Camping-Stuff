@@ -6,7 +6,7 @@
 	<NCS_Large>Large</NCS_Large>
 	<NCS_Long>Long</NCS_Long>
 
-	<!-- Lables -->
+	<!-- Labels -->
 	<SpawnedTentLabel>{0} {1} tent</SpawnedTentLabel>
 	<SpawnedTentDescriptionFlavor>A temporary structure</SpawnedTentDescriptionFlavor>
 	<TentDescriptionDetailed>A bag ready to deploy {0}</TentDescriptionDetailed>

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using RimWorld;
+﻿using RimWorld;
 using Verse;
 
 namespace Camping_Stuff
@@ -13,7 +8,8 @@ namespace Camping_Stuff
 		public StatPart_MktValue() : base(delegate (float f)
 		{
 			return f.ToStringMoney((string)null);
-		}) { }
+		})
+		{ }
 
 		public override string ExplanationPart(StatRequest req)
 		{
@@ -28,7 +24,7 @@ namespace Camping_Stuff
 
 	class StatPart_Mass : AliasContainer
 	{
-		public StatPart_Mass() : base( GenText.ToStringMass)
+		public StatPart_Mass() : base(GenText.ToStringMass)
 		{ }
 
 		public override string ExplanationPart(StatRequest req)

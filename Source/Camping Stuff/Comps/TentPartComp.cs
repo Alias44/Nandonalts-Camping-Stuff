@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Verse;
-using Verse.AI;
+
 using RimWorld;
-using System.Diagnostics.Eventing.Reader;
-using System.Reflection;
-using UnityEngine;
+using Verse.AI;
 
 namespace Camping_Stuff
 {
@@ -48,7 +43,7 @@ namespace Camping_Stuff
 					delegate
 					{
 						Find.Targeter.BeginTargeting(this.GetTargetingParameters(),
-							delegate(LocalTargetInfo t)
+							delegate (LocalTargetInfo t)
 							{
 								selPawn.jobs.TryTakeOrderedJob(JobMaker.MakeJob(TentDefOf.NCS_PackBag, this.parent, t));
 							});

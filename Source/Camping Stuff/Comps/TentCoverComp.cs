@@ -1,8 +1,8 @@
-﻿using Verse;
-using System;
-using System.Linq;
+﻿using System;
 using System.Collections.Generic;
-using RimWorld;
+using System.Linq;
+
+using Verse;
 
 namespace Camping_Stuff
 {
@@ -17,7 +17,7 @@ namespace Camping_Stuff
 		public CompProperties_TentCover Props => (CompProperties_TentCover)this.props;
 
 		protected override int DamageUnit => Math.Max((int)Math.Floor((1.0 / this.Props.tentSpec.layoutParts) * this.parent.MaxHitPoints), 1);
-		protected override double DamageCost => (double) this.parent.def.costStuffCount / this.Props.tentSpec.layoutParts;
+		protected override double DamageCost => (double)this.parent.def.costStuffCount / this.Props.tentSpec.layoutParts;
 	}
 
 	public class CompProperties_TentCover : CompProperties_TentPartDamage //(Def)
@@ -26,8 +26,9 @@ namespace Camping_Stuff
 		public string layoutName;
 		private List<string> tentLayoutSouth = new List<string>();
 		public TentSpec tentSpec;
-		public int layoutHash;
 		public List<LayoutSpawn> layoutSpawns = new List<LayoutSpawn>();
+
+		public int LayoutHash => tentSpec.GetHashCode();
 
 		public CompProperties_TentCover()
 		{
@@ -47,7 +48,6 @@ namespace Camping_Stuff
 		public override void ResolveReferences(ThingDef parentDef)
 		{
 			tentSpec.AssignSpawns(layoutSpawns.ToDictionary(spawn => spawn.part, spawn => spawn.def));
-			layoutHash = tentSpec.GetHashCode();
 		}
 	}
 }

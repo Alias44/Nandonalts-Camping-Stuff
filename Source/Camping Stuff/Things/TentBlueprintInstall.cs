@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using RimWorld;
+﻿using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -28,11 +23,15 @@ namespace Camping_Stuff
 			}
 		}
 
+#if RELEASE_1_4 || RELEASE_1_3 || RELEASE_1_2 || RELEASE_1_1
 		public override void DrawAt(Vector3 drawLoc, bool flip = false)
+#else
+		protected override void DrawAt(Vector3 drawLoc, bool flip = false)
+#endif
 		{
 			base.DrawAt(drawLoc, flip);
 
-			if(this.ThingToInstall is NCS_Tent tent)
+			if (this.ThingToInstall is NCS_Tent tent)
 			{
 				tent.DrawGhost(drawLoc.ToIntVec3(), false, this.Rotation);
 			}

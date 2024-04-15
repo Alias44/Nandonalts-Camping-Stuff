@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using RimWorld;
+
 using Verse;
 
 namespace Camping_Stuff
@@ -29,7 +26,7 @@ namespace Camping_Stuff
 
 			public void ExposeData()
 			{
-				if((Scribe.mode == LoadSaveMode.Saving && usages.Count > 0) || Scribe.mode != LoadSaveMode.Saving)
+				if ((Scribe.mode == LoadSaveMode.Saving && usages.Count > 0) || Scribe.mode != LoadSaveMode.Saving)
 				{
 					Scribe_Deep.Look(ref spec, "tentLayouts");
 					Scribe_Collections.Look(ref usages, false, "usage", LookMode.Reference);
@@ -38,8 +35,9 @@ namespace Camping_Stuff
 		}
 
 		private Dictionary<int, LayoutUsage> layoutUsages = new Dictionary<int, LayoutUsage>();
-		
-		public LayoutCache(Game theGame) : base() {
+
+		public LayoutCache(Game theGame) : base()
+		{
 
 		}
 
@@ -84,14 +82,14 @@ namespace Camping_Stuff
 		{
 			base.ExposeData();
 
-			if(Scribe.mode == LoadSaveMode.Saving && layoutUsages != null)
+			if (Scribe.mode == LoadSaveMode.Saving && layoutUsages != null)
 			{
 				Cleanup();
 			}
-			
+
 			Scribe_Collections.Look(ref layoutUsages, "layoutUsage", LookMode.Value, LookMode.Deep);
 
-			if(Scribe.mode == LoadSaveMode.PostLoadInit && layoutUsages == null)
+			if (Scribe.mode == LoadSaveMode.PostLoadInit && layoutUsages == null)
 			{
 				layoutUsages = new Dictionary<int, LayoutUsage>();
 			}

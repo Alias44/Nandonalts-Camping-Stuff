@@ -1,9 +1,7 @@
-﻿using RimWorld;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -75,7 +73,7 @@ namespace Camping_Stuff
 			{
 				return false;
 			}
-			if(spawnMode == Sketch.SpawnMode.Normal)
+			if (spawnMode == Sketch.SpawnMode.Normal)
 			{
 				map.roofGrid.SetRoof(at, roof);
 			}
@@ -95,7 +93,7 @@ namespace Camping_Stuff
 
 		public override SketchEntity DeepCopy()
 		{
-			SketchRoof sketchRoof = (SketchRoof) base.DeepCopy();
+			SketchRoof sketchRoof = (SketchRoof)base.DeepCopy();
 			sketchRoof.roof = this.roof;
 			return sketchRoof;
 		}

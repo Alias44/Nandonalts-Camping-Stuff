@@ -164,8 +164,7 @@
 					<li>1,1,1,1,2,1,1,1,1</li>
 				</tentLayoutSouth>
 				<layoutSpawns>
-					<!--NCS_part_1>NCS_TentWall</NCS_part_1-->
-					<NCS_part_1>Wall</NCS_part_1>
+					<NCS_part_1>NCS_TentWall</NCS_part_1>
 					<NCS_part_2>NCS_TentDoor</NCS_part_2>
 				</layoutSpawns>
 			</li>

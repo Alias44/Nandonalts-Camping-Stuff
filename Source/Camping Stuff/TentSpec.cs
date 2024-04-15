@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+
+using GenericHashLib;
+
 using RimWorld;
 using Verse;
 
@@ -26,6 +28,8 @@ namespace Camping_Stuff
 		public List<List<TentLayout>> layout = new List<List<TentLayout>>();
 		private int height;
 		private int width;
+
+		public bool oldHash = false;
 
 		private Dictionary<TentLayout, ThingDef> spawns = new Dictionary<TentLayout, ThingDef>();
 
@@ -77,9 +81,7 @@ namespace Camping_Stuff
 
 		private void SwapDimensions()
 		{
-			int tmp = height;
-			height = width;
-			width = tmp;
+			(height, width) = (width, height);
 		}
 
 		private IntVec3 FindCenter()
@@ -173,9 +175,13 @@ namespace Camping_Stuff
 						}
 					}
 
-					if (cellLayout == TentLayout.wall || cellLayout == TentLayout.door)
+					if (cellLayout == TentLayout.wall)
 					{
-						sketch.AddThing(spawns[cellLayout], loc, rotation, coverStuff);
+						sketch.AddThing(spawns.TryGetValue(cellLayout, TentDefOf.NCS_TentWall), loc, rotation, coverStuff);
+					}
+					else if (cellLayout == TentLayout.door)
+					{
+						sketch.AddThing(spawns.TryGetValue(cellLayout, TentDefOf.NCS_TentDoor), loc, rotation, coverStuff);
 					}
 				}
 			}
@@ -188,45 +194,52 @@ namespace Camping_Stuff
 			return layout.Select(row => string.Join(",", row.Cast<int>())).ToList();
 		}
 
-		// nullcheck prevents errors when loading tentlayouts without embeded spawns (<1.5)
 		public override string ToString()
 		{
-			return string.Join(Environment.NewLine, JoinRows()) +
-				(spawns == null ? string.Empty : Environment.NewLine + spawns.ToStringFullContents());
+			return string.Join("\n", JoinRows()) +
+				"\n" + spawns.ToStringFullContents();
+		}
+
+		public int GetOldHashCode()
+		{
+			return string.Join("\n", JoinRows()).GetHashCode();
 		}
 
 		public override int GetHashCode()
 		{
-			return ToString().GetHashCode();
+			if (!oldHash)
+			{
+				return HashCode
+					.OfEach(layout)
+					.AndEach(spawns);
+			}
+			else
+			{
+				return GetOldHashCode();
+			}
 		}
+
 
 		public void ExposeData()
 		{
 			List<string> saveable = new List<string>();
 
-			if(Scribe.mode == LoadSaveMode.Saving)
+			if (Scribe.mode == LoadSaveMode.Saving)
 			{
 				saveable = JoinRows();
 			}
-			else
-			{
-				if (spawns == null)
-				{
-					spawns = new Dictionary<TentLayout, ThingDef>();
-				}
-			}
 
+			Scribe_Values.Look(ref oldHash, "oldHash", false);
 			Scribe_Collections.Look(ref saveable, "tentSpec", LookMode.Value);
 			Scribe_Collections.Look(ref spawns, "tentSpawns", LookMode.Value, LookMode.Def);
 
 			if (Scribe.mode == LoadSaveMode.LoadingVars)
 			{
 				Initalize(saveable, Rot4.South);
-			}
-			else if (Scribe.mode == LoadSaveMode.PostLoadInit)
-			{
+
 				if (spawns == null)
 				{
+					oldHash = true;
 					AssignSpawns(new Dictionary<TentLayout, ThingDef>());
 				}
 			}

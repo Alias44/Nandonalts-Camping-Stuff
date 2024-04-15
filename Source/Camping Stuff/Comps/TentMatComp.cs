@@ -1,8 +1,7 @@
-﻿using Verse;
-using System;
-using System.Linq;
-using System.Collections.Generic;
+﻿using System;
+
 using RimWorld;
+using Verse;
 
 namespace Camping_Stuff
 {

@@ -1,13 +1,10 @@
-﻿using RimWorld;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+
+using RimWorld;
 using Verse;
-using Verse.AI;
 
 namespace Camping_Stuff
 {
@@ -30,7 +27,6 @@ namespace Camping_Stuff
 		public int maxPoles = DefDatabase<ThingDef>.AllDefs.Where(d => d.HasComp(typeof(TentCoverComp))).Max(cover => cover.GetCompProperties<CompProperties_TentCover>().numPoles);
 		private static int maxPossibePoles = DefDatabase<ThingDef>.AllDefs.Where(d => d.HasComp(typeof(TentCoverComp))).Min(cover => cover.GetCompProperties<CompProperties_TentCover>().numPoles);
 
-		//public Dictionary<ThingDef, Thing> poles = new Dictionary<ThingDef, Thing>();
 		private List<Thing> poles = new List<Thing>();
 
 		public List<Thing> Poles => poles ?? (poles = new List<Thing>());
@@ -75,6 +71,7 @@ namespace Camping_Stuff
 		}
 
 		private bool floorOverride = false;
+		public TerrainDef floorCache;
 		private Thing floor = null;
 		public Thing Floor
 		{
@@ -126,16 +123,16 @@ namespace Camping_Stuff
 					msg += "ContainsCover".Translate(Cover.LabelCapHpFrac()) + "\n";
 				}
 
-				if(PoleCount > 0)
+				if (PoleCount > 0)
 				{
 					msg += "ContainsPoles".Translate() + "\n";
-					foreach(Thing pole in Poles)
+					foreach (Thing pole in Poles)
 					{
 						msg += Util.indent + pole.LabelCap + "\n";
 					}
 				}
 
-				if(Floor != null)
+				if (Floor != null)
 				{
 					msg += "ContainsFloor".Translate(Floor.LabelCapHpFrac()) + "\n";
 				}
@@ -148,7 +145,7 @@ namespace Camping_Stuff
 		{
 			get
 			{
-				if(Cover != null && poles.Count == 1)
+				if (Cover != null && poles.Count == 1)
 				{
 					return "TentCoverFull".Translate(poles[0].Label, cover.Label);
 				}
@@ -160,9 +157,9 @@ namespace Camping_Stuff
 		}
 
 		// Overriding label and description (while spawned/ installed/ deployed), since minified things don't really have their own.
-		public override string LabelNoCount => this.Spawned ? (string) "SpawnedTentLabel".Translate(cover.Stuff.LabelAsStuff, tentSize.ToLower()) : base.LabelNoCount;
+		public override string LabelNoCount => this.Spawned ? (string)"SpawnedTentLabel".Translate(cover.Stuff.LabelAsStuff, tentSize.ToLower()) : base.LabelNoCount;
 
-		public override string DescriptionDetailed => Ready ? (string) "TentDescriptionDetailed".Translate(coverShortDescription.ToLower()) : base.DescriptionDetailed;
+		public override string DescriptionDetailed => Ready ? (string)"TentDescriptionDetailed".Translate(coverShortDescription.ToLower()) : base.DescriptionDetailed;
 
 		public override string DescriptionFlavor
 		{
@@ -173,13 +170,6 @@ namespace Camping_Stuff
 
 				return $"{base.DescriptionFlavor}\n\n{"TentContains".Translate()}\n{ContainsMsg}";
 			}
-		}
-
-		public void SpawnParts()
-		{
-			PackPart(Util.DebugSpawn(TentDefOf.NCS_TentPart_Cover_Small));
-			PackPart(Util.DebugSpawn(TentDefOf.NCS_TentPart_Pole, maxPoles));
-			PackPart(Util.DebugSpawn(TentDefOf.NCS_TentPart_Floor));
 		}
 
 		public override Graphic Graphic => Ready ? this.cover.Graphic : base.Graphic;
@@ -207,7 +197,7 @@ namespace Camping_Stuff
 		public override void SpawnSetup(Map map, bool respawningAfterLoad)
 		{
 			// Early failout to prevent debug spawn errors
-			if(!Ready) { return; }
+			if (!Ready) { return; }
 
 			base.SpawnSetup(map, respawningAfterLoad);
 
@@ -238,11 +228,11 @@ namespace Camping_Stuff
 					bool isTerrain = se is SketchTerrain;
 					bool isThing = se is SketchThing;
 
-					if ((!floorOverride && isTerrain && !floorComp.CheckCell(se, this.Rotation)) || 
+					if ((!floorOverride && isTerrain && !floorComp.CheckCell(se, this.Rotation)) ||
 						(isThing && !coverComp.CheckCell(se, this.Rotation)))
 					{
 						var spawnedThings = new List<Thing>();
- 						se.Spawn(cell, this.Map, Faction.OfPlayer, spawnedThings: spawnedThings);
+						se.Spawn(cell, this.Map, Faction.OfPlayer, spawnedThings: spawnedThings);
 
 						foreach (var twc in spawnedThings.Where(t => t is ThingWithComps).Cast<ThingWithComps>())
 						{
@@ -263,7 +253,7 @@ namespace Camping_Stuff
 							}
 						}
 					}
-					else if(!isTerrain && !isThing)
+					else if (!isTerrain && !isThing)
 					{
 						se.Spawn(cell, this.Map, Faction.OfPlayer);
 					}
@@ -274,15 +264,20 @@ namespace Camping_Stuff
 			// on respawn get the old layout from the cache
 			else if (respawningAfterLoad && layoutHash != 0)
 			{
-				SetDeployedSketch(Current.Game.GetComponent<LayoutCache>().GetSpec(layoutHash));
+				SetDeployedSketch(Current.Game.GetComponent<LayoutCache>().GetSpec(layoutHash), floorCache);
 			}
 
 			if (layoutHash == 0)
 			{
-				layoutHash = coverComp.Props.layoutHash;
+				layoutHash = coverComp.Props.LayoutHash;
 				deployedSketch = sketch.DeepCopy();
 
 				Current.Game.GetComponent<LayoutCache>().Add(coverComp.Props.tentSpec, this);
+			}
+
+			if (floorCache == null)
+			{
+				floorCache = floor?.TryGetComp<TentMatComp>().Spawns;
 			}
 		}
 
@@ -306,7 +301,7 @@ namespace Camping_Stuff
 					{
 						Thing thing = sketchThing.GetSameSpawned(cell, this.Map);
 
-						if(thing is Building_Door door && door.Open)
+						if (thing is Building_Door door && door.Open)
 						{
 							doorOpen.SetValue(door, false);
 						}
@@ -331,7 +326,7 @@ namespace Camping_Stuff
 				}
 			}
 
-			if(layoutHash != coverComp.Props.layoutHash)
+			if (layoutHash != coverComp.Props.LayoutHash)
 			{
 				coverComp.Reallocate(sketch, this.Rotation);
 			}
@@ -339,16 +334,19 @@ namespace Camping_Stuff
 			Current.Game.GetComponent<LayoutCache>().Remove(layoutHash, this);
 			layoutHash = 0;
 			deployedSketch = null;
+			floorCache = null;
 			base.DeSpawn(mode);
 		}
 
 		public override void ExposeData()
 		{
+			// cache floor & override in backcompat
 			base.ExposeData();
 
 			Scribe_Values.Look(ref layoutHash, "layout");
 			Scribe_Deep.Look(ref cover, "tentCover");
 			Scribe_Values.Look(ref floorOverride, "tentFloorPlacedOverride", false);
+			Scribe_Defs.Look(ref floorCache, "floorCache");
 			Scribe_Deep.Look(ref floor, "tentFloor");
 			Scribe_Collections.Look<Thing>(ref poles, "poleList", LookMode.Deep);
 
@@ -402,7 +400,7 @@ namespace Camping_Stuff
 			}
 		}
 
-#region PartPacking
+		#region PartPacking
 		public void PackPart(Thing part)
 		{
 			TentPart partType = TentPart.other;
@@ -415,7 +413,7 @@ namespace Camping_Stuff
 			switch (partType)
 			{
 				case TentPart.pole:
- 					int typeIndex = this.FindPoleIndex(part);
+					int typeIndex = this.FindPoleIndex(part);
 
 					if (typeIndex >= 0)
 					{
@@ -532,7 +530,7 @@ namespace Camping_Stuff
 			}
 		}
 
-#endregion
+		#endregion
 		public float GetValue(StatDef sd)
 		{
 			if (sd == null)
@@ -596,28 +594,29 @@ namespace Camping_Stuff
 
 		private void UpdateSketch()
 		{
- 			if (cover == null)
+			if (cover == null)
 			{
 				sketch = null;
 				return;
 			}
 
-			sketch = this.cover.TryGetComp<TentCoverComp>().Props.tentSpec.ToSketch(cover.Stuff, floor?.TryGetComp<TentMatComp>().Spawns);
+			sketch = this.cover.TryGetComp<TentCoverComp>().Props.tentSpec.ToSketch(cover.Stuff, floor?.TryGetComp<TentMatComp>().Spawns); // manual set cache?
 			sketch.Rotate(this.Rotation);
 		}
 
-		public void SetDeployedSketch(TentSpec spec)
+		public void SetDeployedSketch(TentSpec spec, TerrainDef floor = null)
 		{
-			SetDeployedSketch(spec, spec.GetHashCode());
-		}
-
-		public void SetDeployedSketch(TentSpec spec, int specHash)
-		{
-			layoutHash = specHash;
-			deployedSketch = spec.ToSketch(cover.Stuff, floor?.TryGetComp<TentMatComp>().Spawns);
+			layoutHash = spec.GetHashCode();
+			deployedSketch = spec.ToSketch(cover.Stuff, floor);
 			deployedSketch.Rotate(this.Rotation);
 
 			Current.Game.GetComponent<LayoutCache>().Add(spec, this);
+		}
+
+		public void SpawnParts()
+		{
+			SpawnParts(TentDefOf.NCS_TentPart_Cover_Small);
+			Floor = ThingMaker.MakeThing(TentDefOf.NCS_TentPart_Floor, Stuff);
 		}
 
 		public void SpawnParts(ThingDef cover)

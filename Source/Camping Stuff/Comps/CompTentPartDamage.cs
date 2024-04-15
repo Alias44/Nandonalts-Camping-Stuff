@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using RimWorld;
 using Verse;
-using Verse.AI;
 
 namespace Camping_Stuff
 {
@@ -17,7 +13,7 @@ namespace Camping_Stuff
 	{
 		public CompProperties_TentPartDamage Props => (CompProperties_TentPartDamage)this.props;
 
-		protected virtual double DamageCost => 1.0 - ((double) this.parent.HitPoints / this.parent.MaxHitPoints);
+		protected virtual double DamageCost => 1.0 - ((double)this.parent.HitPoints / this.parent.MaxHitPoints);
 		public virtual int RepairCost => (int)Math.Ceiling(this.parent.def.costStuffCount * DamageCost);
 
 		public virtual bool CanRepair => RepairCost > 0;

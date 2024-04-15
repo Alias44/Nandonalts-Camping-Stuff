@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using RimWorld;
-using Verse;
 
 namespace Camping_Stuff
 {
-	public abstract class AliasContainer: StatPart
+	public abstract class AliasContainer : StatPart
 	{
 		private readonly Func<float, string> format;
 

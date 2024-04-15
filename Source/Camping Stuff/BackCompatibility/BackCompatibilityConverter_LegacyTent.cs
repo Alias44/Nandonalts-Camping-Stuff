@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
+
 using RimWorld;
 using Verse;
 
 namespace Camping_Stuff
 {
-	class BackCompatibilityConverter_NCS : BackCompatibilityConverter
+	public class BackCompatibilityConverter_LegacyTent : BackCompatibilityConverter
 	{
 		private static Dictionary<string, ThingDef> partReplacements = new Dictionary<string, ThingDef>();
 
@@ -108,7 +107,7 @@ namespace Camping_Stuff
 			if (Scribe.mode != LoadSaveMode.PostLoadInit)
 				return;
 
-			if(obj is Map map && newDeployedTents.ContainsKey(map.uniqueID))
+			if (obj is Map map && newDeployedTents.ContainsKey(map.uniqueID))
 			{
 				// Convert Constructed roofs above each tent into tent roofs
 				newDeployedTents[map.uniqueID]
@@ -128,7 +127,7 @@ namespace Camping_Stuff
 				miniTent.Bag = tent;
 				miniTent.HitPoints = miniTent.MaxHitPoints;
 			}
-			else if(obj is NCS_Tent tent && oldDeployedTents.ContainsKey(tent.thingIDNumber))
+			else if (obj is NCS_Tent tent && oldDeployedTents.ContainsKey(tent.thingIDNumber))
 			{
 				var (thingDef, orientation, mapId) = oldDeployedTents[tent.thingIDNumber];
 				tent.SpawnParts(thingDef);

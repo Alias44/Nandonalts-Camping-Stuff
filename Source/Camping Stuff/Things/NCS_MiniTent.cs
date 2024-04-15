@@ -1,10 +1,7 @@
-﻿using RimWorld;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+
 using HarmonyLib;
+using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.AI;
@@ -15,7 +12,7 @@ namespace Camping_Stuff
 	{
 		public NCS_Tent Bag
 		{
-			get => (NCS_Tent) InnerThing;
+			get => (NCS_Tent)InnerThing;
 			set
 			{
 				// Harmony hack to prevent trying to add things to a null innerContainer
@@ -49,9 +46,13 @@ namespace Camping_Stuff
 				? this.def.graphicData.GraphicColoredFor(this.InnerThing)
 				: base.Graphic;
 
+#if RELEASE_1_4 || RELEASE_1_3 || RELEASE_1_2 || RELEASE_1_1
 		public override void DrawAt(Vector3 drawLoc, bool flip = false)
+#else
+		protected override void DrawAt(Vector3 drawLoc, bool flip = false)
+#endif
 		{
-			this.Graphic.Draw(drawLoc, this.Graphic is Graphic_Single ? Rot4.North : Rot4.South, (Thing) this);
+			this.Graphic.Draw(drawLoc, this.Graphic is Graphic_Single ? Rot4.North : Rot4.South, (Thing)this);
 		}
 
 #if !(RELEASE_1_2 || RELEASE_1_1)
@@ -174,7 +175,12 @@ namespace Camping_Stuff
 			{
 				if (gizmo is Designator_Install)
 				{
+#if RELEASE_1_4 || RELEASE_1_3 || RELEASE_1_2 || RELEASE_1_1
 					gizmo.disabled = !Bag.Ready;
+#else
+					gizmo.Disabled = !Bag.Ready;
+#endif
+
 					gizmo.disabledReason = Bag.MissingMsg;
 				}
 

@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using RimWorld;
 using Verse;
 
@@ -50,7 +49,7 @@ namespace Camping_Stuff
 			.Aggregate((spec1, spec2) => spec1.tiles > spec2.tiles ? spec1 : spec2);
 		public static int maxTiles = largestTent.tiles; // maximum cells 
 
-		protected virtual int DamageUnit => (int)Math.Ceiling((double) this.parent.MaxHitPoints / maxTiles); // Hitpoints to subtract per cell in damagedCells
+		protected virtual int DamageUnit => (int)Math.Ceiling((double)this.parent.MaxHitPoints / maxTiles); // Hitpoints to subtract per cell in damagedCells
 
 		protected override double DamageCost => ((double)this.parent.def.costStuffCount / maxTiles);
 		public override int RepairCost => (int)Math.Ceiling(DamageCost * damagedCells.Count);
@@ -98,7 +97,7 @@ namespace Camping_Stuff
 				if (!d[cell.GetType()].Contains(cell))
 				{
 					int maxRadius = Math.Max(sketchRect.Width, sketchRect.Height);
-					for(int radius = 1; radius <= maxRadius; radius++)
+					for (int radius = 1; radius <= maxRadius; radius++)
 					{
 						CellRect searchSpace = CellRect.CenteredOn(cell.pos, radius).ClipInsideRect(sketchRect);
 
@@ -106,7 +105,7 @@ namespace Camping_Stuff
 							.Where(entity => searchSpace.Contains(entity.pos) &&
 									entity.Label.Equals(cell.Label) &&
 									!reallocatedCells.Contains(entity) &&
-									entity.OccupiedRect.Height == cell.OccupiedRect.Height && // .equals() won't work since Cellrect's are relatice to the posistion so the bounds won't line up
+									entity.OccupiedRect.Height == cell.OccupiedRect.Height && // .equals() won't work since Cellrect's are relative to the posistion so the bounds won't line up
 									entity.OccupiedRect.Width == cell.OccupiedRect.Width &&
 									entity.SpawnOrder.Equals(entity.SpawnOrder))
 							.OrderBy(entity => entity.pos.DistanceTo(cell.pos))
@@ -129,7 +128,7 @@ namespace Camping_Stuff
 				}
 			}
 
-			if(reallocatedCells.Count != 0)
+			if (reallocatedCells.Count != 0)
 			{
 				damagedCells.Clear();
 				damagedCells = reallocatedCells;

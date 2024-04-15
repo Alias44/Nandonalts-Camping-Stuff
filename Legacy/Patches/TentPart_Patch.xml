@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/ThingDef[defName="NCS_TentPart_Floor"]/comps/li[@Class="Camping_Stuff.CompProperties_TentMat"]/spawnedFloorTemplate</xpath>
+		<value><spawnedFloor>NCS_TentFloor</spawnedFloor></value>
+	</Operation>
+</Patch>

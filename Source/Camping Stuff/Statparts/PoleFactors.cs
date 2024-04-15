@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using RimWorld;
 using Verse;
 
@@ -35,7 +33,7 @@ namespace Camping_Stuff
 
 				float avg = AvgPoleFactor(tent, sd);
 				float offset = DistributedPoleOffset(tent, sd);
-				float coverMultiplier = (float) 1.0 / tent.Cover.TryGetComp<TentCoverComp>().Props.tentSpec.layoutParts;
+				float coverMultiplier = (float)1.0 / tent.Cover.TryGetComp<TentCoverComp>().Props.tentSpec.layoutParts;
 
 				string factorDesc = "";
 				string offsetDesc = "";
@@ -45,11 +43,11 @@ namespace Camping_Stuff
 				foreach (var pole in tent.Poles)
 				{
 					float statFactorFromList = pole.Stuff.stuffProps.statFactors.GetStatFactorFromList(sd);
-					float weight = (float) pole.stackCount / tent.PoleCount;
+					float weight = (float)pole.stackCount / tent.PoleCount;
 
 					factorDesc +=
 						$"{Util.indent}{"StatsReport_Material".Translate()} ({pole.Stuff.LabelCap}): {statFactorFromList.ToStringByStyle(ToStringStyle.PercentZero, ToStringNumberSense.Factor)} ({"HealthFactorPercentImpact".Translate(weight.ToStringPercentEmptyZero())})\n";
-					
+
 					float statOffsetFromList = pole.Stuff.stuffProps.statOffsets.GetStatOffsetFromList(sd);
 					offsetDesc +=
 						$"{Util.indent}{"StatsReport_Material".Translate()} ({pole.Stuff.LabelCap}): {statOffsetFromList.ToStringByStyle(sd.toStringStyle, ToStringNumberSense.Offset)} ({"HealthOffsetScale".Translate(pole.stackCount + "x")})\n";
@@ -63,7 +61,7 @@ namespace Camping_Stuff
 					str += $"{"ContainsPoles".Translate()}\n{factorDesc}\n";
 				}
 
-				if ((double) offset != 0.0)
+				if ((double)offset != 0.0)
 				{
 					offsetDesc +=
 						$"{Util.indent}{"StatsReport_TentSize".Translate(tent.Cover.def.LabelCap)}: {coverMultiplier.ToStringByStyle(ToStringStyle.PercentTwo, ToStringNumberSense.Factor)}\n" +

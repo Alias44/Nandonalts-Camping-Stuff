@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -14,11 +10,11 @@ namespace Camping_Stuff
 	{
 		protected const TargetIndex bagTarget = TargetIndex.A;
 
-		protected NCS_MiniTent MiniBag => (NCS_MiniTent) this.job.GetTarget(bagTarget).Thing;
+		protected NCS_MiniTent MiniBag => (NCS_MiniTent)this.job.GetTarget(bagTarget).Thing;
 		protected int UseDuration
 		{
 			get
- 			{
+			{
 				return 200;
 			}
 		}
@@ -34,7 +30,9 @@ namespace Camping_Stuff
 
 			this.FailOnDestroyedNullOrForbidden(bagTarget);
 
-			yield return Toils_Goto.GotoThing(bagTarget, PathEndMode.ClosestTouch).FailOnDespawnedNullOrForbidden<Toil>(bagTarget).FailOnSomeonePhysicallyInteracting<Toil>(bagTarget);
+			yield return Toils_Goto.GotoThing(bagTarget, PathEndMode.ClosestTouch)
+				.FailOnDespawnedNullOrForbidden<Toil>(bagTarget)
+				.FailOnSomeonePhysicallyInteracting<Toil>(bagTarget);
 			pawn.CurJob.count = 1;
 
 			Toil toil = Toils_General.Wait(UseDuration, TargetIndex.None);

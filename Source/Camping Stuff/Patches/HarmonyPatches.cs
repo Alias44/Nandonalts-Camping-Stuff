@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
+
 using HarmonyLib;
 using RimWorld;
 using RimWorld.Planet;
@@ -23,6 +23,7 @@ namespace Camping_Stuff
 			harmony.Patch(AccessTools.Method(typeof(Designator_Uninstall), "CanDesignateThing"), null, new HarmonyMethod(typeof(HarmonyPatches), nameof(CanDesignateThingTent)));
 			harmony.Patch(AccessTools.Method(typeof(GenConstruct), "FirstBlockingThing"), null, new HarmonyMethod(typeof(HarmonyPatches), nameof(TentBlueprintRect)));
 			harmony.Patch(AccessTools.Method(typeof(ScenPart_ThingCount), "PossibleThingDefs"), null, new HarmonyMethod(typeof(HarmonyPatches), nameof(TentScenario)));
+			harmony.Patch(AccessTools.Method(typeof(BackCompatibility), "BackCompatibleTerrainWithShortHash"), null, new HarmonyMethod(typeof(HarmonyPatches), nameof(BackCompatibleTentFloor)));
 
 #if !RELEASE_1_1
 			harmony.Patch(AccessTools.Method(typeof(CaravanUIUtility), "GetTransferableCategory"), null, null, new HarmonyMethod(typeof(HarmonyPatches), nameof(TentTransferCategory)));
@@ -37,7 +38,8 @@ namespace Camping_Stuff
 				AccessTools.StaticFieldRefAccess<List<BackCompatibilityConverter>>(typeof(BackCompatibility),
 					"conversionChain");
 
-			compatibilityConverters.Add(new BackCompatibilityConverter_NCS());
+			compatibilityConverters.Add(new BackCompatibilityConverter_LegacyTent());
+			compatibilityConverters.Add(new BackCompatibilityConverter_LegacyFloors());
 		}
 
 		/// <summary>Allows tents to be marked with a faction (why isn't there a boolean override for that?!), resolves issues with setting them as frames</summary>
@@ -73,7 +75,7 @@ namespace Camping_Stuff
 
 		/// <summary>Tent specific adjustments to FirstBlockingThing</summary>
 		[HarmonyPostfix]
-		public static void TentBlueprintRect(Thing constructible, ref Thing __result) 
+		public static void TentBlueprintRect(Thing constructible, ref Thing __result)
 		{
 			if (constructible is TentBlueprint_Install tbi && tbi.ThingToInstall is NCS_Tent tent)
 			{
@@ -93,7 +95,7 @@ namespace Camping_Stuff
 							GenConstruct.BlocksConstruction(constructible, t)
 						)
 						{
- 							__result = t;
+							__result = t;
 							return;
 						}
 					}
@@ -109,6 +111,17 @@ namespace Camping_Stuff
 			__result = __result.AddItem(TentDefOf.NCS_TentBag);
 		}
 
+		/// <summary>Add tent bag to scenario menu</summary>
+		/// <remarks>quick and dirty hack to be repaced by custom ScenPart in future</remarks>
+		[HarmonyPostfix]
+		public static void BackCompatibleTentFloor(ushort hash, ref TerrainDef __result)
+		{
+			if (__result == null && hash == (ushort)20659)
+			{
+				__result = TentDefOf.NCS_TentFloorRed;
+			}
+		}
+
 
 		/// <summary>Adds tents in the ready state to the "Travel and Supplies" tab of the Form Caravan page</summary>
 		[HarmonyTranspiler]
@@ -121,11 +134,11 @@ namespace Camping_Stuff
 			var tentPatchStart = ilg.DefineLabel();
 			Label nextIf = new Label();
 
-			for (int i = 0; i < codes.Count -2 ; i++)
+			for (int i = 0; i < codes.Count - 2; i++)
 			{
-				if (codes[i].opcode == OpCodes.Bne_Un_S && codes[i+2].opcode == OpCodes.Ret)
+				if (codes[i].opcode == OpCodes.Bne_Un_S && codes[i + 2].opcode == OpCodes.Ret)
 				{
-					nextIf = (Label) codes[i].operand;
+					nextIf = (Label)codes[i].operand;
 					codes[i].operand = tentPatchStart;
 
 					insertIndex = i + 3;
@@ -164,7 +177,7 @@ namespace Camping_Stuff
 			// copy !(def.thingClass == typeof (MinifiedThing) ilcode and check type of NCS_MiniTent / NCS_Tent instead
 			for (int i = linesBefore; i < codes.Count - linesToCopy; i++)
 			{
-				if(codes[i].opcode == OpCodes.Ldtoken && codes[i].operand.Equals(typeof(MinifiedThing)))
+				if (codes[i].opcode == OpCodes.Ldtoken && codes[i].operand.Equals(typeof(MinifiedThing)))
 				{
 					List<CodeInstruction> newInstructions = codes.GetRange(i - linesBefore, linesToCopy);
 					newInstructions[linesBefore] = new CodeInstruction(OpCodes.Ldtoken, typeof(NCS_MiniTent));

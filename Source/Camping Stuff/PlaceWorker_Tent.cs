@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using RimWorld;
+﻿using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -20,7 +15,7 @@ namespace Camping_Stuff
 
 		public override AcceptanceReport AllowsPlacing(BuildableDef checkingDef, IntVec3 loc, Rot4 rot, Map map, Thing thingToIgnore = null, Thing thing = null)
 		{
-			if(thing is NCS_Tent tent)
+			if (thing is NCS_Tent tent)
 			{
 				bool existingFloor = tent.CanSafelySpawnFloor(loc, map);
 				foreach (SketchEntity entity in tent.sketch.Entities)
@@ -31,9 +26,9 @@ namespace Camping_Stuff
 					if (cellRect.InNoBuildEdgeArea(map))
 						return (AcceptanceReport)"TooCloseToMapEdge".Translate();
 
-					if(!entity.CanBuildOnTerrain(entity.pos + loc, map) && !(entity is SketchTerrain && existingFloor)) // ignore floors if they're going to get skipped on spawn
+					if (!entity.CanBuildOnTerrain(entity.pos + loc, map) && !(entity is SketchTerrain && existingFloor)) // ignore floors if they're going to get skipped on spawn
 					{
-						if(entity is SketchBuildable sb)
+						if (entity is SketchBuildable sb)
 						{
 							return (AcceptanceReport)"TerrainCannotSupport_TerrainAffordance".Translate(sb.Buildable, sb.Buildable.GetTerrainAffordanceNeed(sb.Stuff));
 						}

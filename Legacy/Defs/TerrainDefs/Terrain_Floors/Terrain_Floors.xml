@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
-	<TerrainDef ParentName="FloorBase">
-		<texturePath>Terrain/Surfaces/Carpet</texturePath>
-		<researchPrerequisites>
-			<li>CarpetMaking</li>
-		</researchPrerequisites>
-		<burnedDef>BurnedCarpet</burnedDef>
-		<statBases>
-			<Beauty>2</Beauty>
-			<Flammability>0.32</Flammability>
-		</statBases>
+	<TerrainDef ParentName="CarpetBase">
 		<defName>NCS_TentFloor</defName>
 		<label>tent floor</label>
 		<renderPrecedence>200</renderPrecedence>
