@@ -4,6 +4,7 @@ using Verse;
 
 namespace Camping_Stuff
 {
+#if !(RELEASE_1_3 || RELEASE_1_2 || RELEASE_1_1)
 	public class BackCompatibilityConverter_LegacyFloors : BackCompatibilityConverter
 	{
 		public override bool AppliesToVersion(int majorVer, int minorVer) => majorVer == 1 && minorVer <= 4;
@@ -32,4 +33,5 @@ namespace Camping_Stuff
 		}
 
 	}
+#endif
 }

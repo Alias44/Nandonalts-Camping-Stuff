@@ -23,7 +23,9 @@ namespace Camping_Stuff
 		public static RoofDef NCS_TentRoof;
 
 		//public static TerrainDef NCS_TentFloor;
+#if !(RELEASE_1_3 || RELEASE_1_2 || RELEASE_1_1)
 		public static TerrainDef NCS_TentFloorRed;
+#endif
 
 		public static JobDef NCS_PackBag;
 		public static JobDef NCS_UnpackBag;

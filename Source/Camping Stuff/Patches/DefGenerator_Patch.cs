@@ -15,6 +15,7 @@ namespace Camping_Stuff
 				.Select(stuff => ColorFromStuff(stuff))
 				.ToList();
 
+
 			var tentFloors = DefDatabase<ThingDef>.AllDefs
 				.Where(def => def.HasComp<TentMatComp>())
 				.Select(def => def.GetCompProperties<CompProperties_TentMat>().spawnedFloorTemplate);
@@ -69,7 +70,7 @@ namespace Camping_Stuff
 				.ToList();
 
 			var tentFloors = DefDatabase<ThingDef>.AllDefs
-				.Where(def => def.HasComp(typeof(TentMatComp)))
+				.Where(def => def.GetCompProperties<CompProperties_TentMat>() != null)
 				.Select(def => def.GetCompProperties<CompProperties_TentMat>().spawnedFloorTemplate);
 
 			matColors.ForEach(colorDef =>

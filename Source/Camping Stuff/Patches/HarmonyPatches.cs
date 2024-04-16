@@ -17,13 +17,13 @@ namespace Camping_Stuff
 			var harmony = new Harmony("Nandonalt_CampingStuff.main");
 #if !(RELEASE_1_3 || RELEASE_1_2 || RELEASE_1_1)
 			harmony.Patch(AccessTools.Method(typeof(DefGenerator), "GenerateImpliedDefs_PreResolve"), new HarmonyMethod(typeof(HarmonyPatches), nameof(TentDefGenerator)));
+			harmony.Patch(AccessTools.Method(typeof(BackCompatibility), "BackCompatibleTerrainWithShortHash"), null, new HarmonyMethod(typeof(HarmonyPatches), nameof(BackCompatibleTentFloor)));
 #endif
 			harmony.Patch(AccessTools.Method(typeof(ThingDef), "get_CanHaveFaction"), null, new HarmonyMethod(typeof(HarmonyPatches), nameof(TentCanHaveFaction)));
 			harmony.Patch(AccessTools.Method(typeof(ThingDefGenerator_Buildings), "NewBlueprintDef_Thing"), null, new HarmonyMethod(typeof(HarmonyPatches), nameof(NewBlueprintDef_Tent)));
 			harmony.Patch(AccessTools.Method(typeof(Designator_Uninstall), "CanDesignateThing"), null, new HarmonyMethod(typeof(HarmonyPatches), nameof(CanDesignateThingTent)));
 			harmony.Patch(AccessTools.Method(typeof(GenConstruct), "FirstBlockingThing"), null, new HarmonyMethod(typeof(HarmonyPatches), nameof(TentBlueprintRect)));
 			harmony.Patch(AccessTools.Method(typeof(ScenPart_ThingCount), "PossibleThingDefs"), null, new HarmonyMethod(typeof(HarmonyPatches), nameof(TentScenario)));
-			harmony.Patch(AccessTools.Method(typeof(BackCompatibility), "BackCompatibleTerrainWithShortHash"), null, new HarmonyMethod(typeof(HarmonyPatches), nameof(BackCompatibleTentFloor)));
 
 #if !RELEASE_1_1
 			harmony.Patch(AccessTools.Method(typeof(CaravanUIUtility), "GetTransferableCategory"), null, null, new HarmonyMethod(typeof(HarmonyPatches), nameof(TentTransferCategory)));
@@ -39,7 +39,9 @@ namespace Camping_Stuff
 					"conversionChain");
 
 			compatibilityConverters.Add(new BackCompatibilityConverter_LegacyTent());
+#if !(RELEASE_1_3 || RELEASE_1_2 || RELEASE_1_1)
 			compatibilityConverters.Add(new BackCompatibilityConverter_LegacyFloors());
+#endif
 		}
 
 		/// <summary>Allows tents to be marked with a faction (why isn't there a boolean override for that?!), resolves issues with setting them as frames</summary>
@@ -110,18 +112,6 @@ namespace Camping_Stuff
 		{
 			__result = __result.AddItem(TentDefOf.NCS_TentBag);
 		}
-
-		/// <summary>Add tent bag to scenario menu</summary>
-		/// <remarks>quick and dirty hack to be repaced by custom ScenPart in future</remarks>
-		[HarmonyPostfix]
-		public static void BackCompatibleTentFloor(ushort hash, ref TerrainDef __result)
-		{
-			if (__result == null && hash == (ushort)20659)
-			{
-				__result = TentDefOf.NCS_TentFloorRed;
-			}
-		}
-
 
 		/// <summary>Adds tents in the ready state to the "Travel and Supplies" tab of the Form Caravan page</summary>
 		[HarmonyTranspiler]

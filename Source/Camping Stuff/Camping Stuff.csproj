@@ -104,6 +104,7 @@
     <Compile Include="Comps\CompTentBagDamageComp.cs" />
     <Compile Include="Comps\TentMatComp.cs" />
     <Compile Include="Comps\TentSpawnedComp.cs" />
+    <Compile Include="Patches\BackCompatibleTerrain_Patch.cs" />
     <Compile Include="Patches\DefGenerator_Patch.cs" />
     <Compile Include="Patches\HarmonyPatches.cs" />
     <Compile Include="Jobs\JobDriver_Fetch.cs" />
