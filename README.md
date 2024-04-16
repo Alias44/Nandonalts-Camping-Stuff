@@ -22,6 +22,13 @@ Enter the command git clone https://github.com/Alias44/Nandonalts-Camping-Stuff
 Note: You can get future changes by using the command get pull origin master
 
 ### Changes
+V1.1.0
+* RimWorld 1.5 support
+* Moved wall, door, and floor definitions to tent XMl specification
+* Tent mats now spawn appropriately colored floor terrain
+* Added tent mats to scenario editor
+* Removed installed tent item from debug spawn menu (this prevents error state tents from being accidently spawned)
+
 v1.0.4
 * RimWorld 1.4 support
 * Added tag to hopefully prevented deployed tents from being hauled in rare cases
