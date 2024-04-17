@@ -24,9 +24,9 @@ namespace Camping_Stuff
 			if (Scribe.mode != LoadSaveMode.PostLoadInit)
 				return;
 
-			if (obj is NCS_Tent tent && tent.Floor != null)
+			if (obj is NCS_Tent tent && tent.ParentHolder == null && tent.Floor != null && tent.deployedFloor == null)
 			{
-				tent.floorCache = TentDefOf.NCS_TentFloorRed;
+				tent.deployedFloor = TentDefOf.NCS_TentFloorRed;
 			}
 
 			return;

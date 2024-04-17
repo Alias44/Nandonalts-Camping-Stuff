@@ -67,7 +67,7 @@ namespace Camping_Stuff
 
 			if (added)
 			{
-				this.parent.HitPoints -= DamageUnit;
+				this.parent.HitPoints = Math.Max(1, this.parent.HitPoints - DamageUnit);
 			}
 
 			return added;

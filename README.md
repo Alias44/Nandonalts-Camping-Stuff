@@ -27,6 +27,7 @@ V1.1.0
 * Moved wall, door, and floor definitions to tent XMl specification
 * Tent mats now spawn appropriately colored floor terrain
 * Added tent mats to scenario editor
+* Fixed tent floors not tracking damage
 * Removed installed tent item from debug spawn menu (this prevents error state tents from being accidently spawned)
 
 v1.0.4

@@ -71,7 +71,7 @@ namespace Camping_Stuff
 		}
 
 		private bool floorOverride = false;
-		public TerrainDef floorCache;
+		public TerrainDef deployedFloor;
 		private Thing floor = null;
 		public Thing Floor
 		{
@@ -201,7 +201,7 @@ namespace Camping_Stuff
 
 			base.SpawnSetup(map, respawningAfterLoad);
 
-			var floorComp = this.cover?.TryGetComp<CompTentPartWithCellsDamage>();
+			var floorComp = this.floor?.TryGetComp<CompTentPartWithCellsDamage>();
 			var coverComp = this.cover?.TryGetComp<TentCoverComp>();
 
 			if (!respawningAfterLoad)
@@ -258,13 +258,15 @@ namespace Camping_Stuff
 						se.Spawn(cell, this.Map, Faction.OfPlayer);
 					}
 				}
+
+				deployedFloor = floor?.TryGetComp<TentMatComp>().Spawns;
 			}
 
 			// Technically respawningAfterLoad is gurateed true from the previous if (but I like it for clarity)
 			// on respawn get the old layout from the cache
 			else if (respawningAfterLoad && layoutHash != 0)
 			{
-				SetDeployedSketch(Current.Game.GetComponent<LayoutCache>().GetSpec(layoutHash), floorCache);
+				SetDeployedSketch(Current.Game.GetComponent<LayoutCache>().GetSpec(layoutHash), deployedFloor);
 			}
 
 			if (layoutHash == 0)
@@ -274,18 +276,13 @@ namespace Camping_Stuff
 
 				Current.Game.GetComponent<LayoutCache>().Add(coverComp.Props.tentSpec, this);
 			}
-
-			if (floorCache == null)
-			{
-				floorCache = floor?.TryGetComp<TentMatComp>().Spawns;
-			}
 		}
 
 		private static FieldInfo doorOpen = typeof(Building_Door).GetField("openInt", BindingFlags.NonPublic | BindingFlags.Instance);
 		public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
 		{
-			var floorComp = this.cover.TryGetComp<CompTentPartWithCellsDamage>();
-			var coverComp = this.cover.TryGetComp<TentCoverComp>();
+			var floorComp = this.floor?.TryGetComp<CompTentPartWithCellsDamage>();
+			var coverComp = this.cover?.TryGetComp<TentCoverComp>();
 
 			foreach (SketchEntity se in this.deployedSketch.Entities.OrderByDescending<SketchEntity, float>((Func<SketchEntity, float>)(x => x.SpawnOrder)))
 			{
@@ -322,6 +319,11 @@ namespace Camping_Stuff
 					else
 					{
 						floorComp.AddCell(terrain, this.Rotation);
+
+						if (terrain.IsBurnedSpawned(cell, this.Map))
+						{
+							Map.terrainGrid.RemoveTopLayer(terrain.pos + this.Position, false);
+						}
 					}
 				}
 			}
@@ -334,7 +336,7 @@ namespace Camping_Stuff
 			Current.Game.GetComponent<LayoutCache>().Remove(layoutHash, this);
 			layoutHash = 0;
 			deployedSketch = null;
-			floorCache = null;
+			deployedFloor = null;
 			base.DeSpawn(mode);
 		}
 
@@ -346,7 +348,7 @@ namespace Camping_Stuff
 			Scribe_Values.Look(ref layoutHash, "layout");
 			Scribe_Deep.Look(ref cover, "tentCover");
 			Scribe_Values.Look(ref floorOverride, "tentFloorPlacedOverride", false);
-			Scribe_Defs.Look(ref floorCache, "floorCache");
+			Scribe_Defs.Look(ref deployedFloor, "deployedFloor");
 			Scribe_Deep.Look(ref floor, "tentFloor");
 			Scribe_Collections.Look<Thing>(ref poles, "poleList", LookMode.Deep);
 

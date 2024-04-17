@@ -1,4 +1,5 @@
 ﻿using RimWorld;
+using System.Security.Cryptography;
 using Verse;
 
 namespace Camping_Stuff
@@ -35,6 +36,16 @@ namespace Camping_Stuff
 		{
 			var partComp = t.TryGetComp<CompUsable_TentPart>();
 			return partComp != null && partComp.Props.partType == partType;
+		}
+
+		public static bool IsBurnedSpawned(this SketchTerrain terrain, IntVec3 at, Map map)
+		{
+			if (!at.InBounds(map))
+			{
+				return false;
+			}
+
+			return at.GetTerrain(map) == terrain.def?.burnedDef;
 		}
 	}
 }
