@@ -4,48 +4,47 @@ using RimWorld;
 using Verse;
 using Verse.AI;
 
-namespace Camping_Stuff
+namespace Camping_Stuff;
+
+public class JobDriver_PackBag : JobDriver_Fetch // JobDriver
 {
-	public class JobDriver_PackBag : JobDriver_Fetch // JobDriver
+	protected Thing Part => this.job.GetTarget(fetch).Thing;
+	protected NCS_MiniTent MiniBag => (NCS_MiniTent)this.job.GetTarget(target).Thing;
+
+	protected override int DesiredQty
 	{
-		protected Thing Part => this.job.GetTarget(fetch).Thing;
-		protected NCS_MiniTent MiniBag => (NCS_MiniTent)this.job.GetTarget(target).Thing;
-
-		protected override int DesiredQty
+		get
 		{
-			get
+			TentPart partType = Part.TryGetComp<CompUsable_TentPart>().Props.partType;
+
+			if (partType == TentPart.pole)
 			{
-				TentPart partType = Part.TryGetComp<CompUsable_TentPart>().Props.partType;
-
-				if (partType == TentPart.pole)
-				{
-					return MiniBag.Bag.maxPoles - MiniBag.Bag.PoleKindCount(Part);
-				}
-
-				return 1;
+				return MiniBag.Bag.maxPoles - MiniBag.Bag.PoleKindCount(Part);
 			}
+
+			return 1;
+		}
+	}
+
+	protected override IEnumerable<Toil> MakeNewToils()
+	{
+		if (AvailQty == 0)
+		{
+			Messages.Message(MiniBag.Bag.PoleFullMsg, MessageTypeDefOf.NeutralEvent);
 		}
 
-		protected override IEnumerable<Toil> MakeNewToils()
+		foreach (Toil t in base.MakeNewToils())
 		{
-			if (AvailQty == 0)
-			{
-				Messages.Message(MiniBag.Bag.PoleFullMsg, MessageTypeDefOf.NeutralEvent);
-			}
-
-			foreach (Toil t in base.MakeNewToils())
-			{
-				yield return t;
-			}
-
-			yield return new Toil
-			{
-				initAction = delegate ()
-				{
-					MiniBag.Bag.PackPart(Part.SplitOff(AvailQty));
-				},
-				defaultCompleteMode = ToilCompleteMode.Instant
-			};
+			yield return t;
 		}
+
+		yield return new Toil
+		{
+			initAction = delegate ()
+			{
+				MiniBag.Bag.PackPart(Part.SplitOff(AvailQty));
+			},
+			defaultCompleteMode = ToilCompleteMode.Instant
+		};
 	}
 }

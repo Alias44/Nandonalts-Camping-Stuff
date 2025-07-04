@@ -1,56 +1,55 @@
 ﻿using RimWorld;
 using Verse;
 
-namespace Camping_Stuff
+namespace Camping_Stuff;
+
+class StatPart_MktValue : AliasContainer
 {
-	class StatPart_MktValue : AliasContainer
+	public StatPart_MktValue() : base(delegate (float f)
 	{
-		public StatPart_MktValue() : base(delegate (float f)
-		{
-			return f.ToStringMoney((string)null);
-		})
-		{ }
+		return f.ToStringMoney((string)null);
+	})
+	{ }
 
-		public override string ExplanationPart(StatRequest req)
-		{
-			return this.ExplanationPart(req, StatDefOf.MarketValue);
-		}
-
-		public override void TransformValue(StatRequest req, ref float val)
-		{
-			this.TransformValue(req, ref val, StatDefOf.MarketValue);
-		}
+	public override string ExplanationPart(StatRequest req)
+	{
+		return this.ExplanationPart(req, StatDefOf.MarketValue);
 	}
 
-	class StatPart_Mass : AliasContainer
+	public override void TransformValue(StatRequest req, ref float val)
 	{
-		public StatPart_Mass() : base(GenText.ToStringMass)
-		{ }
+		this.TransformValue(req, ref val, StatDefOf.MarketValue);
+	}
+}
 
-		public override string ExplanationPart(StatRequest req)
-		{
-			return this.ExplanationPart(req, StatDefOf.Mass);
-		}
+class StatPart_Mass : AliasContainer
+{
+	public StatPart_Mass() : base(GenText.ToStringMass)
+	{ }
 
-		public override void TransformValue(StatRequest req, ref float val)
-		{
-			this.TransformValue(req, ref val, StatDefOf.Mass);
-		}
+	public override string ExplanationPart(StatRequest req)
+	{
+		return this.ExplanationPart(req, StatDefOf.Mass);
 	}
 
-	class StatPart_Favor : AliasContainer
+	public override void TransformValue(StatRequest req, ref float val)
 	{
-		public StatPart_Favor() : base()
-		{ }
+		this.TransformValue(req, ref val, StatDefOf.Mass);
+	}
+}
 
-		public override string ExplanationPart(StatRequest req)
-		{
-			return this.ExplanationPart(req, StatDefOf.RoyalFavorValue);
-		}
+class StatPart_Favor : AliasContainer
+{
+	public StatPart_Favor() : base()
+	{ }
 
-		public override void TransformValue(StatRequest req, ref float val)
-		{
-			this.TransformValue(req, ref val, StatDefOf.RoyalFavorValue);
-		}
+	public override string ExplanationPart(StatRequest req)
+	{
+		return this.ExplanationPart(req, StatDefOf.RoyalFavorValue);
+	}
+
+	public override void TransformValue(StatRequest req, ref float val)
+	{
+		this.TransformValue(req, ref val, StatDefOf.RoyalFavorValue);
 	}
 }
