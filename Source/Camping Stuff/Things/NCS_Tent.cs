@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-
+using HarmonyLib;
 using RimWorld;
 using Verse;
 
@@ -278,7 +277,7 @@ public class NCS_Tent : Building
 		}
 	}
 
-	private static FieldInfo doorOpen = typeof(Building_Door).GetField("openInt", BindingFlags.NonPublic | BindingFlags.Instance);
+	private static AccessTools.FieldRef<Building_Door, bool> doorOpen = AccessTools.FieldRefAccess<Building_Door, bool>("openInt");
 	public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
 	{
 		var floorComp = this.floor?.TryGetComp<CompTentPartWithCellsDamage>();
@@ -300,7 +299,7 @@ public class NCS_Tent : Building
 
 					if (thing is Building_Door door && door.Open)
 					{
-						doorOpen.SetValue(door, false);
+						doorOpen(door) = false;
 					}
 
 					thing.DeSpawn(DestroyMode.Vanish);
