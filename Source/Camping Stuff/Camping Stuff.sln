@@ -32,6 +32,8 @@ Global
 		Release 1.3|x64 = Release 1.3|x64
 		Release 1.4|Any CPU = Release 1.4|Any CPU
 		Release 1.4|x64 = Release 1.4|x64
+		Release 1.5|Any CPU = Release 1.5|Any CPU
+		Release 1.5|x64 = Release 1.5|x64
 		Release Current|Any CPU = Release Current|Any CPU
 		Release Current|x64 = Release Current|x64
 	EndGlobalSection
@@ -56,6 +58,10 @@ Global
 		{C343D09D-09C9-4865-B1A3-388570E67071}.Release 1.4|Any CPU.Build.0 = Release 1.4|Any CPU
 		{C343D09D-09C9-4865-B1A3-388570E67071}.Release 1.4|x64.ActiveCfg = Release 1.4|Any CPU
 		{C343D09D-09C9-4865-B1A3-388570E67071}.Release 1.4|x64.Build.0 = Release 1.4|Any CPU
+		{C343D09D-09C9-4865-B1A3-388570E67071}.Release 1.5|Any CPU.ActiveCfg = Release 1.5|Any CPU
+		{C343D09D-09C9-4865-B1A3-388570E67071}.Release 1.5|Any CPU.Build.0 = Release 1.5|Any CPU
+		{C343D09D-09C9-4865-B1A3-388570E67071}.Release 1.5|x64.ActiveCfg = Release 1.5|Any CPU
+		{C343D09D-09C9-4865-B1A3-388570E67071}.Release 1.5|x64.Build.0 = Release 1.5|Any CPU
 		{C343D09D-09C9-4865-B1A3-388570E67071}.Release Current|Any CPU.ActiveCfg = Release Current|Any CPU
 		{C343D09D-09C9-4865-B1A3-388570E67071}.Release Current|Any CPU.Build.0 = Release Current|Any CPU
 		{C343D09D-09C9-4865-B1A3-388570E67071}.Release Current|x64.ActiveCfg = Release Current|Any CPU
@@ -70,6 +76,8 @@ Global
 		{29372B74-354C-48BF-B833-F8A5CA1B2FF6}.Release 1.3|x64.ActiveCfg = Release|x64
 		{29372B74-354C-48BF-B833-F8A5CA1B2FF6}.Release 1.4|Any CPU.ActiveCfg = Release|x64
 		{29372B74-354C-48BF-B833-F8A5CA1B2FF6}.Release 1.4|x64.ActiveCfg = Release|x64
+		{29372B74-354C-48BF-B833-F8A5CA1B2FF6}.Release 1.5|Any CPU.ActiveCfg = Release|x64
+		{29372B74-354C-48BF-B833-F8A5CA1B2FF6}.Release 1.5|x64.ActiveCfg = Release|x64
 		{29372B74-354C-48BF-B833-F8A5CA1B2FF6}.Release Current|Any CPU.ActiveCfg = Release|x64
 		{29372B74-354C-48BF-B833-F8A5CA1B2FF6}.Release Current|x64.ActiveCfg = Release|x64
 	EndGlobalSection

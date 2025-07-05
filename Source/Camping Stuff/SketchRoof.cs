@@ -67,9 +67,14 @@ class SketchRoof : SketchEntity
 		return this.roof == sketchRoof.roof;
 	}
 
+#if RELEASE_1_1 || RELEASE_1_2 || RELEASE_1_3 || RELEASE_1_4 || RELEASE_1_5
 	public override bool Spawn(IntVec3 at, Map map, Faction faction, Sketch.SpawnMode spawnMode = Sketch.SpawnMode.Normal, bool wipeIfCollides = false, List<Thing> spawnedThings = null, bool dormant = false)
-	{
-		if (this.IsSpawningBlocked(at, map, (Thing)null, wipeIfCollides))
+#else
+	public override bool Spawn(IntVec3 at, Map map, Faction faction, Sketch.SpawnMode spawnMode = Sketch.SpawnMode.Normal, bool wipeIfCollides = false, bool forceTerrainAffordance = false, List<Thing> spawnedThings = null, bool dormant = false, TerrainDef defaultAffordanceTerrain = null)
+#endif
+
+    {
+		if(this.IsSpawningBlocked(at, map, (Thing)null, wipeIfCollides))
 		{
 			return false;
 		}
@@ -82,8 +87,8 @@ class SketchRoof : SketchEntity
 			throw new NotImplementedException("Spawn mode " + (object)spawnMode + " not implemented!");
 		}
 
-		return true;
-	}
+	return true;
+}
 
 	public override void ExposeData()
 	{

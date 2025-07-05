@@ -14,7 +14,7 @@
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <RimWorldInstallDir>..\..\..\..\..\</RimWorldInstallDir>
-    <CurrentVer>1.5</CurrentVer>
+    <GameVer>1.6</GameVer>
   </PropertyGroup>
   <PropertyGroup>
     <ErrorReport>prompt</ErrorReport>
@@ -30,73 +30,38 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>portable</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\$(CurrentVer)\Assemblies\</OutputPath>
+    <OutputPath>..\..\$(GameVer)\Assemblies\</OutputPath>
     <DefineConstants>TRACE;DEBUG</DefineConstants>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisIgnoreGeneratedCode>false</CodeAnalysisIgnoreGeneratedCode>
-    <ManagedDir>$(RimWorldInstallDir)\RimWorld\RimWorldWin64_Data\Managed</ManagedDir>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release Current|AnyCPU' ">
-    <OutputPath>..\..\$(CurrentVer)\Assemblies\</OutputPath>
     <DefineConstants>TRACE;RELEASE_CURRENT</DefineConstants>
-    <ManagedDir>$(RimWorldInstallDir)\RimWorld\RimWorldWin64_Data\Managed</ManagedDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release 1.5|AnyCPU'">
+    <DefineConstants>TRACE;RELEASE_1_5</DefineConstants>
+    <GameVer>1.5</GameVer>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release 1.4|AnyCPU'">
-    <OutputPath>..\..\1.4\Assemblies\</OutputPath>
     <DefineConstants>TRACE;RELEASE_1_4</DefineConstants>
-    <ManagedDir>$(RimWorldInstallDir)\RimWorld - 1.4\RimWorldWin64_Data\Managed</ManagedDir>
+    <GameVer>1.4</GameVer>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release 1.3|AnyCPU'">
-    <OutputPath>..\..\1.3\Assemblies\</OutputPath>
     <DefineConstants>TRACE;RELEASE_1_3</DefineConstants>
-    <ManagedDir>$(RimWorldInstallDir)\RimWorld - 1.3\RimWorldWin64_Data\Managed</ManagedDir>
+    <GameVer>1.3</GameVer>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release 1.2|AnyCPU'">
-    <OutputPath>..\..\1.2\Assemblies\</OutputPath>
     <DefineConstants>TRACE;RELEASE_1_2</DefineConstants>
-    <ManagedDir>$(RimWorldInstallDir)\RimWorld - 1.2\RimWorldWin64_Data\Managed</ManagedDir>
+    <GameVer>1.2</GameVer>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release 1.1|AnyCPU'">
-    <OutputPath>..\..\1.1\Assemblies\</OutputPath>
     <DefineConstants>TRACE;RELEASE_1_1</DefineConstants>
-    <ManagedDir>$(RimWorldInstallDir)\RimWorld - 1.1\RimWorldWin64_Data\Managed</ManagedDir>
+    <GameVer>1.1</GameVer>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="0Harmony, Version=2.3.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Lib.Harmony.2.3.3\lib\net472\0Harmony.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="GenericHashLib, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\GenericHashLib.1.0.1\lib\net472\GenericHashLib.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.InteropServices.RuntimeInformation" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
-    <Reference Include="Assembly-CSharp">
-      <HintPath>$(ManagedDir)\Assembly-CSharp.dll</HintPath>
-      <Private>False</Private>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
-    </Reference>
-    <Reference Include="UnityEngine">
-      <HintPath>$(ManagedDir)\UnityEngine.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.CoreModule">
-      <HintPath>$(ManagedDir)\UnityEngine.CoreModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.IMGUIModule">
-      <HintPath>$(ManagedDir)\UnityEngine.IMGUIModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-  </ItemGroup>
+  <PropertyGroup>
+    <OutputPath>..\..\$(GameVer)\Assemblies\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="BackCompatibility\BackCompatibilityConverter_LegacyFloors.cs" />
     <Compile Include="BackCompatibility\BackCompatibilityConverter_LegacyTent.cs" />
@@ -115,6 +80,7 @@
     <Compile Include="Statparts\PoleFactors.cs" />
     <Compile Include="LayoutSpawn.cs" />
     <Compile Include="TentSpec.cs" />
+    <Compile Include="TerrainDefGenerator_TentFloor.cs" />
     <Compile Include="Things\NCS_MiniTent.cs" />
     <Compile Include="SketchRoof.cs" />
     <Compile Include="Statparts\AliasContainer.cs" />
@@ -131,7 +97,20 @@
     <Compile Include="Util.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <PackageReference Include="GenericHashLib">
+      <Version>1.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="Krafs.Rimworld.Ref">
+      <Version>$(GameVer).*-*</Version>
+      <PrivateAssets>all</PrivateAssets>
+      <ExcludeAssets>runtime</ExcludeAssets>
+      <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Lib.Harmony">
+      <Version>2.3.6</Version>
+      <PrivateAssets>all</PrivateAssets>
+      <ExcludeAssets>runtime</ExcludeAssets>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
