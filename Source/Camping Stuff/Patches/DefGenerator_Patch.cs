@@ -11,108 +11,20 @@ public partial class HarmonyPatches
 	/// <summary>Tent specific def generation</summary>
 	public static void TentDefGenerator(bool hotReload)
 	{
-		var matColors = GenStuff.AllowedStuffsFor(TentDefOf.NCS_TentPart_Floor).ToHashSet()
-			.Select(stuff => ColorFromStuff(stuff))
-			.ToList();
-
-
-		var tentFloors = DefDatabase<ThingDef>.AllDefs
-			.Where(def => def.HasComp<TentMatComp>())
-			.Select(def => def.GetCompProperties<CompProperties_TentMat>().spawnedFloorTemplate);
-
-		matColors.ForEach(colorDef =>
+		foreach (var td in TerrainDefGenerator_TentFloor.ImpliedTerrainDefs())
 		{
-			DefGenerator.AddImpliedDef(colorDef, hotReload);
-
-			int index = 0;
-			foreach (var item in tentFloors)
-			{
-				TerrainDef td = TentTerrainFromBlueprint(item, colorDef, index, false);
-				++index;
-
-				DefGenerator.AddImpliedDef(td, hotReload);
-			}
-		});
+			DefGenerator.AddImpliedDef(td, hotReload);
+		}
 	}
 
-	public static ColorDef ColorFromStuff(ThingDef stuff)
-	{
-		return new ColorDef
-		{
-			defName = stuff.defName + "_Color",
-			color = stuff.stuffProps.color,
-			colorType = ColorType.Misc,
-			label = stuff.label,
-			displayOrder = -1,
-			displayInStylingStationUI = false
-		};
-	}
-
-	public static TerrainDef TentTerrainFromBlueprint(
-		TerrainTemplateDef tp,
-		ColorDef colorDef,
-		int index,
-		bool hotReload = false)
-	{
-		TerrainDef terrainDef = TerrainDefGenerator_Carpet.CarpetFromBlueprint(tp, colorDef, index, hotReload);
-
-		terrainDef.defName = tp.defName + colorDef.defName.Replace("_Color", "");
-		terrainDef.resourcesFractionWhenDeconstructed = 0;
-
-		return terrainDef;
-	}
 #elif (RELEASE_1_4)
 	/// <summary>Tent specific def generation</summary>
 	public static void TentDefGenerator()
 	{
-		var matColors = GenStuff.AllowedStuffsFor(TentDefOf.NCS_TentPart_Floor).ToHashSet()
-			.Select(stuff => ColorFromStuff(stuff))
-			.ToList();
-
-		var tentFloors = DefDatabase<ThingDef>.AllDefs
-			.Where(def => def.GetCompProperties<CompProperties_TentMat>() != null)
-			.Select(def => def.GetCompProperties<CompProperties_TentMat>().spawnedFloorTemplate);
-
-		matColors.ForEach(colorDef =>
+		foreach (var td in TerrainDefGenerator_TentFloor.ImpliedTerrainDefs())
 		{
-			DefGenerator.AddImpliedDef(colorDef);
-
-			int index = 0;
-			foreach (var item in tentFloors)
-			{
-				TerrainDef td = TentTerrainFromBlueprint(item, colorDef, index, false);
-				++index;
-
-				DefGenerator.AddImpliedDef(td);
-			}
-		});
-	}
-
-	public static ColorDef ColorFromStuff(ThingDef stuff)
-	{
-		return new ColorDef
-		{
-			defName = stuff.defName + "_Color",
-			color = stuff.stuffProps.color,
-			colorType = ColorType.Misc,
-			label = stuff.label,
-			displayOrder = -1,
-			displayInStylingStationUI = false
-		};
-	}
-
-	public static TerrainDef TentTerrainFromBlueprint(
-		TerrainTemplateDef tp,
-		ColorDef colorDef,
-		int index,
-		bool hotReload = false)
-	{
-		TerrainDef terrainDef = TerrainDefGenerator_Carpet.CarpetFromBlueprint(tp, colorDef, index);
-
-		terrainDef.defName = tp.defName + colorDef.defName.Replace("_Color", "");
-		terrainDef.resourcesFractionWhenDeconstructed = 0;
-
-		return terrainDef;
+			DefGenerator.AddImpliedDef(td);
+		}
 	}
 #endif
 }
