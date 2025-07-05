@@ -62,7 +62,7 @@
 		<comps>
 			<li Class="Camping_Stuff.CompProperties_TentPart">
 				<compClass>Camping_Stuff.CompUsable_TentPart</compClass>
-				<partType>2</partType>
+				<partType>Cover</partType>
 			</li>
 		</comps>
 	</ThingDef>

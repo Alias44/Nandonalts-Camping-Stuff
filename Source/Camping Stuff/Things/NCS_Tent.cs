@@ -7,13 +7,13 @@ using Verse;
 
 namespace Camping_Stuff;
 
-public enum TentPart
+public enum TentPart : sbyte
 {
-	other = -1,
-	bag,
-	pole,
-	cover,
-	floor
+	Other = -1,
+	Bag,
+	Pole,
+	Cover,
+	Floor
 }
 
 // Implimnet IThingHolder so packing can be done with DepositHauledThingInContainer ???
@@ -50,7 +50,7 @@ public class NCS_Tent : Building
 		get => cover;
 		set
 		{
-			if (!Util.IsTentPart(value, TentPart.cover) && value != null)
+			if (!Util.IsTentPart(value, TentPart.Cover) && value != null)
 			{
 				return;
 			}
@@ -77,7 +77,7 @@ public class NCS_Tent : Building
 		get => floor;
 		set
 		{
-			if (!Util.IsTentPart(value, TentPart.floor) && value != null)
+			if (!Util.IsTentPart(value, TentPart.Floor) && value != null)
 			{
 				return;
 			}
@@ -404,7 +404,7 @@ public class NCS_Tent : Building
 	#region PartPacking
 	public void PackPart(Thing part)
 	{
-		TentPart partType = TentPart.other;
+		TentPart partType = TentPart.Other;
 
 		if (part.TryGetComp<CompUsable_TentPart>() != null)
 		{
@@ -413,7 +413,7 @@ public class NCS_Tent : Building
 
 		switch (partType)
 		{
-			case TentPart.pole:
+			case TentPart.Pole:
 				int typeIndex = this.FindPoleIndex(part);
 
 				if (typeIndex >= 0)
@@ -427,11 +427,11 @@ public class NCS_Tent : Building
 				AdjustPoles(typeIndex);
 				break;
 
-			case TentPart.cover:
+			case TentPart.Cover:
 				Cover = part;
 				break;
 
-			case TentPart.floor:
+			case TentPart.Floor:
 				Floor = part;
 				break;
 		}

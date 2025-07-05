@@ -17,7 +17,7 @@ public class JobDriver_PackBag : JobDriver_Fetch // JobDriver
 		{
 			TentPart partType = Part.TryGetComp<CompUsable_TentPart>().Props.partType;
 
-			if (partType == TentPart.pole)
+			if (partType == TentPart.Pole)
 			{
 				return MiniBag.Bag.maxPoles - MiniBag.Bag.PoleKindCount(Part);
 			}

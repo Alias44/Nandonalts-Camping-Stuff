@@ -55,7 +55,7 @@
 			</li>
 			<li Class="Camping_Stuff.CompProperties_TentPart">
 				<compClass>Camping_Stuff.CompUsable_TentPart</compClass>
-				<partType>1</partType>
+				<partType>Pole</partType>
 			</li>
 			<li Class="Camping_Stuff.CompProperties_TentPartDamage"/>
 		</comps>
@@ -229,7 +229,7 @@
 		<comps>
 			<li Class="Camping_Stuff.CompProperties_TentPart">
 				<compClass>Camping_Stuff.CompUsable_TentPart</compClass>
-				<partType>3</partType>
+				<partType>Floor</partType>
 			</li>
 			<li Class="Camping_Stuff.CompProperties_TentMat">
 				<spawnedFloorTemplate>NCS_TentFloor</spawnedFloorTemplate>
