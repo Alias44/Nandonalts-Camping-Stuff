@@ -7,4 +7,12 @@
 		<costList Inherit="False"/>
 		<canGenerateDefaultDesignator>false</canGenerateDefaultDesignator>
 	</TerrainTemplateDef>
+	
+	<TerrainTemplateDef ParentName="FineCarpetBase" MayRequire="Ludeon.RimWorld.Royalty">
+		<defName>NCS_FineTentFloor</defName>
+		<label>fine tent floor ({0})</label>
+		<description>Luxurious, ornately-patterned mat to cover the inside of a tent.</description>
+		<costList Inherit="False"/>
+		<canGenerateDefaultDesignator>false</canGenerateDefaultDesignator>
+	</TerrainTemplateDef>
 </Defs>

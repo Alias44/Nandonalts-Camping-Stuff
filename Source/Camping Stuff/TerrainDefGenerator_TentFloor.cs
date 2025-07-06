@@ -18,7 +18,11 @@ public static class TerrainDefGenerator_TentFloor
 	public static (IEnumerable<ColorDef> colors, IEnumerable<TerrainDef> terrains) ImpliedTerrainDefs(bool hotReload = false)
 	{
 		var terrainStuff = DefDatabase<ThingDef>.AllDefs
+#if RELEASE_1_4
+			.Where(def => def.HasComp(typeof(TentMatComp)) && def.GetCompProperties<CompProperties_TentMat>().UsesTemplate)
+#else
 			.Where(def => def.HasComp<TentMatComp>() && def.GetCompProperties<CompProperties_TentMat>().UsesTemplate)
+#endif
 			.GroupBy(def => def.GetCompProperties<CompProperties_TentMat>().spawnedFloorTemplate, tentPart => GenStuff.AllowedStuffsFor(tentPart), (template, stuffs) => new
 			{
 				Key = template,

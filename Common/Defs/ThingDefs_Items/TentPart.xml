@@ -236,6 +236,37 @@
 			</li>
 		</comps>
 	</ThingDef>
+	
+	<ThingDef ParentName="TentPartTailored" MayRequire="Ludeon.RimWorld.Royalty">
+		<defName>NCS_TentPart_FineFloor</defName>
+		<label>Fine tent mat</label>
+		<descriptionHyperlinks>
+			<ThingDef>NCS_TentBag</ThingDef>
+		</descriptionHyperlinks>
+		<description>Luxurious, ornately-patterned mat tiles to keep the dirt outside of your tent.\nAllows a tent to be installed with a fine floor when packed in a tent bag.</description>
+		<graphicData>
+			<texPath>CampingStuff/Blanket</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<costStuffCount>300</costStuffCount>
+		<stuffCategories Inherit="False">
+			<li>Fabric</li>
+		</stuffCategories>
+		<statBases>
+			<MaxHitPoints>200</MaxHitPoints>
+			<WorkToMake>50000</WorkToMake>
+			<Mass>6</Mass>
+		</statBases>
+		<comps>
+			<li Class="Camping_Stuff.CompProperties_TentPart">
+				<compClass>Camping_Stuff.CompUsable_TentPart</compClass>
+				<partType>Floor</partType>
+			</li>
+			<li Class="Camping_Stuff.CompProperties_TentMat">
+				<spawnedFloorTemplate>NCS_FineTentFloor</spawnedFloorTemplate>
+			</li>
+		</comps>
+	</ThingDef>
 		
 	<!-- Bag -->
 	<ThingDef ParentName="MinifiedThing">

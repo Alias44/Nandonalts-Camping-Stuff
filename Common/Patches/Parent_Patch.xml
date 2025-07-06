@@ -11,4 +11,15 @@
 		<attribute>Name</attribute>
 		<value>CarpetBase</value>
 	</Operation>
+	
+	<Operation Class="PatchOperationFindMod">
+		<mods>
+			<li>Royalty</li>
+		</mods>
+		<match Class="PatchOperationAttributeAdd">
+			<xpath>Defs/TerrainTemplateDef[defName="CarpetFine"]</xpath>
+			<attribute>Name</attribute>
+			<value>FineCarpetBase</value>
+		</match>
+	</Operation>
 </Patch>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+	<Operation Class="PatchOperationFindMod">
+		<mods>
+			<li>Royalty</li>
+		</mods>
+		<nomatch Class="PatchOperationRemove">
+			<xpath>Defs/*[self::ThingDef[defName="NCS_TentPart_FineFloor"] or self::TerrainTemplateDef[defName="NCS_FineTentFloor"]]</xpath>
+		</nomatch>
+	</Operation>
+</Patch>
