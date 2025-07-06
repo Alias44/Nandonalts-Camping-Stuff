@@ -9,11 +9,11 @@
 		<soundWorking>Recipe_Smith</soundWorking>
 		<allowMixingIngredients>false</allowMixingIngredients>
 		<fixedIngredientFilter>
-        <stuffCategoriesToAllow>
-          <li>Metallic</li>
-			 <li>Woody</li>
-        </stuffCategoriesToAllow>
-      </fixedIngredientFilter>
+			<stuffCategoriesToAllow>
+				<li>Metallic</li>
+				<li>Woody</li>
+			</stuffCategoriesToAllow>
+		</fixedIngredientFilter>
 		<defaultIngredientFilter>
 			<stuffCategoriesToAllow>
 				<li>Metallic</li>
