@@ -11,7 +11,14 @@ public partial class HarmonyPatches
 	/// <summary>Tent specific def generation</summary>
 	public static void TentDefGenerator(bool hotReload)
 	{
-		foreach (var td in TerrainDefGenerator_TentFloor.ImpliedTerrainDefs())
+		var (colors, terrains) = TerrainDefGenerator_TentFloor.ImpliedTerrainDefs(hotReload);
+
+		foreach (var c in colors)
+		{
+			DefGenerator.AddImpliedDef(c, hotReload);
+		}
+
+		foreach (var td in terrains)
 		{
 			DefGenerator.AddImpliedDef(td, hotReload);
 		}
@@ -21,7 +28,14 @@ public partial class HarmonyPatches
 	/// <summary>Tent specific def generation</summary>
 	public static void TentDefGenerator()
 	{
-		foreach (var td in TerrainDefGenerator_TentFloor.ImpliedTerrainDefs())
+		var (colors, terrains) = TerrainDefGenerator_TentFloor.ImpliedTerrainDefs();
+
+		foreach (var c in colors)
+		{
+			DefGenerator.AddImpliedDef(c);
+		}
+
+		foreach (var td in terrains)
 		{
 			DefGenerator.AddImpliedDef(td);
 		}

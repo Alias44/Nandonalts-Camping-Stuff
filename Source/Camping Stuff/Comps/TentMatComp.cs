@@ -21,6 +21,8 @@ public class CompProperties_TentMat : CompProperties_CompTentPartWithCellsDamage
 	public TerrainDef spawnedFloor;
 #if !(RELEASE_1_3 || RELEASE_1_2 || RELEASE_1_1)
 	public TerrainTemplateDef spawnedFloorTemplate;
+
+	public bool UsesTemplate => spawnedFloor == null && spawnedFloorTemplate != null;
 #endif
 
 	public CompProperties_TentMat()

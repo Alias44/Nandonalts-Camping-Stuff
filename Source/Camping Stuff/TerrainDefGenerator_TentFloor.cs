@@ -1,44 +1,40 @@
 ﻿using RimWorld;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Verse;
 
 namespace Camping_Stuff;
 
+/// <remarks>Because terrarin/ flooring isn't stuffed</remarks>
 /// <see cref="RimWorld.TerrainDefGenerator_Carpet"/>
 public static class TerrainDefGenerator_TentFloor
 {
-#if !(RELEASE_1_4 || RELEASE_1_3 || RELEASE_1_2 || RELEASE_1_1)
-	public static IEnumerable<TerrainDef> ImpliedTerrainDefs(bool hotReload = false)
+#if !(RELEASE_1_3 || RELEASE_1_2 || RELEASE_1_1)
+	public static (IEnumerable<ColorDef> colors, IEnumerable<TerrainDef> terrains) ImpliedTerrainDefs(bool hotReload = false)
 	{
-		var matColors = GenStuff.AllowedStuffsFor(TentDefOf.NCS_TentPart_Floor).ToHashSet()
-			.Select(stuff => ColorFromStuff(stuff))
-			.ToList();
-
-
-		var tentFloors = DefDatabase<ThingDef>.AllDefs
-			.Where(def => def.HasComp<TentMatComp>())
-			.Select(def => def.GetCompProperties<CompProperties_TentMat>().spawnedFloorTemplate);
-
-		foreach (var colorDef in matColors)
-		{
-			DefGenerator.AddImpliedDef(colorDef, hotReload);
-
-			int index = 0;
-			foreach (var item in tentFloors)
+		var terrainStuff = DefDatabase<ThingDef>.AllDefs
+			.Where(def => def.HasComp<TentMatComp>() && def.GetCompProperties<CompProperties_TentMat>().UsesTemplate)
+			.GroupBy(def => def.GetCompProperties<CompProperties_TentMat>().spawnedFloorTemplate, tentPart => GenStuff.AllowedStuffsFor(tentPart), (template, stuffs) => new
 			{
-				TerrainDef td = TentTerrainFromBlueprint(item, colorDef, index, false);
-				++index;
+				Key = template,
+				Stuff = stuffs.SelectMany(stuffCategories => stuffCategories).ToHashSet()
+			});
 
-				yield return td;
-			}
-		}
+		var terrainColors = terrainStuff.SelectMany(obj => obj.Stuff)
+			.ToHashSet()
+			.ToDictionary(stuff => stuff, ColorDefFromStuff);
+
+		var terrains = terrainStuff.SelectMany(obj => obj.Stuff.Select((stuff, idx) => TentTerrainFromBlueprint(obj.Key, terrainColors[stuff], idx, hotReload)));
+
+		return (terrainColors.Values, terrains);
 	}
 
-	public static ColorDef ColorFromStuff(ThingDef stuff)
+	public static ColorDef ColorDefFromStuff(ThingDef stuff)
 	{
 		return new ColorDef
 		{
@@ -57,70 +53,12 @@ public static class TerrainDefGenerator_TentFloor
 		int index,
 		bool hotReload = false)
 	{
-		TerrainDef terrainDef = TerrainDefGenerator_Carpet.CarpetFromBlueprint(tp, colorDef, index, hotReload);
 
-		terrainDef.defName = tp.defName + colorDef.defName.Replace("_Color", "");
-		terrainDef.resourcesFractionWhenDeconstructed = 0;
-		  
-		return terrainDef;
-	}
-
-
-	/// <summary>Tent specific def generation</summary>
-	public static void TentDefGenerator(bool hotReload)
-	{
-		foreach (var td in TerrainDefGenerator_TentFloor.ImpliedTerrainDefs())
-		{
-			DefGenerator.AddImpliedDef(td, hotReload);
-		}
-	}
-
-#elif (RELEASE_1_4)
-	public static IEnumerable<TerrainDef> ImpliedTerrainDefs()
-	{
-		var matColors = GenStuff.AllowedStuffsFor(TentDefOf.NCS_TentPart_Floor).ToHashSet()
-			.Select(stuff => ColorFromStuff(stuff))
-			.ToList();
-
-		var tentFloors = DefDatabase<ThingDef>.AllDefs
-			.Where(def => def.GetCompProperties<CompProperties_TentMat>() != null)
-			.Select(def => def.GetCompProperties<CompProperties_TentMat>().spawnedFloorTemplate);
-
-		foreach (var colorDef in matColors)
-		{
-			DefGenerator.AddImpliedDef(colorDef);
-
-			int index = 0;
-			foreach (var item in tentFloors)
-			{
-				TerrainDef td = TentTerrainFromBlueprint(item, colorDef, index, false);
-				++index;
-
-				yield return td;
-			}
-		}
-	}
-
-	public static ColorDef ColorFromStuff(ThingDef stuff)
-	{
-		return new ColorDef
-		{
-			defName = stuff.defName + "_Color",
-			color = stuff.stuffProps.color,
-			colorType = ColorType.Misc,
-			label = stuff.label,
-			displayOrder = -1,
-			displayInStylingStationUI = false
-		};
-	}
-
-	public static TerrainDef TentTerrainFromBlueprint(
-		TerrainTemplateDef tp,
-		ColorDef colorDef,
-		int index,
-		bool hotReload = false)
-	{
+#if RELEASE_1_4
 		TerrainDef terrainDef = TerrainDefGenerator_Carpet.CarpetFromBlueprint(tp, colorDef, index);
+#else
+		TerrainDef terrainDef = TerrainDefGenerator_Carpet.CarpetFromBlueprint(tp, colorDef, index, hotReload);
+#endif
 
 		terrainDef.defName = tp.defName + colorDef.defName.Replace("_Color", "");
 		terrainDef.resourcesFractionWhenDeconstructed = 0;
