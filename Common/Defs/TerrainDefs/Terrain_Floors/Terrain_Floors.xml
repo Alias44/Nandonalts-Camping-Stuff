@@ -4,6 +4,7 @@
 		<defName>NCS_TentFloor</defName>
 		<label>tent floor ({0})</label>
 		<description>A mat to cover the inside of a tent.</description>
+		<texturePath>CampingStuff/Terrain/TentFloor</texturePath>
 		<costList Inherit="False"/>
 		<canGenerateDefaultDesignator>false</canGenerateDefaultDesignator>
 	</TerrainTemplateDef>
@@ -12,6 +13,7 @@
 		<defName>NCS_FineTentFloor</defName>
 		<label>fine tent floor ({0})</label>
 		<description>Luxurious, ornately-patterned mat to cover the inside of a tent.</description>
+		<texturePath>CampingStuff/Terrain/TentFloorFine</texturePath>
 		<costList Inherit="False"/>
 		<canGenerateDefaultDesignator>false</canGenerateDefaultDesignator>
 	</TerrainTemplateDef>
