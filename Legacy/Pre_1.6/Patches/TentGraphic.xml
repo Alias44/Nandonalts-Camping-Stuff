@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+	<Operation Class="PatchOperationAdd">
+		<xpath>Defs/ThingDef[defName="NCS_TentBag"]</xpath>
+		<value>
+			<graphicData>
+				<graphicClass>Graphic_Single</graphicClass>
+				<texPath>CampingStuff/TentBag</texPath>
+				<shaderType>CutoutComplex</shaderType>
+				<drawRotated>false</drawRotated>
+				<allowFlip>false</allowFlip>
+			</graphicData>
+		</value>
+	</Operation>
+</Patch>

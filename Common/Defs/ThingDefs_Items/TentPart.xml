@@ -320,13 +320,6 @@
 		<minifiedDef>NCS_MiniTentBag</minifiedDef>
 		<drawPlaceWorkersWhileInstallBlueprintSelected>true</drawPlaceWorkersWhileInstallBlueprintSelected>
 		<canLoadIntoCaravan>true</canLoadIntoCaravan>
-		<graphicData>
-			<graphicClass>Graphic_Single</graphicClass>
-			<texPath>CampingStuff/TentBag</texPath>
-			<shaderType>CutoutComplex</shaderType>
-			<drawRotated>false</drawRotated>
-			<allowFlip>false</allowFlip>
-		</graphicData>
 		<costStuffCount>25</costStuffCount>
 		<useHitPoints>false</useHitPoints>
 		<building>

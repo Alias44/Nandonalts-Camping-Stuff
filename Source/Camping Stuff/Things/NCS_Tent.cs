@@ -1,8 +1,9 @@
-﻿using System;
+﻿using HarmonyLib;
+using RimWorld;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using HarmonyLib;
-using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace Camping_Stuff;
@@ -26,9 +27,9 @@ public class NCS_Tent : Building
 	public int maxPoles = DefDatabase<ThingDef>.AllDefs.Where(d => d.HasComp(typeof(TentCoverComp))).Max(cover => cover.GetCompProperties<CompProperties_TentCover>().numPoles);
 	private static int maxPossibePoles = DefDatabase<ThingDef>.AllDefs.Where(d => d.HasComp(typeof(TentCoverComp))).Min(cover => cover.GetCompProperties<CompProperties_TentCover>().numPoles);
 
-	private List<Thing> poles = new List<Thing>();
+	private List<Thing> poles = [];
 
-	public List<Thing> Poles => poles ?? (poles = new List<Thing>());
+	public List<Thing> Poles => poles ??= [];
 
 	public int PoleKindCount(Thing thing)
 	{
@@ -55,7 +56,6 @@ public class NCS_Tent : Building
 				return;
 			}
 
-			// Eject previous cover if applicable
 			if (this.cover != null)
 			{
 				Eject(this.cover);
@@ -248,7 +248,8 @@ public class NCS_Tent : Building
 						}
 						finally // top up the HP after the tent reference has been set (this helps account for any pole factors that would spawn the tent at its base health)
 						{
-							twc.HitPoints = twc.MaxHitPoints;
+							// access via MaxHitPoints may retrieve a stale value if poles have been added, this forces a recompute.
+							twc.HitPoints = Mathf.RoundToInt(twc.GetStatValue(StatDefOf.MaxHitPoints));
 						}
 					}
 				}
