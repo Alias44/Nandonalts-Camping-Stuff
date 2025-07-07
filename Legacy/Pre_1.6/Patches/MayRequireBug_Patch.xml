@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Patch>
+	<!-- Removes defs that inherit from Royalty bases (because may require is bugged prior to 1.6)-->
 	<Operation Class="PatchOperationFindMod">
 		<mods>
 			<li>Royalty</li>
