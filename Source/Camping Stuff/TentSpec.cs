@@ -205,19 +205,19 @@ public class TentSpec : IExposable
 		return string.Join("\n", JoinRows()).GetHashCode();
 	}
 
-		public override int GetHashCode()
+	public override int GetHashCode()
+	{
+		if (!oldHash)
 		{
-			if (!oldHash)
-			{
-				return GenericHashLib.HashCode
-					.OfEach(layout)
-					.AndEach(spawns);
-			}
-			else
-			{
-				return GetOldHashCode();
-			}
+			return GenericHashLib.HashCode
+				.OfEach(layout)
+				.AndEach(spawns);
 		}
+		else
+		{
+			return GetOldHashCode();
+		}
+	}
 
 
 	public void ExposeData()

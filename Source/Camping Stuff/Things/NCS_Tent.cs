@@ -56,6 +56,7 @@ public class NCS_Tent : Building
 				return;
 			}
 
+			// Eject previous Cover if applicable
 			if (this.cover != null)
 			{
 				Eject(this.cover);
@@ -233,6 +234,8 @@ public class NCS_Tent : Building
 					var spawnedThings = new List<Thing>();
 					se.Spawn(cell, this.Map, Faction.OfPlayer, spawnedThings: spawnedThings);
 
+					HashSet<ThingDef> staleThings = [];
+
 					foreach (var twc in spawnedThings.Where(t => t is ThingWithComps).Cast<ThingWithComps>())
 					{
 						try
@@ -246,10 +249,16 @@ public class NCS_Tent : Building
 								tent = this
 							});
 						}
-						finally // top up the HP after the tent reference has been set (this helps account for any pole factors that would spawn the tent at its base health)
+						finally // top up the HP after the tent reference has been set (this helps account for any Pole factors that would spawn the tent at its base health)
 						{
-							// access via MaxHitPoints may retrieve a stale value if poles have been added, this forces a recompute.
-							twc.HitPoints = Mathf.RoundToInt(twc.GetStatValue(StatDefOf.MaxHitPoints));
+							// 1.6 access via MaxHitPoints may retrieve a stale value if poles have been added, this forces a recompute.
+							if (!staleThings.Contains(twc.def))
+							{
+								Mathf.RoundToInt(twc.GetStatValue(StatDefOf.MaxHitPoints));
+								staleThings.Add(twc.def);
+							}
+
+							twc.HitPoints = twc.MaxHitPoints;
 						}
 					}
 				}
@@ -342,7 +351,7 @@ public class NCS_Tent : Building
 
 	public override void ExposeData()
 	{
-		// cache floor & override in backcompat
+		// cache Floor & override in backcompat
 		base.ExposeData();
 
 		Scribe_Values.Look(ref layoutHash, "layout");
