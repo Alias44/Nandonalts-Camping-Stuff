@@ -22,6 +22,12 @@ Enter the command git clone https://github.com/Alias44/Nandonalts-Camping-Stuff
 Note: You can get future changes by using the command get pull origin master
 
 ### Changes
+v1.2.0
+* RimWorld 1.6 support
+* Added support for Royalty DLC
+* New terrain textures for tent floors (commissioned from Orange Peel Assassin)
+* Code cleanup & optimizations
+
 V1.1.0
 * RimWorld 1.5 support
 * Moved wall, door, and floor definitions to tent XMl specification
