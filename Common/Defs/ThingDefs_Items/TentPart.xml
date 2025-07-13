@@ -307,6 +307,13 @@
 			<ThingDef>NCS_TentPart_Pole</ThingDef>
 			<ThingDef>NCS_TentPart_Floor</ThingDef>
 		</descriptionHyperlinks>
+		<graphicData>
+			<graphicClass>Graphic_Single</graphicClass>
+			<texPath>CampingStuff/TentBag</texPath>
+			<shaderType>CutoutComplex</shaderType>
+			<drawRotated>false</drawRotated>
+			<allowFlip>false</allowFlip>
+		</graphicData>
 		<thingClass>Camping_Stuff.NCS_Tent</thingClass>
 		<altitudeLayer>Shadows</altitudeLayer>
 		<statBases Inherit="False">

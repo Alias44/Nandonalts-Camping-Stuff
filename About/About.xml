@@ -5,6 +5,7 @@
 		<li>Alias</li>
 		<li>Nandonalt</li>
 	</authors>
+	<modVersion IgnoreIfNoMatchingField="True">1.2.1</modVersion>
 	<packageId>Alias.CampingStuff</packageId>
 
 	<supportedVersions>
