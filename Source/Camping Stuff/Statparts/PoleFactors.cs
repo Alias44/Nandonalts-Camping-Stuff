@@ -10,11 +10,7 @@ public abstract class PoleFactors : StatPart
 {
 	protected virtual bool AppliesTo(StatRequest req)
 	{
-#if RELEASE_1_4 || RELEASE_1_3 || RELEASE_1_2 || RELEASE_1_1
-		return req.HasThing && req.Thing.def.HasComp(typeof(TentSpawnedComp));
-#else
-		return req.HasThing && req.Thing.HasComp<TentSpawnedComp>();
-#endif
+		return req.HasThing && req.Thing.TryGetComp<TentSpawnedComp>()?.tent != null;
 	}
 
 	protected float AvgPoleFactor(NCS_Tent tent, StatDef sd)

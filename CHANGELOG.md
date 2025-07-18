@@ -1,3 +1,6 @@
+# v1.2.2
+- Bugfix: tents fail to install and spam error log (due to null pointer in PoleFactors)
+
 # v1.2.1
 - Bugfix: tent bags not craft-able due to graphic
 
