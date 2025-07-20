@@ -10,18 +10,20 @@ public abstract class PoleFactors : StatPart
 {
 	protected virtual bool AppliesTo(StatRequest req)
 	{
-		return req.HasThing && req.Thing.TryGetComp<TentSpawnedComp>()?.tent != null;
+		var t = req.Thing.TryGetComp<TentSpawnedComp>()?.tent;
+
+		return req.HasThing && t!= null;
 	}
 
 	protected float AvgPoleFactor(NCS_Tent tent, StatDef sd)
 	{
-		return tent.Poles.Sum(p => p.Stuff.stuffProps.statFactors.GetStatFactorFromList(sd) * p.stackCount) / tent.PoleCount;
+		return tent.Poles.Sum(p => (p.Stuff ?? p.def).stuffProps.statFactors.GetStatFactorFromList(sd) * p.stackCount) / tent.PoleCount;
 	}
 
 	protected float DistributedPoleOffset(NCS_Tent tent, StatDef sd)
 	{
 		int parts = tent.Cover.TryGetComp<TentCoverComp>().Props.tentSpec.layoutParts;
-		float totalOffset = tent.Poles.Sum(p => p.Stuff.stuffProps.statOffsets.GetStatOffsetFromList(sd) * p.stackCount);
+		float totalOffset = tent.Poles.Sum(p => (p.Stuff ?? p.def).stuffProps.statOffsets.GetStatOffsetFromList(sd) * p.stackCount);
 
 		float distributedOffset = totalOffset / parts;
 
@@ -46,15 +48,17 @@ public abstract class PoleFactors : StatPart
 
 		foreach (var pole in tent.Poles)
 		{
-			float statFactorFromList = pole.Stuff.stuffProps.statFactors.GetStatFactorFromList(sd);
+			var stuff = pole.Stuff ?? pole.def;
+
+			float statFactorFromList = stuff.stuffProps.statFactors.GetStatFactorFromList(sd);
 			float weight = (float)pole.stackCount / tent.PoleCount;
 
 			factorDesc +=
-				$"{Util.indent}{"StatsReport_Material".Translate()} ({pole.Stuff.LabelCap}): {statFactorFromList.ToStringByStyle(ToStringStyle.PercentZero, ToStringNumberSense.Factor)} ({"HealthFactorPercentImpact".Translate(weight.ToStringPercentEmptyZero())})\n";
+				$"{Util.indent}{"StatsReport_Material".Translate()} ({stuff.LabelCap}): {statFactorFromList.ToStringByStyle(ToStringStyle.PercentZero, ToStringNumberSense.Factor)} ({"HealthFactorPercentImpact".Translate(weight.ToStringPercentEmptyZero())})\n";
 
-			float statOffsetFromList = pole.Stuff.stuffProps.statOffsets.GetStatOffsetFromList(sd);
+			float statOffsetFromList = stuff.stuffProps.statOffsets.GetStatOffsetFromList(sd);
 			offsetDesc +=
-				$"{Util.indent}{"StatsReport_Material".Translate()} ({pole.Stuff.LabelCap}): {statOffsetFromList.ToStringByStyle(sd.toStringStyle, ToStringNumberSense.Offset)} ({"HealthOffsetScale".Translate(pole.stackCount + "x")})\n";
+				$"{Util.indent}{"StatsReport_Material".Translate()} ({stuff.LabelCap}): {statOffsetFromList.ToStringByStyle(sd.toStringStyle, ToStringNumberSense.Offset)} ({"HealthOffsetScale".Translate(pole.stackCount + "x")})\n";
 		}
 
 		if ((double)Math.Abs(avg - 1f) > 1.40129846432482E-45) // Avg != 1.0
